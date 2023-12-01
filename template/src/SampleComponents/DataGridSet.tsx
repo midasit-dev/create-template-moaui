@@ -26,6 +26,7 @@ const Sample = () => {
 						]}
 					/>
 				</Panel>
+				<p style={pStyle2}>To revert to the original state, perform "Ctrl + Z" in src/App.tsx.</p>
 			</div>
 		</div>
 	)
@@ -55,4 +56,12 @@ const pStyle: any = {
 	fontSize: '30px',
 	textAlign: 'center',
 	color: Color.text.secondary
+}
+
+const pStyle2: any = {
+	fontSize: '17px',
+	textAlign: 'center',
+	color: Color.text.third,
+	paddingTop: '15px',
+	marginBottom: '20px',
 }

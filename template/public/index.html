@@ -8,9 +8,22 @@
       name="description"
       content="Web site created using cra-template-moaui"
     />
+		<link rel="icon" href="./SVG/m_circle.svg">
+		<!-- FOR PYTHON SCRIPTING (PYTHON LINKING)
+			linking and import script for Embedded Python Script
+		-->
+		<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+		<script defer src="https://pyscript.net/latest/pyscript.js"></script>
     <title>cra-template-moaui</title>
   </head>
   <body>
     <div id="root"></div>
+		<!-- FOR PYTHON SCRIPTING (PYTHON PACKAGE SETTING)
+			If you need any Python packages,
+			please add the package names below.
+		-->
+		<py-config>
+			packages = ["numpy"]
+		</py-config>
   </body>
 </html>
