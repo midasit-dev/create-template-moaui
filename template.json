@@ -1,6 +1,9 @@
 {
 	"package": {
+		"private": false,
+		"homepage": ".",
 		"devDependencies": {
+			"@babel/plugin-proposal-private-property-in-object": "^1.0.0",
 			"@midasit-dev/moaui": "^0.0.52"
 		},
 		"dependencies": {

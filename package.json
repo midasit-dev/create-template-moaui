@@ -1,7 +1,6 @@
 {
   "name": "@midasit-dev/cra-template-moaui",
-  "version": "1.0.0",
-  "private": false,
+  "version": "1.0.1",
   "browserslist": {
     "production": [
       ">0.2%",
