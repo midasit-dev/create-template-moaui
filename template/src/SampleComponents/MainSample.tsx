@@ -3,6 +3,7 @@ import { CodeBlock, Color } from "@midasit-dev/moaui";
 import ButtonAlertMessage from './ButtonAlertMessage';
 import ButtonApiGet from './ButtonApiGet';
 import ButtonApiPost from './ButtonApiPost';
+import ButtonSnackbar from './ButtonSnackbar';
 
 function App() {
 	return (
@@ -11,6 +12,7 @@ function App() {
 			<div style={outlineStyle}>
 				<img style={imgStyle} src="./SVG/m_circle.svg" alt="Midas IT" />
 				<p style={pStyle}>Enjoy, moaui components</p>
+				<div style={{...centerStyle, marginBottom: 15}}><ButtonSnackbar /></div>
 				<p style={pStyle2}>🌻 Python Execution Testing</p>
 				<div style={{...centerStyle, marginBottom: 15}}><ButtonAlertMessage /></div>
 				<div style={{...centerStyle, marginBottom: 15}}><ButtonApiGet /></div>
@@ -54,7 +56,7 @@ const backgroundStyle: any = {
 }
 
 const widthValue = 600;
-const heightValue = 790;
+const heightValue = 845;
 const outlineStyle: any = {
 	position: 'absolute',
 	top: '50%',
@@ -76,7 +78,7 @@ const pStyle: any = {
 	fontSize: '30px',
 	textAlign: 'center',
 	color: Color.text.secondary,
-	marginBottom: '-10px',
+	marginBottom: '15px',
 }
 
 const pStyle2: any = {

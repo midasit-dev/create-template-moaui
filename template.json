@@ -3,8 +3,8 @@
 		"private": false,
 		"homepage": ".",
 		"devDependencies": {
-			"@babel/plugin-proposal-private-property-in-object": "^1.0.0",
-			"@midasit-dev/moaui": "^0.0.52"
+			"@midasit-dev/moaui": "^0.0.52",
+			"notistack": "^3.0.1"
 		},
 		"dependencies": {
 			"@testing-library/jest-dom": "^5.17.0",
