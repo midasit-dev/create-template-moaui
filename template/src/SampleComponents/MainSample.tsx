@@ -39,8 +39,7 @@ function App() {
 	return <DataGridSet />;
 }
 
-export default App;
-`
+export default App;`
 const centerStyle: any = {
 	display: 'flex',
 	justifyContent: 'center',
@@ -56,7 +55,7 @@ const backgroundStyle: any = {
 }
 
 const widthValue = 600;
-const heightValue = 845;
+const heightValue = 850;
 const outlineStyle: any = {
 	position: 'absolute',
 	top: '50%',
