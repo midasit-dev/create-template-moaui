@@ -2,7 +2,6 @@ import React from 'react';
 import { CodeBlock, Color } from "@midasit-dev/moaui";
 import ButtonAlertMessage from './ButtonAlertMessage';
 import ButtonApiGet from './ButtonApiGet';
-import ButtonApiPost from './ButtonApiPost';
 import ButtonSnackbar from './ButtonSnackbar';
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
 				<p style={pStyle2}>🌻 Python Execution Testing</p>
 				<div style={{...centerStyle, marginBottom: 15}}><ButtonAlertMessage /></div>
 				<div style={{...centerStyle, marginBottom: 15}}><ButtonApiGet /></div>
-				<div style={centerStyle}><ButtonApiPost /></div>
 				<p style={pStyle2}>❄️ React Render Testing</p>
 				<p style={pStyle2_1}>Copy and paste to src/App.tsx and save reload this page.</p>
 				<div style={{ opacity: 0.95, }} >
@@ -55,7 +53,7 @@ const backgroundStyle: any = {
 }
 
 const widthValue = 600;
-const heightValue = 850;
+const heightValue = 830;
 const outlineStyle: any = {
 	position: 'absolute',
 	top: '50%',

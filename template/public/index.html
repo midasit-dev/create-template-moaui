@@ -7,47 +7,48 @@
 	<meta name="theme-color" content="#000000" />
 	<meta name="description" content="Web site created using cra-template-moaui" />
 	<link rel="icon" href="./favicon.ico">
-	<!-- FOR PYTHON SCRIPTING (PYTHON LINKING)
-			linking and import script for Embedded Python Script
-		-->
-	<link rel="stylesheet" href="./Python/css/index.css" />
+	<link rel="stylesheet" href="./index.css" />
+
+	<!-- [PYSCRIPT LATEST	]-->
 	<script defer src="https://pyscript.net/latest/pyscript.js"></script>
+	<py-config type="json" src="./pyscript_config.json"></py-config>
+
+	<!-- [PYSCRIPT RELEASE] -->
 	<!-- <script type="module" src="https://pyscript.net/releases/2023.12.1/core.js"></script> -->
+
 	<title>cra-template-moaui</title>
 </head>
 
 <body>
 	<div id="root"></div>
-	<!-- FOR PYTHON SCRIPTING (PYTHON PACKAGE SETTING)
-			If you need any Python packages,
-			please add the package names below.
-		-->
-	<py-config>
-		packages = ["numpy"]
-		<!--
-			* using pyodide version: 0.23.1
-			* inner CPython version: 3.11.2
-			* if check the packages, (if the package is included below links, you can use it)
-			* 	you can search in https://pyodide.org/en/0.23.1/usage/packages-in-pyodide.html
-			*		you can search in https://docs.python.org/3.11/library/index.html
+	<!-- [PYSCRIPT LATEST	]-->
+	<py-script src="./pyscript_main.py"></py-script>
+	<!-- FOR PYSCRIPT CONFIGURATIONS
+		* using pyodide version: 0.23.1
+		* inner CPython version: 3.11.2
+		* if check the packages, (if the package is included below links, you can use it)
+		* 	you can search in https://pyodide.org/en/0.23.1/usage/packages-in-pyodide.html
+		*		you can search in https://docs.python.org/3.11/library/index.html
 
-			Available Packages: [
-				"arrr",
-				"numpy",
-				"openpyxl",
-				"dash",
-				"matplotlib", (if you want to use "mpl_toolkits", this package is required.)
-				"numpy",
-				"scipy",
-				"shapely"
-			]
+		Available Packages: [
+			"arrr",
+			"numpy",
+			"openpyxl",
+			"dash",
+			"matplotlib", (if you want to use "mpl_toolkits", this package is required.)
+			"numpy",
+			"scipy",
+			"shapely"
+		]
 
-			Unavailable Packages of internal modules: [
-				"requests",
-				"winreg"
-			]
-		-->
-	</py-config>
+		Unavailable Packages of internal modules: [
+			"requests",
+			"winreg",
+		]
+	-->
+
+	<!-- [PYSCRIPT RELEASE] -->
+	<!-- <script type="py" src="./pyscript_main.py" config="./pyscript_config.json"></script> -->
 </body>
 
 </html>

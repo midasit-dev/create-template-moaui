@@ -11,8 +11,8 @@ const Component = () => {
 			color="negative"
 			onClick={() => {
 				// FOR PYTHON SCRIPTING (GET FUNCTION PY PYTHON CODE)
-				// @see ./public/python/Code.py
-				const func = pyscript.interpreter.globals.get("helloWorld");
+				// @see ./public/data.py
+				const func = pyscript.interpreter.globals.get("HelloWorld");
 				alert(func());
 			}}
 		>

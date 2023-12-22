@@ -4,7 +4,8 @@
 		"homepage": ".",
 		"devDependencies": {
 			"@midasit-dev/moaui": "latest",
-			"notistack": "^3.0.1"
+			"notistack": "^3.0.1",
+			"recoil": "^0.7.7"
 		},
 		"dependencies": {
 			"@testing-library/jest-dom": "^5.17.0",

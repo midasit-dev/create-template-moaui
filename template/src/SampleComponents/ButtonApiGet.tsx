@@ -12,11 +12,8 @@ const Component = () => {
 			if (clicked === false) {
 				// FOR PYTHON SCRIPTING (GET FUNCTION PY PYTHON CODE)
 				// To invoke the function asynchronously, retrieve the method from pyscript.interpreter.
-				// @see ./public/python/Code.py
-				const pyFunction = pyscript.interpreter.globals.get('apiGet');
-
-				// Awaits the Promise returned by the Python function.
-				const response = await pyFunction();
+				const pyFunction = pyscript.interpreter.globals.get('ApiGet');
+				const response = pyFunction();
 				const result = JSON.parse(response);
 
 				setClicked(true);
