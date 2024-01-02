@@ -132,8 +132,8 @@ class MidasAPI:
         responseJson = requests_json.get(url, headers=self.headers)
         # check response.json()[item_name] is Exist
         if item_name not in responseJson:
-            print(f"Error: Unable to find the registry key or value for {item_name}")
-            return None
+            error_message = {"error": f"Error: Unable to find the registry key or value for {item_name}"}
+            return error_message
         keyVals = responseJson[item_name]
         return { int(k): v for k, v in keyVals.items() }
     
@@ -143,11 +143,11 @@ class MidasAPI:
         responseJson = requests_json.get(url, headers=self.headers)
         # check responseJson[item_name] is Exist
         if item_name not in responseJson:
-            print(f"Error: Unable to find the registry key or value for {item_name}")
-            return None
+            error_message = {"error": f"Error: Unable to find the registry key or value for {item_name}"}
+            return error_message
         if item_id_str not in responseJson[item_name]:
-            print(f"Error: Unable to find the registry key or value for {item_id}")
-            return None
+            error_message = {"error": f"Error: Unable to find the registry key or value for {item_id}"}
+            return error_message
         return responseJson[item_name][item_id_str]
     
     def db_update(self, item_name, items):
@@ -184,7 +184,8 @@ class MidasAPI:
     ## view ############################################################################################################
     def view_select_get(self):
         url = f'{self.base_url}/view/select'
-        return requests_json.get(url, headers=self.headers)
+        response = requests_json.get(url, headers=self.headers)
+        return response['SELECT']
     
     ## Steel Code Check (Gen Only) ########################################################################################################
     def post_steelcodecheck(self):

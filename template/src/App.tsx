@@ -1,5 +1,26 @@
+/**
+ *	                        __
+ *	  ___ ___       __     /\_\     ___                 __      _____    _____
+ *	/' __` __`\   /'__`\   \/\ \  /' _ `\             /'__`\   /\ '__`\ /\ '__`\
+ *	/\ \/\ \/\ \ /\ \L\.\_  \ \ \ /\ \/\ \           /\ \L\.\_ \ \ \L\ \\ \ \L\ \
+ *	\ \_\ \_\ \_\\ \__/.\_\  \ \_\\ \_\ \_\          \ \__/.\_\ \ \ ,__/ \ \ ,__/
+ *	 \/_/\/_/\/_/ \/__/\/_/   \/_/ \/_/\/_/  _______  \/__/\/_/  \ \ \/   \ \ \/
+ *	                                        /\______\             \ \_\    \ \_\
+ *	                                        \/______/              \/_/     \/_/
+ */
+
 import React from 'react';
-import MainSample from './SampleComponents/MainSample'
+import { GuideBox, Panel, Typography, Color } from '@midasit-dev/moaui';
+import LogoSvg from './SampleComponents/LogoSvg';
+import ButtonSnackbar from './SampleComponents/ButtonSnackbar';
+import ButtonAlertMessage from './SampleComponents/ButtonAlertMessage';
+import ButtonApiGet from './SampleComponents/ButtonApiGet';
+import CodeBlockComponent from './SampleComponents/CodeBlock';
+import LearnMoreComponent from './SampleComponents/LearnMore';
+import PythonFetchingPost from './SampleComponents/PythonFetchingPost';
+import PythonFetchingGet from './SampleComponents/PythonFetchingGet';
+import PythonFetchingPut from './SampleComponents/PythonFetchingPut';
+import PythonFetchingDelete from './SampleComponents/PythonFetchingDelete';
 
 /**
  * This is a sample code.
@@ -8,7 +29,73 @@ import MainSample from './SampleComponents/MainSample'
 const App = () => {
 	return (
 		//You can modify the code here and test.
-	 <MainSample />
+		<GuideBox show width='100%' fill='2' center paddingY={10}>
+			<GuideBox spacing={5} center>
+
+				<LogoSvg />
+				<Typography color={Color.text.secondary} size='large'>Enjoy, moaui components</Typography>
+
+				<Panel variant='shadow2' width={600} padding={5}>
+					<GuideBox spacing={3.5} width='100%'>
+						<Typography color={Color.text.secondary} size='medium'>Snackbar Example</Typography>
+						<ButtonSnackbar />
+					</GuideBox>
+				</Panel>
+
+				<Panel variant='shadow2' width={600} padding={5}>
+					<GuideBox spacing={3.5} width='auto'>
+						<Typography color={Color.text.secondary} size='medium'>Javascript Fetching Examples</Typography>
+						<ButtonAlertMessage />
+						<ButtonApiGet />
+					</GuideBox>
+				</Panel>
+
+				<Panel variant='shadow2' width={600} padding={5}>
+					<GuideBox spacing={3.5} width='auto'>
+						<Typography color={Color.text.secondary} size='medium'>Python Fetching Examples (POST)</Typography>
+						<PythonFetchingPost />
+					</GuideBox>
+				</Panel>
+
+				<Panel variant='shadow2' width={600} padding={5}>
+					<GuideBox spacing={3.5} width='auto'>
+						<Typography color={Color.text.secondary} size='medium'>Python Fetching Examples (GET)</Typography>
+						<PythonFetchingGet />
+					</GuideBox>
+				</Panel>
+
+				<Panel variant='shadow2' width={600} padding={5}>
+					<GuideBox spacing={3.5} width='auto'>
+						<Typography color={Color.text.secondary} size='medium'>Python Fetching Examples (PUT)</Typography>
+						<PythonFetchingPut />
+					</GuideBox>
+				</Panel>
+
+				<Panel variant='shadow2' width={600} padding={5}>
+					<GuideBox spacing={3.5} width='auto'>
+						<Typography color={Color.text.secondary} size='medium'>Python Fetching Examples (DELETE)</Typography>
+						<PythonFetchingDelete />
+					</GuideBox>
+				</Panel>
+
+				<Panel variant='shadow2' width={600} padding={5}>
+					<GuideBox spacing={5} width="auto">
+						<GuideBox spacing={2} width="100%">
+							<Typography color={Color.text.primary} size="medium">
+								❄️ React Render Testing
+							</Typography>
+							<Typography color={Color.text.secondary}>
+								Copy and paste to src/App.tsx and save reload this page.
+							</Typography>
+						</GuideBox>
+						<CodeBlockComponent />
+					</GuideBox>
+				</Panel>
+
+				<LearnMoreComponent />
+
+			</GuideBox>
+		</GuideBox>
 	);
 }
 

@@ -22,7 +22,7 @@ function App() {
 						{sampleCompDataGridSet}
 					</CodeBlock>
 				</div>
-				<a href="https://feature-storybook-from-dev--6556d17f924e868b000ddaf5.chromatic.com/" target="_blank" rel="noopener noreferrer"><p style={pStyle3}>Learn moaui</p></a>
+				<a href="https://dev--6556d17f924e868b000ddaf5.chromatic.com/" target="_blank" rel="noopener noreferrer"><p style={pStyle3}>Learn moaui</p></a>
 			</div>
 		</>
 	);

@@ -7,3 +7,22 @@ export const idItemString = (value: any, index: number) => {
 export const parseId = (idItemStr: string) => {
 	return parseInt(idItemStr.split(':')[0]);
 }
+
+export function isLargerThanZero(value: string) {
+	const val = parseFloat(value);
+	return val > 0;
+}
+
+export function isInteger(value: string) {
+	return Number.isInteger(+value);
+}
+
+export function isFloat(value: string) {
+	const val = parseFloat(value);
+	return typeof val === 'number' && !Number.isNaN(val);
+}
+
+export function isBetween1And1000000(value: string) {
+	const val = parseFloat(value);
+	return val >= 1 && val <= 1000000;
+}
