@@ -40,9 +40,9 @@ const ValidWrapper = (props: any) => {
 				}
 			}
 			if (verifyMapiKey.hasOwnProperty("status")) {
-				if (verifyMapiKey["status"] === "disconnected") {
+				if (verifyMapiKey["status"] !== "connected") {
 					_checkMapiKey = false;
-					setCheckMapiKeyMsg('disconnected');
+					setCheckMapiKeyMsg(verifyMapiKey['status']);
 				}
 			}
       setCheckMapiKey(_checkMapiKey);
