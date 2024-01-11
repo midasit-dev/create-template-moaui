@@ -1,10 +1,24 @@
+/**
+ * 
+ * ██████╗       ██╗    ██╗██████╗  █████╗ ██████╗ ██████╗ ███████╗██████╗ 
+ * ╚════██╗      ██║    ██║██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗
+ *  █████╔╝█████╗██║ █╗ ██║██████╔╝███████║██████╔╝██████╔╝█████╗  ██████╔╝
+ * ██╔═══╝ ╚════╝██║███╗██║██╔══██╗██╔══██║██╔═══╝ ██╔═══╝ ██╔══╝  ██╔══██╗
+ * ███████╗      ╚███╔███╔╝██║  ██║██║  ██║██║     ██║     ███████╗██║  ██║
+ * ╚══════╝       ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝     ╚══════╝╚═╝  ╚═╝
+ * 
+ * @description Wrapper for Pyscript
+ * @next ./src/App.tsx
+ */
+
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import App from './App';
 import { GuideBox, Panel, Typography, VerifyDialog, VerifyUtil, IconButton, Icon } from '@midasit-dev/moaui';
-import { setGlobalVariable, getGlobalVariable } from './pyscript_utils';
+import { setGlobalVariable, getGlobalVariable } from './utils_pyscript';
 import { SnackbarProvider, closeSnackbar } from 'notistack';
-import { RenderingSignatureLogger } from './RenderingSignatureLogger';
+import SignatureLogger from './SignatureLogger';
+import { SignatureLogger as SignatureLoggerOfMoaui } from '@midasit-dev/moaui';
 
 const ValidWrapper = (props: any) => {
 	const { isIntalledPyscript } = props;
@@ -83,7 +97,8 @@ const ValidWrapper = (props: any) => {
     <>
       {isInitialized && isValid && (
 				<RecoilRoot>
-					<RenderingSignatureLogger />
+					<SignatureLogger />
+					<SignatureLoggerOfMoaui />
 					<SnackbarProvider 
 						maxSnack={3} 
 						anchorOrigin={{
