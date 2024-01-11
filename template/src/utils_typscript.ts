@@ -38,3 +38,13 @@ export function isBetween1And1000000(value: string) {
 	const val = parseFloat(value);
 	return val >= 1 && val <= 1000000;
 }
+
+export const deletePyscriptTerminalTag = () => {
+	// Get all elements with the py-terminal tag
+	const pyTerminals = document.querySelectorAll('py-terminal');
+
+	// Remove all py-terminal elements
+	pyTerminals.forEach(pyTerminal => {
+		pyTerminal.remove();
+	});
+}
