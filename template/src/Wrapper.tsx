@@ -4,6 +4,7 @@ import App from './App';
 import { GuideBox, Panel, Typography, VerifyDialog, VerifyUtil, IconButton, Icon } from '@midasit-dev/moaui';
 import { setGlobalVariable, getGlobalVariable } from './pyscript_utils';
 import { SnackbarProvider, closeSnackbar } from 'notistack';
+import { RenderingSignatureLogger } from './RenderingSignatureLogger';
 
 const ValidWrapper = (props: any) => {
 	const { isIntalledPyscript } = props;
@@ -82,6 +83,7 @@ const ValidWrapper = (props: any) => {
     <>
       {isInitialized && isValid && (
 				<RecoilRoot>
+					<RenderingSignatureLogger />
 					<SnackbarProvider 
 						maxSnack={3} 
 						anchorOrigin={{
