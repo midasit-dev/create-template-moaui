@@ -1,7 +1,7 @@
 {
   "name": "@midasit-dev/cra-template-moaui",
-  "version": "1.1.16",
-	"description": "This is the React template used to create a plugin item in the 'moaui' format.",
+  "version": "1.1.18",
+  "description": "This is the React template used to create a plugin item in the 'moaui' format.",
   "browserslist": {
     "production": [
       ">0.2%",
