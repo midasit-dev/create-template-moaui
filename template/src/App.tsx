@@ -31,18 +31,19 @@ import {
  */
 const App = () => {
 	return (
-		<>
-			<Panel variant="shadow2" width={500} height={100}/>
-			<GuideBox row width='100%' spacing={3}>
+		<GuideBox width={400} spacing={2}>
+			<GuideBox row width='100%' spacing={2}>
+				<Panel variant="shadow2" width='50%' height={100}/>
 				<Panel variant="shadow2" width='50%' height={100}/>
 				<Panel variant="shadow2" width='50%' height={100}/>
 			</GuideBox>
-			<GuideBox width='100%' spacing={1}>
+			<GuideBox width='100%' spacing={2}>
+				<Panel variant="shadow2" width='100%' height={50}/>
 				<Panel variant="shadow2" width='100%' height={50}/>
 				<Panel variant="shadow2" width='100%' height={50}/>
 				<Panel variant="shadow2" width='100%' height={50}/>
 			</GuideBox>
-		</>
+		</GuideBox>
 	);
 }
 

@@ -110,6 +110,7 @@ const ValidWrapper = (props: any) => {
 
 	//Container Size
 	const [containerSize, setContainerSize] = React.useState({ width: 0, height: 0 });
+	const [constainerSizeUpdate, setContainerSizeUpdate] = React.useState(true);
 
   return (
     <>
@@ -127,19 +128,27 @@ const ValidWrapper = (props: any) => {
 							</IconButton>
 						)}
 					>
-							<GuideBox width="100%" height='100vh' center={devTools.IsDevEnv() ? true : false} horCenter spacing={3} show={devTools.IsDevEnv()} fill={"#e9ebef"}>
-								<div id='container'>
-									<Panel variant={devTools.IsDevEnv() ? "shadow2" : "box"} padding={0} borderRadius='4px'>
-										<GuideBox width="auto">
-											<devTools.TitleBarSample />
-											<GuideBox show center spacing={3} padding={3} fill='#eee' borderRadius={devTools.IsDevEnv() ? '0 0 4px 4px' : 0}>
-												<devTools.ContainerSizeCalculator setContainerSize={setContainerSize} />
-												<App />
-											</GuideBox>
-										</GuideBox>
+							<GuideBox row width="100%" height='100vh' spacing={3} show={devTools.IsDevEnv()} fill={"#e9ebef"}>
+								<GuideBox width="auto" padding={3} height={300}>
+									<Panel variant='shadow2' padding={3} borderRadius='4px'>
+										<devTools.ContainerSizeUpdator 
+											updateState={{ value: constainerSizeUpdate, setter: setContainerSizeUpdate, }}
+											containerSizeState={{ value: containerSize, setter: setContainerSize }} 
+										/>
 									</Panel>
-								</div>
-								<devTools.ManifestUpdater containerSize={containerSize} />
+								</GuideBox>
+								<GuideBox flexGrow={1} center height="100vh">
+									<div id='container'>
+										<Panel variant={devTools.IsDevEnv() ? "shadow2" : "box"} padding={0} borderRadius='4px'>
+											<GuideBox width="auto">
+												<devTools.TitleBarSample />
+												<GuideBox show center spacing={3} padding={3} fill='#eee' borderRadius={devTools.IsDevEnv() ? '0 0 4px 4px' : 0}>
+													<App />
+												</GuideBox>
+											</GuideBox>
+										</Panel>
+									</div>
+								</GuideBox>
 							</GuideBox>
 					</SnackbarProvider>
 				</RecoilRoot>

@@ -1,7 +1,13 @@
 import Utils from '../Utils';
 
-const Tool = () => {
+interface ToolProps {
+	title: string;
+}
+
+const Tool = (props: ToolProps) => {
 	if (!Utils.IsDevEnv()) return null;
+
+	const { title } = props;
 
 	return (
 		<div style={{ display: 'flex', width: '100%' }}>
@@ -11,7 +17,7 @@ const Tool = () => {
 						<img src={`${process.env.PUBLIC_URL}/favicon.ico`} width="12px" alt="midas-control-icon" />
 					</div>
 					<span style={{ paddingLeft: '0.75rem', userSelect: 'none', fontSize: '0.75rem' }}>
-						Plug-in Title Sample
+						{title}
 					</span>
 				</div>
 				<div style={{ width: '3rem', userSelect: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#21272A', color: '#BDC2C8', borderRadius: '0 4px 0 0', }}>

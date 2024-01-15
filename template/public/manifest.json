@@ -1,6 +1,6 @@
 {
-  "short_name": "plugin-item-name",
-  "name": "plugin-item-name",
+  "short_name": "Plug-in Title",
+  "name": "Plug-in Title",
   "icons": [
     {
       "src": "favicon.ico",
@@ -12,6 +12,6 @@
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
-  "width": "600",
-  "height": "500"
+  "width": 600,
+  "height": 600
 }
