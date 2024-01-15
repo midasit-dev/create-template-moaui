@@ -5,7 +5,7 @@ const CodeBlockComponent = () => {
   return (
     <CodeBlock language="typescript" width={505}>
       {`import React from 'react';
-import DataGridSet from './SampleComponents/DataGridSet';
+import DataGridSet from './SampleComponents/Guide/DataGridSet';
 
 function App() {
 return <DataGridSet />;

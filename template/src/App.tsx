@@ -12,92 +12,37 @@
  */
 
 import React from 'react';
-import { GuideBox, Panel, Typography, Color } from '@midasit-dev/moaui';
-import LogoSvg from './SampleComponents/LogoSvg';
-import ButtonSnackbar from './SampleComponents/ButtonSnackbar';
-import ButtonAlertMessage from './SampleComponents/ButtonAlertMessage';
-import ButtonApiGet from './SampleComponents/ButtonApiGet';
-import CodeBlockComponent from './SampleComponents/CodeBlock';
-import LearnMoreComponent from './SampleComponents/LearnMore';
-import PythonFetchingPost from './SampleComponents/PythonFetchingPost';
-import PythonFetchingGet from './SampleComponents/PythonFetchingGet';
-import PythonFetchingPut from './SampleComponents/PythonFetchingPut';
-import PythonFetchingDelete from './SampleComponents/PythonFetchingDelete';
+import { 
+	GuideBox, 
+	Panel,
+} from '@midasit-dev/moaui';
+//If you want to test, try using the GuideApp component.
+//import GuideApp from './SampleComponents/GuideApp';
 
 /**
- * This is a sample code.
- * for more information, please visit https://midasit-dev.github.io/moaui
+ * You can modify the code here and test.
+ * 
+ * @description 	You can start from the Panel Component below.
+ * 							You can add the Component you want.
+ *								You can check the version of the library you are currently using by opening the developer tool.
+ * 
+ * For more information about the library, please refer to the link below.
+ * @see https://midasit-dev.github.io/moaui
  */
 const App = () => {
 	return (
-		//You can modify the code here and test.
-		<GuideBox show width='100%' fill='2' center paddingY={10}>
-			<GuideBox spacing={5} center>
-
-				<LogoSvg />
-				<Typography color={Color.text.secondary} size='large'>Enjoy, moaui components</Typography>
-
-				<Panel variant='shadow2' width={600} padding={5}>
-					<GuideBox spacing={3.5} width='100%'>
-						<Typography color={Color.text.secondary} size='medium'>Snackbar Example</Typography>
-						<ButtonSnackbar />
-					</GuideBox>
-				</Panel>
-
-				<Panel variant='shadow2' width={600} padding={5}>
-					<GuideBox spacing={3.5} width='auto'>
-						<Typography color={Color.text.secondary} size='medium'>Javascript Fetching Examples</Typography>
-						<ButtonAlertMessage />
-						<ButtonApiGet />
-					</GuideBox>
-				</Panel>
-
-				<Panel variant='shadow2' width={600} padding={5}>
-					<GuideBox spacing={3.5} width='auto'>
-						<Typography color={Color.text.secondary} size='medium'>Python Fetching Examples (POST)</Typography>
-						<PythonFetchingPost />
-					</GuideBox>
-				</Panel>
-
-				<Panel variant='shadow2' width={600} padding={5}>
-					<GuideBox spacing={3.5} width='auto'>
-						<Typography color={Color.text.secondary} size='medium'>Python Fetching Examples (GET)</Typography>
-						<PythonFetchingGet />
-					</GuideBox>
-				</Panel>
-
-				<Panel variant='shadow2' width={600} padding={5}>
-					<GuideBox spacing={3.5} width='auto'>
-						<Typography color={Color.text.secondary} size='medium'>Python Fetching Examples (PUT)</Typography>
-						<PythonFetchingPut />
-					</GuideBox>
-				</Panel>
-
-				<Panel variant='shadow2' width={600} padding={5}>
-					<GuideBox spacing={3.5} width='auto'>
-						<Typography color={Color.text.secondary} size='medium'>Python Fetching Examples (DELETE)</Typography>
-						<PythonFetchingDelete />
-					</GuideBox>
-				</Panel>
-
-				<Panel variant='shadow2' width={600} padding={5}>
-					<GuideBox spacing={5} width="auto">
-						<GuideBox spacing={2} width="100%">
-							<Typography color={Color.text.primary} size="medium">
-								❄️ React Render Testing
-							</Typography>
-							<Typography color={Color.text.secondary}>
-								Copy and paste to src/App.tsx and save reload this page.
-							</Typography>
-						</GuideBox>
-						<CodeBlockComponent />
-					</GuideBox>
-				</Panel>
-
-				<LearnMoreComponent />
-
+		<>
+			<Panel variant="shadow2" width={500} height={100}/>
+			<GuideBox row width='100%' spacing={3}>
+				<Panel variant="shadow2" width='50%' height={100}/>
+				<Panel variant="shadow2" width='50%' height={100}/>
 			</GuideBox>
-		</GuideBox>
+			<GuideBox width='100%' spacing={1}>
+				<Panel variant="shadow2" width='100%' height={50}/>
+				<Panel variant="shadow2" width='100%' height={50}/>
+				<Panel variant="shadow2" width='100%' height={50}/>
+			</GuideBox>
+		</>
 	);
 }
 

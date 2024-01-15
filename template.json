@@ -4,6 +4,7 @@
 		"homepage": ".",
 		"devDependencies": {
 			"@midasit-dev/moaui": "latest",
+			"cors": "^2.8.5",
 			"notistack": "^3.0.1",
 			"recoil": "^0.7.7"
 		},
@@ -23,10 +24,13 @@
 		},
 		"scripts": {
 			"start": "react-scripts start",
-			"prebuild": "ren build plugin-item-name",
-			"build": "react-scripts build && npm run prebuild",
+			"build": "react-scripts build",
 			"test": "react-scripts test",
-			"eject": "react-scripts eject"
+			"eject": "react-scripts eject",
+			"dev-on": "cd src/DevTools && node dev-on.js",
+			"dev-off": "cd src/DevTools && node dev-off.js",
+			"dev-server": "cd src/DevTools && node server.js",
+			"dev": "npm run dev-on && npm run dev-server"
 		},
 		"eslintConfig": {
 			"extends": [

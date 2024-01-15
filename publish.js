@@ -16,7 +16,7 @@ fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8')
 console.log(`Updated package.json version to ${newVersion}`);
 
 // Update logRenderingSignature.ts
-const logRenderingSignaturePath = path.resolve(__dirname, 'template', 'src', 'SignatureLogger.tsx');
+const logRenderingSignaturePath = path.resolve(__dirname, 'template', 'src', 'Signature.tsx');
 const logRenderingSignatureContent = fs.readFileSync(logRenderingSignaturePath, 'utf-8');
 
 // Replace the version string in logRenderingSignature.ts

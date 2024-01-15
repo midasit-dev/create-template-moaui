@@ -1,8 +1,8 @@
 import React from 'react';
 import { CodeBlock, Color } from "@midasit-dev/moaui";
-import ButtonAlertMessage from './ButtonAlertMessage';
-import ButtonApiGet from './ButtonApiGet';
-import ButtonSnackbar from './ButtonSnackbar';
+import ButtonAlertMessage from './Guide/ButtonAlertMessage';
+import ButtonApiGet from './Guide/ButtonApiGet';
+import ButtonSnackbar from './Guide/ButtonSnackbar';
 
 function App() {
 	return (

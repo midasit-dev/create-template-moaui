@@ -14,35 +14,26 @@
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import App from './App';
-import { GuideBox, Panel, Typography, VerifyDialog, VerifyUtil, IconButton, Icon } from '@midasit-dev/moaui';
-import { setGlobalVariable, getGlobalVariable } from './utils_pyscript';
-import { SnackbarProvider, closeSnackbar } from 'notistack';
-import SignatureLogger from './SignatureLogger';
-import { SignatureLogger as SignatureLoggerOfMoaui } from '@midasit-dev/moaui';
-
-const MidasControllerSample = () => {
-	if (process.env.NODE_ENV === 'production') return null;
-	return (
-		<div style={{ paddingBottom: '2rem' }}>
-			<span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', height: '2rem', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}>
-				<div style={{ display: 'flex', flexDirection: 'row', backgroundColor: '#21272A', paddingTop: '0.5rem', paddingBottom: '0.5rem', width: '100%', fontFamily: 'Pretendard', color: '#BDC2C8' }}>
-					<div style={{ display: 'flex', paddingLeft: '20px', alignItems: 'center' }}>
-						<img src={`${process.env.PUBLIC_URL}/favicon.ico`} width="12px" alt="midas-control-icon" />
-					</div>
-					<span style={{ paddingLeft: '0.75rem', userSelect: 'none', fontSize: '0.75rem' }}>
-						Plug-in Title Sample
-					</span>
-				</div>
-				<div style={{ width: '3rem', userSelect: 'none', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#21272A', color: '#BDC2C8' }}>
-					<svg width="1rem" viewBox="0 0 24 24">
-						<path fill="#BDC2C8" d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-						</path>
-					</svg>										
-				</div>									
-			</span>
-		</div>
-	)
-}
+import { 
+	GuideBox, 
+	Panel, 
+	Typography, 
+	VerifyDialog, 
+	VerifyUtil, 
+	IconButton, 
+	Icon, 
+} from '@midasit-dev/moaui';
+import { 
+	SnackbarProvider, 
+	closeSnackbar 
+} from 'notistack';
+import { 
+	setGlobalVariable, 
+	getGlobalVariable 
+} from './utils_pyscript';
+import Signature from './Signature';
+import { Signature as SignatureMoaui } from '@midasit-dev/moaui';
+import devTools from "./DevTools"
 
 const ValidWrapper = (props: any) => {
 	const { isIntalledPyscript } = props;
@@ -68,17 +59,17 @@ const ValidWrapper = (props: any) => {
 
       const mapiKey = VerifyUtil.getMapiKey();
       const verifyMapiKey = await VerifyUtil.getVerifyInfoAsync(mapiKey);
-      if (verifyMapiKey.hasOwnProperty("error")) {
+      if ('error' in verifyMapiKey && 'message' in verifyMapiKey.error) {
         _checkMapiKey = false;
-				setCheckMapiKeyMsg('error');
+				setCheckMapiKeyMsg(verifyMapiKey.error.message);
       }
-			if (verifyMapiKey.hasOwnProperty("keyVerified")) {
+			if ('keyVerified' in verifyMapiKey) {
 				if (!verifyMapiKey["keyVerified"]) {
 					_checkMapiKey = false;
 					setCheckMapiKeyMsg('keyVerified');
 				}
 			}
-			if (verifyMapiKey.hasOwnProperty("status")) {
+			if ('status' in verifyMapiKey) {
 				if (verifyMapiKey["status"] !== "connected") {
 					_checkMapiKey = false;
 					setCheckMapiKeyMsg(verifyMapiKey['status']);
@@ -106,7 +97,7 @@ const ValidWrapper = (props: any) => {
 		strInvalid = 'Invalid',
 	}: any) => {
 		return (
-			<GuideBox row horSpaceBetween width={300}>
+			<GuideBox row horSpaceBetween width={350}>
 				<Typography variant="body1">{title}: </Typography>
 				{checkIf ? ( 
 					<Typography variant="h1" color="#1f78b4">{strValid}</Typography>
@@ -117,12 +108,13 @@ const ValidWrapper = (props: any) => {
 		);
 	}
 
+	//Container Size
+	const [containerSize, setContainerSize] = React.useState({ width: 0, height: 0 });
+
   return (
     <>
       {isInitialized && isValid && (
 				<RecoilRoot>
-					<SignatureLogger />
-					<SignatureLoggerOfMoaui />
 					<SnackbarProvider 
 						maxSnack={3} 
 						anchorOrigin={{
@@ -135,23 +127,37 @@ const ValidWrapper = (props: any) => {
 							</IconButton>
 						)}
 					>
-						<MidasControllerSample />
-						<App />
+							<GuideBox width="100%" height='100vh' center={devTools.IsDevEnv() ? true : false} horCenter spacing={3} show={devTools.IsDevEnv()} fill={"#e9ebef"}>
+								<div id='container'>
+									<Panel variant={devTools.IsDevEnv() ? "shadow2" : "box"} padding={0} borderRadius='4px'>
+										<GuideBox width="auto">
+											<devTools.TitleBarSample />
+											<GuideBox show center spacing={3} padding={3} fill='#eee' borderRadius={devTools.IsDevEnv() ? '0 0 4px 4px' : 0}>
+												<devTools.ContainerSizeCalculator setContainerSize={setContainerSize} />
+												<App />
+											</GuideBox>
+										</GuideBox>
+									</Panel>
+								</div>
+								<devTools.ManifestUpdater containerSize={containerSize} />
+							</GuideBox>
 					</SnackbarProvider>
 				</RecoilRoot>
 			)}
 				
 			{isInitialized && !isValid && (
-        <Panel variant="shadow2" padding={3} margin={3}>
-					<GuideBox opacity={0.9} spacing={2}>
-						<Typography variant="h1">Validation Check</Typography>
-						<GuideBox spacing={2}>
-							<ValidationComponent title="pyscript" checkIf={isIntalledPyscript} strValid="Installed" strInvalid={`Not Installed`} />
-							<ValidationComponent title="Base URI" checkIf={checkUri} strValid="Valid" strInvalid="Invalid" />
-							<ValidationComponent title="MAPI-Key" checkIf={checkMapiKey} strValid="Valid" strInvalid={`Invalid (${checkMapiKeyMsg})`} />
+				<GuideBox width="100%" height="100vh" center>
+					<Panel variant="shadow2" padding={3} margin={3}>
+						<GuideBox opacity={0.9} spacing={2}>
+							<Typography variant="h1">Validation Check</Typography>
+							<GuideBox spacing={2}>
+								<ValidationComponent title="pyscript" checkIf={isIntalledPyscript} strValid="Installed" strInvalid={`Not Installed`} />
+								<ValidationComponent title="Base URI" checkIf={checkUri} strValid="Valid" strInvalid="Invalid" />
+								<ValidationComponent title="MAPI-Key" checkIf={checkMapiKey} strValid="Valid" strInvalid={`Invalid (${checkMapiKeyMsg})`} />
+							</GuideBox>
 						</GuideBox>
-					</GuideBox>
-				</Panel>
+					</Panel>
+				</GuideBox>
       )}
     </>
   );
@@ -167,6 +173,8 @@ const PyscriptWrapper = () => {
       if (pyscript && pyscript.interpreter) {
         setGlobalVariable();
         getGlobalVariable();
+				Signature.log();
+				SignatureMoaui.log();
 				setInstalled(true);
       } else {
         // if not, wait 100ms and try again

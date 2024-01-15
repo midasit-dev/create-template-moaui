@@ -10,9 +10,9 @@
  * @description sign of cra-template-moaui
  */
 
-const currentVersionFromPackageJson = '1.1.27';
+const currentVersionFromPackageJson = '1.1.35';
 
-export const SignatureLogger = () => {
+export const log = () => {
 	/**
 	 * logo Color Code
 	 * 31: Red
@@ -29,8 +29,16 @@ export const SignatureLogger = () => {
 	const repository = `- repository: https://github.com/midasit-dev/create-template-moaui`;
 
 	console.log(`\n\n\n${logo}\n\n${title}\n${deploy}\n${repository}\n\n\n`);
+}
 
+export const Component = () => {
+	log();
 	return null;
 }
 
-export default SignatureLogger;
+const Signature = {
+	log,
+	Component,
+}
+
+export default Signature;

@@ -1,14 +1,25 @@
 import { Button, CodeBlock, GuideBox, Typography } from "@midasit-dev/moaui";
 import React from "react";
-import { dbDelete } from "../utils_pyscript";
+import { dbUpdate } from "../../utils_pyscript";
 
 const Script = () => {
-	return `import { dbDelete } from "../utils_pyscript";
+	return `import { dbUpdate } from "../utils_pyscript";
 
-	const result = dbDelete("NODE", 1);
+	const result = dbUpdate("NODE", {
+		"1": {
+			"X": 1,
+			"Y": 2,
+			"Z": 3
+		},
+		"2": {
+			"X": 4,
+			"Y": 5,
+			"Z": 6.1
+		}
+	});
 	console.log(result);`
 }
-const DeleteComponent = () => {
+const Putcomponent = () => {
 	const [dbResult, setDbResult] = React.useState('');
 
   return (
@@ -19,7 +30,18 @@ const DeleteComponent = () => {
 			<Button 
 				color='negative' 
 				onClick={() => {
-					const result = dbDelete("NODE", 1);
+					const result = dbUpdate("NODE", {
+						"1": {
+							"X": 1,
+							"Y": 2,
+							"Z": 3
+						},
+						"2": {
+							"X": 4,
+							"Y": 5,
+							"Z": 6.1
+						}
+					});
 					console.log(result);
 					setDbResult(JSON.stringify(result, null, 2));
 				}}
@@ -31,4 +53,12 @@ const DeleteComponent = () => {
   );
 };
 
-export default DeleteComponent;
+const PythonFetchingExamples = () => {
+  return (
+    <GuideBox>
+			<Putcomponent />
+		</GuideBox>
+  );
+};
+
+export default PythonFetchingExamples;

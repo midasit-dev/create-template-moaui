@@ -1,6 +1,7 @@
+
 import { Button, CodeBlock, GuideBox, Panel, DataGrid } from "@midasit-dev/moaui";
 import React from "react";
-import { dbRead } from "../utils_pyscript";
+import { dbRead } from "../../utils_pyscript";
 
 interface InputObject {
   [key: string]: {
