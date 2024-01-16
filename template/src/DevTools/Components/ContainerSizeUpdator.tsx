@@ -1,7 +1,7 @@
 import React from 'react';
 import Moaui from '@midasit-dev/moaui';
-import Utils from '../Utils';
-import Constant from '../constant.json';
+import Header from './Shared/Header';
+import onClickHandler from './Shared/OnClickHandler';
 
 /**
  * Container Size Updator
@@ -16,8 +16,6 @@ const Tool = () => {
 	const [loading, setLoading] = React.useState(false);
 
 	React.useEffect(() => {
-		if (!Utils.IsDevEnv()) return;
-
 		if (constainerSizeUpdate) {
 			//Get the width and height values of the entire container.
 			const myElement = document.getElementById('container');
@@ -30,87 +28,69 @@ const Tool = () => {
 		}
 	}, [constainerSizeUpdate, setContainerSize]);
 
-	const changeManifestJson = React.useCallback(async (width: number, height: number) => {
-		const newInfo = { width: width, height: height };
-  
-		try {
-			const response = await fetch(`${Constant.baseUrl}/public/manifest-json`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(newInfo),
-			});
-	
-			if (response.ok) {
-				console.log('Change Manifest.json updated successfully');
-			} else {
-				console.error('Update failed');
-			}
-		} catch (error) {
-			console.error('An error occurred:', error);
-		}
-	}, []);
+	const onClickUpdate = React.useCallback(async () => onClickHandler({
+		path: '/public/manifest-json',
+		body: { width: containerSize.width, height: containerSize.height },
+		method: 'put',
+	}), [containerSize.height, containerSize.width]);
 
-	if (!Utils.IsDevEnv()) return null;
+	const [show, setShow] = React.useState(true);
 
 	return (
 		<Moaui.GuideBox width="100%" spacing={2} center>
-			<Moaui.GuideBox width="100%" spacing={1.5} verCenter>
-				<Moaui.GuideBox width="100%" row horSpaceBetween verCenter>
-					<Moaui.GuideBox width="100%" spacing={1} row verCenter>
-						<Moaui.Icon iconName='PhotoSizeSelectActual' />
-						<Moaui.Typography variant='h1'>Container Size</Moaui.Typography>
+
+			<Header
+				iconName='PhotoSizeSelectActual'
+				title="Container Size"
+				showState={[show, setShow]}
+			/>
+
+			{show &&
+				<Moaui.GuideBox row width="100%" spacing={5} verCenter height={30} horSpaceBetween>
+					<Moaui.GuideBox row verCenter spacing={1} loading={loading}>
+						<Moaui.Tooltip title="re-calculate the container size" placement='top'>
+							<Moaui.IconButton
+								transparent
+								onClick={() => {
+									setLoading(true);
+									setTimeout(() => {
+										try {
+											setContainerSizeUpdate(true);
+										} finally {
+											setLoading(false);
+										}
+									}, 500);
+								}}
+							>
+								<>
+									<Moaui.Icon iconName='Refresh' />
+									<Moaui.Typography>{`${containerSize.width}px x ${containerSize.height}px`}</Moaui.Typography>
+								</>
+							</Moaui.IconButton>
+						</Moaui.Tooltip>
 					</Moaui.GuideBox>
 
-
-				</Moaui.GuideBox>
-				<Moaui.Separator />
-			</Moaui.GuideBox>
-
-			<Moaui.GuideBox row width="100%" spacing={5} verCenter height={30} horSpaceBetween>
-				<Moaui.GuideBox row verCenter spacing={1} loading={loading}>
-					<Moaui.Tooltip title="re-calculate the container size" placement='top'>
-						<Moaui.IconButton
-							transparent
-							onClick={() => {
-								setLoading(true);
-								setTimeout(() => {
-									try {
-										setContainerSizeUpdate(true);
-									} finally {
-										setLoading(false);
-									}
-								}, 500);
-							}}
+					<Moaui.Tooltip 
+						title={
+							<Moaui.GuideBox center>
+								<Moaui.GuideBox center row>
+									<Moaui.Chip color='primary' size="small" label='public/manifest.json' />
+								</Moaui.GuideBox>
+								<Moaui.Typography>It will be refresh this page.</Moaui.Typography>
+							</Moaui.GuideBox>
+						}
+						placement='left'
+					>
+						<Moaui.Button
+							color='negative'
+							onClick={onClickUpdate}	
 						>
-							<>
-								<Moaui.Icon iconName='Refresh' />
-								<Moaui.Typography>{`${containerSize.width}px x ${containerSize.height}px`}</Moaui.Typography>
-							</>
-						</Moaui.IconButton>
+							Update
+						</Moaui.Button>
 					</Moaui.Tooltip>
 				</Moaui.GuideBox>
-
-				<Moaui.Tooltip 
-					title={
-						<Moaui.GuideBox center>
-							<Moaui.GuideBox center row>
-								<Moaui.Chip color='primary' size="small" label='public/manifest.json' />
-							</Moaui.GuideBox>
-							<Moaui.Typography>It will be refresh this page.</Moaui.Typography>
-						</Moaui.GuideBox>
-					}
-					placement='left'
-				>
-					<Moaui.Button
-						color='negative'
-						onClick={async () => await changeManifestJson(containerSize.width, containerSize.height)}	
-					>
-						Update
-					</Moaui.Button>
-				</Moaui.Tooltip>
-			</Moaui.GuideBox>
+			}
+			
 			
 		</Moaui.GuideBox>
 	)

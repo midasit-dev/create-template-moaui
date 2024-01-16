@@ -35,6 +35,15 @@ import Signature from './Signature';
 import { Signature as SignatureMoaui } from '@midasit-dev/moaui';
 import devTools from "./DevTools"
 
+// PY Terminal 삭제하는 코드
+//// py-terminal 태그를 가진 모든 요소 가져오기
+//const pyTerminals = document.querySelectorAll('py-terminal');
+//
+//// 가져온 모든 py-terminal 요소를 제거
+//pyTerminals.forEach(pyTerminal => {
+//	pyTerminal.remove();
+//});
+
 const ValidWrapper = (props: any) => {
 	const { isIntalledPyscript } = props;
 
@@ -108,9 +117,29 @@ const ValidWrapper = (props: any) => {
 		);
 	}
 
-	//Container Size
-	const [containerSize, setContainerSize] = React.useState({ width: 0, height: 0 });
-	const [constainerSizeUpdate, setContainerSizeUpdate] = React.useState(true);
+	//Title
+	const [title, setTitle] = React.useState('');
+  React.useEffect(() => {
+    fetch(`${process.env.PUBLIC_URL}/manifest.json`)
+      .then(response => response.json())
+      .then(data => data.name ? setTitle(data.name) : null)
+      .catch(error => console.error('Error fetching manifest.json:', error));
+  }, []);
+
+	//Background Color
+	const [bgColor, setBgColor] = React.useState('#eee');
+	React.useEffect(() => {
+    fetch(`${process.env.PUBLIC_URL}/manifest.json`)
+      .then(response => response.json())
+      .then(data => {
+				if (data.background_color) {
+					setBgColor(data.background_color);
+					//document bgColor Change
+					document.body.style.backgroundColor = data.background_color;
+				}
+			})
+      .catch(error => console.error('Error fetching manifest.json:', error));
+  }, []);
 
   return (
     <>
@@ -128,28 +157,45 @@ const ValidWrapper = (props: any) => {
 							</IconButton>
 						)}
 					>
-							<GuideBox row width="100%" height='100vh' spacing={3} show={devTools.IsDevEnv()} fill={"#e9ebef"}>
+						{/** Production Mode */}
+						{!devTools.IsDevEnv() &&
+							<GuideBox tag="AppBackground" show center fill={bgColor} width="100%">
+								<App />
+							</GuideBox>
+						}
+
+						{/** Development Mode */}
+						{devTools.IsDevEnv() && 
+							<GuideBox show row width="100%" height='100vh' fill={"#e9ebef"}>
+								<GuideBox flexGrow={1} center height="100vh">
+								<div id='container'>
+									<Panel variant="shadow2" padding={0} borderRadius='4px'>
+										<GuideBox width="auto">
+											<devTools.TitleBarSample title={title} />
+											<GuideBox tag="AppBackground" show center fill={bgColor} borderRadius='0 0 4px 4px' spacing={3}>
+												<App />
+											</GuideBox>
+										</GuideBox>
+									</Panel>
+								</div>
+							</GuideBox>
 								<GuideBox width="auto" padding={3} height={300}>
-									<Panel variant='shadow2' padding={3} borderRadius='4px'>
-										<devTools.ContainerSizeUpdator 
-											updateState={{ value: constainerSizeUpdate, setter: setContainerSizeUpdate, }}
-											containerSizeState={{ value: containerSize, setter: setContainerSize }} 
-										/>
+									<Panel width={350} variant='shadow2' padding={3} borderRadius='4px'>
+										<GuideBox spacing={5}>
+											<devTools.TitleUpdator titleState={[title, setTitle]} />
+											<devTools.ContainerSizeUpdator />
+											<devTools.ContainerBackgroundUpdator containerBackgroundColorState={[bgColor, setBgColor]} />
+										</GuideBox>
+									</Panel>
+									<Panel width="100%" variant='shadow2' padding={3} borderRadius='4px' marginTop={3}>
+										<GuideBox spacing={5}>
+											<devTools.Builder />
+											<devTools.Upgrade />
+										</GuideBox>
 									</Panel>
 								</GuideBox>
-								<GuideBox flexGrow={1} center height="100vh">
-									<div id='container'>
-										<Panel variant={devTools.IsDevEnv() ? "shadow2" : "box"} padding={0} borderRadius='4px'>
-											<GuideBox width="auto">
-												<devTools.TitleBarSample />
-												<GuideBox show center spacing={3} padding={3} fill='#eee' borderRadius={devTools.IsDevEnv() ? '0 0 4px 4px' : 0}>
-													<App />
-												</GuideBox>
-											</GuideBox>
-										</Panel>
-									</div>
-								</GuideBox>
 							</GuideBox>
+						}
 					</SnackbarProvider>
 				</RecoilRoot>
 			)}

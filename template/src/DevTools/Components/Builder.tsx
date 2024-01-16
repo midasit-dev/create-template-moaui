@@ -19,17 +19,17 @@ const Tool = () => {
 			if (response.ok) {
 				const data = await response.json();
 				if (!data.message) {
-					console.error('Update failed');
-					setBuildMessage('Build failed!');
-					return;
+					setBuildMessage('The message is not exist, build failed!');
+				} else {
+					setBuildMessage(data.message);
 				}
-				setIsEnded(true);
-				setBuildMessage(data.message);
 			} else {
-				console.error('Update failed');
+				setBuildMessage('Response not ok, build failed!');
 			}
 		} catch (error) {
 			console.error('An error occurred:', error);
+		} finally {
+			setIsEnded(true);
 		}
 	}, []);
 
@@ -60,33 +60,35 @@ const Tool = () => {
 				headerIcon={<Icon iconName="HourglassFull" />}
         headerTitle="Plug-in Item Building ..."
       >
-				{!isEnded && <GuideBox width='100%' height={50} loading />}
-				{isEnded &&
-					<GuideBox width='100%'>
-						{buildMessage.split('\n').map((line, index) => {
-							if (line === '') return <div key={index} style={{ height: 10 }} />
-							return (
-								<Typography key={index} variant='body1'>
-									{line}
-								</Typography>
-							)
-						})}
-					</GuideBox>
-				}
-				{isEnded && (
-					<GuideBox width='100%' center>
-						<Button 
-							color='negative'
-							onClick={() => {
-								setBuildMessage('');
-								setIsEnded(false);
-								setBuilding(false);
-							}}
-						>
-							Close
-						</Button>
-					</GuideBox>
-				)}
+				<GuideBox width='100%' spacing={2}>
+					{!isEnded && <GuideBox width='100%' height={50} loading />}
+					{isEnded &&
+						<GuideBox width='100%'>
+							{buildMessage.split('\n').map((line, index) => {
+								if (line === '') return <div key={index} style={{ height: 10 }} />
+								return (
+									<Typography key={index} variant='body1'>
+										{line}
+									</Typography>
+								)
+							})}
+						</GuideBox>
+					}
+					{isEnded && (
+						<GuideBox width='100%' center>
+							<Button 
+								color='negative'
+								onClick={() => {
+									setBuildMessage('');
+									setIsEnded(false);
+									setBuilding(false);
+								}}
+							>
+								Close
+							</Button>
+						</GuideBox>
+					)}
+				</GuideBox>
 			</Dialog>
 
 		</GuideBox>
