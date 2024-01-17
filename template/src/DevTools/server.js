@@ -105,7 +105,7 @@ app.get('/health', (req, res) => {
 //./Utils.ts의 const devServerStatus: string = ''; 
 //부분을 const devServerStatus: string = 'listening'; 으로 변경한다
 const changeServerStatus = (status) => {
-	const utilsPath = path.join(__dirname, 'Utils.ts');
+	const utilsPath = path.join(__dirname, 'ServerListening.ts');
 	const utilsText = fs.readFileSync(utilsPath, 'utf-8');
 	const newUtilsText = utilsText.replace(
 		/const devServerStatus: string = '.*';/g,

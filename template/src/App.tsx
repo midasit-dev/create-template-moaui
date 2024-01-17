@@ -40,6 +40,7 @@ const App = () => {
 			<GuideBox width='100%' spacing={2}>
 				<Panel variant="shadow2" width='100%' height={50}/>
 				<Panel variant="shadow2" width='100%' height={50}/>
+				<Panel variant="shadow2" width='100%' height={50}/>
 			</GuideBox>
 		</GuideBox>
 	);

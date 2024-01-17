@@ -44,6 +44,7 @@ const Tool = () => {
 					</GuideBox>
 				</GuideBox>
 				<Button
+					width='90px'
 					color='negative'
 					onClick={async () => {
 						setBuilding(true);
