@@ -55,6 +55,7 @@ app.put('/public/manifest-json', (req, res) => {
 		logServerON(port);
 		console.log(`\x1b[36mPUT /public/manifest-json Completed!\x1b[0m`);
 		console.log(`modified at \x1b[37m\x1b[1m${manifestPath}\x1b[0m`);
+		console.log('modified data:', req.body, '\n');
 	}
 });
 

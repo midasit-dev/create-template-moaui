@@ -7,14 +7,13 @@ import {
 	Tooltip,
 	IconButton,
 } from '@midasit-dev/moaui';
+import MidasController from '@midasit-dev/moaui/Components/MidasController';
 import HomeManifestHeadLine from './Home/Manifest/HeadLine';
 import HomeManifestTitleUpdator from './Home/Manifest/TitleUpdator';
 import HomeManifestContainerSizeUpdator from './Home/Manifest/ContainerSizeUpdator';
 import HomeManifestContainerBackgroundUpdator from './Home/Manifest/ContainerBackgroundUpdator';
 import HomeBuilder from './Home/Builder';
 import HomeUpgrade from './Home/Upgrade';
-
-import TitleBarSample from './Home/TitleBarSample';
 
 interface KitProps {
 	children: React.ReactNode;
@@ -44,18 +43,6 @@ const Kit = (props: KitProps) => {
 
 	//Background Color
 	const [bgColor, setBgColor] = bgColorState;
-	React.useEffect(() => {
-		fetch(`${process.env.PUBLIC_URL}/manifest.json`)
-			.then(response => response.json())
-			.then(data => {
-				if (data.background_color) {
-					setBgColor(data.background_color);
-					//document bgColor Change
-					document.body.style.backgroundColor = data.background_color;
-				}
-			})
-			.catch(error => console.error('Error fetching manifest.json:', error));
-	}, [setBgColor]);
 
 	//Menu Select
 	const [currentMenu, setCurrentMenu] = React.useState('Home');
@@ -127,7 +114,10 @@ const Kit = (props: KitProps) => {
 				<div id='container'>
 					<Panel variant="shadow2" padding={0} borderRadius='4px'>
 						<GuideBox width="auto">
-							<TitleBarSample title={title} />
+							<MidasController 
+								icoSrc={`${process.env.PUBLIC_URL}/favicon.ico`}
+								title={title} 
+							/>
 							{children}
 						</GuideBox>
 					</Panel>

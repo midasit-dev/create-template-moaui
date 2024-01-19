@@ -51,6 +51,7 @@ const HeadLine = (props: HeadLineProps) => {
 					placement='right'
 				>
 					<Moaui.Button
+						width='90px'
 						color='negative'
 						onClick={onClickUpdate}
 					>
