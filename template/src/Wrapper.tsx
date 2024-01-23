@@ -118,6 +118,12 @@ const ValidWrapper = (props: any) => {
 	}
 
 	const [bgColor, setBgColor] = React.useState('#eee');
+	React.useEffect(() => {
+    fetch(`${process.env.PUBLIC_URL}/manifest.json`)
+      .then(response => response.json())
+      .then(data => data.name ? setBgColor(data.background_color) : null)
+      .catch(error => console.error('Error fetching manifest.json:', error));
+  }, []);
 
   return (
     <>
