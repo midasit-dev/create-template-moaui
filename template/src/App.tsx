@@ -16,6 +16,8 @@ import {
 	GuideBox, 
 	Panel,
 } from '@midasit-dev/moaui';
+import { default as WelcomeDevTools } from './DevTools/Welcome';
+const opacity = 0.5;
 //If you want to test, try using the GuideApp component.
 //import GuideApp from './SampleComponents/GuideApp';
 
@@ -31,17 +33,19 @@ import {
  */
 const App = () => {
 	return (
-		<GuideBox width={400} spacing={3} padding={3}>
-			<GuideBox row width='100%' spacing={2}>
+		<GuideBox width={550} spacing={2} padding={2}>
+			<WelcomeDevTools />
+			<GuideBox row width='100%' spacing={2} opacity={opacity}>
 				<Panel variant="shadow2" width='50%' height={100}/>
 				<Panel variant="shadow2" width='50%' height={100}/>
 				<Panel variant="shadow2" width='50%' height={100}/>
 			</GuideBox>
-			<GuideBox width='100%' spacing={2}>
+			<GuideBox width='100%' spacing={2} opacity={opacity}>
 				<Panel variant="shadow2" width='100%' height={50}/>
 				<Panel variant="shadow2" width='100%' height={50}/>
 				<Panel variant="shadow2" width='100%' height={50}/>
 			</GuideBox>
+
 		</GuideBox>
 	);
 }

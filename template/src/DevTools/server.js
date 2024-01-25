@@ -11,6 +11,24 @@ app.use(cors());
 const constantPath = path.join(__dirname, 'constant.json');
 const constantJson = fs.readFileSync(constantPath, 'utf-8');
 const constant = JSON.parse(constantJson);
+
+//서버 실행 시, 초기 상태인지 확인 후, WelcomDevTools를 지워준다.
+if (constant.initial === true) {
+	const appPath = path.join(__dirname, '../../src/App.tsx');
+	const appText = fs.readFileSync(appPath, 'utf-8');
+	const deleteAppText = 
+		appText
+			.replace(/import { default as WelcomeDevTools } from '.\/DevTools\/Welcome';/g, '',)
+				.replace(/const opacity = 0.5;/g, '')
+					.replace(/<WelcomeDevTools \/>/g, '')
+						.replaceAll(/ opacity={opacity}/g, '')
+	fs.writeFileSync(appPath, deleteAppText, 'utf-8');
+
+	//constant json 갱신
+	constant.initial = false;
+	fs.writeFileSync(constantPath, JSON.stringify(constant, null, 2), 'utf-8');
+}
+
 const defaultPort = constant.port;
 const defaultHost = constant.host;
 let anotherPort = '';
