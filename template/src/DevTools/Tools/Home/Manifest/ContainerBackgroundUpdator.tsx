@@ -17,7 +17,7 @@ interface ToolProps {
 const Tool = (props: ToolProps) => {
 	const { containerBackgroundColorState } = props;
 	const [color, setColor] = containerBackgroundColorState;
-	const [show, setShow] = React.useState(false);
+	const [show, setShow] = React.useState(true);
 
 	return (
 		<Moaui.GuideBox width="100%" center>
@@ -29,7 +29,7 @@ const Tool = (props: ToolProps) => {
 			/>
 
 			{show &&
-				<Body guideBoxProps={{ center: true, paddingTop: 2 }}>
+				<Body LayoutGuideBoxProps={{ center: true, paddingTop: 2 }}>
 					<HexColorPicker color={color} onChange={setColor} />
 
 					<Moaui.GuideBox row width="100%" spacing={2} center>

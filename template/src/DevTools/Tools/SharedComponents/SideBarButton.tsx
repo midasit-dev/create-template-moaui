@@ -1,0 +1,40 @@
+import {
+	Icon,
+	IconButton,
+	Tooltip,
+	GuideBox,
+} from '@midasit-dev/moaui';
+
+const SideBarButton = (
+	props: { 
+		currentMenuState: [string, React.Dispatch<React.SetStateAction<string | any>>],
+		iconName: string,
+		menuName: string,
+	}
+) => {
+	const { currentMenuState, iconName, menuName } = props;
+	const [currentMenu, setCurrentMenu] = currentMenuState;
+
+	const optionalProps = {
+		fill: '#fff',
+		borderRadius: 1,
+		show: currentMenu === menuName,
+		border: currentMenu === menuName ? '1px solid #d1d1d1' : '1px solid transparent',
+	}
+	
+	return (
+		<GuideBox {...optionalProps}>
+			<Tooltip title={menuName} placement='right'>
+				<IconButton
+					transparent
+					onClick={() => setCurrentMenu(menuName)}
+					color='negative'
+				>
+					<Icon iconName={iconName} />
+				</IconButton>
+			</Tooltip>
+		</GuideBox>
+	)
+}
+
+export default SideBarButton;

@@ -1,4 +1,4 @@
-import Constant from '../../constant.json';
+import Constant from '../../../constant.json';
 
 interface OnClickHandlerProps {
 	/**

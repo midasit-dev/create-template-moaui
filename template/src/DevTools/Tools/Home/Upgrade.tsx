@@ -6,7 +6,7 @@ import {
 	GuideBox,
 	Typography,
 } from "@midasit-dev/moaui";
-import Constant from '../constant.json';
+import Constant from '../../constant.json';
 
 const Tool = () => {
 	const [loading, setLoading] = React.useState(false);

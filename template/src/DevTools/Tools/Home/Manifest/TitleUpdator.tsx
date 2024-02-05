@@ -23,7 +23,7 @@ const Tool = (props: ToolProps) => {
 				noSeparator
 			/>
 
-			<Body guideBoxProps={{
+			<Body LayoutGuideBoxProps={{
 				row: true,
 				horSpaceBetween: true,
 				verCenter: true,

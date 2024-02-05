@@ -2,20 +2,20 @@ import { GuideBox } from "@midasit-dev/moaui"
 
 interface BodyProps {
 	children: React.ReactNode;
-	guideBoxProps?: any
+	LayoutGuideBoxProps?: any
 }
 
 const Body = (props: BodyProps) => {
 	const { 
 		children,
-		guideBoxProps,
+		LayoutGuideBoxProps,
 	} = props;
 
 	return (
 		<GuideBox 
 			width="100%"
 			spacing={2}
-			{...guideBoxProps}
+			{...LayoutGuideBoxProps}
 		>
 			{children}
 		</GuideBox>
