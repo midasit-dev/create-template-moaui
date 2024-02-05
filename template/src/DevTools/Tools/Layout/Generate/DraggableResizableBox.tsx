@@ -5,9 +5,9 @@ import {
 	Icon,
 	IconButton, Typography
 } from '@midasit-dev/moaui';
-import { type LayoutSchema, type LayoutSchemas } from '../../../types';
+import { type Layer, type Layers } from '../../../types';
 import { useRecoilState } from 'recoil';
-import { LayoutSchemaState } from '../recoilState';
+import { LayersState } from '../recoilState';
 
 export const style: React.CSSProperties = {
   display: 'flex',
@@ -18,27 +18,32 @@ export const style: React.CSSProperties = {
 };
 
 export interface RndBoxProps {
-  bounds?: string;
+	key: string;
+  id: string;
   defaultX: number;
   defaultY: number;
   defaultWidth: number;
   defaultHeight: number;
   dragGrid?: [number, number];
+  bounds?: string;
   resizeGrid?: [number, number];
   children?: React.ReactNode;
-
-  id?: string;
   spacing: number;
 
 	//Buttons
-  onDelete?: (id: string) => void;
+  onDelete?: any;
   onSendStyleToController?: (inputs: any) => void;
 }
 
-export const DraggableResizableBox: React.FC<RndBoxProps> = ({
-	children, id, onDelete, onSendStyleToController, ...props
-}) => {
-	const [schemas, setSchemas] = useRecoilState(LayoutSchemaState);
+export const DraggableResizableBox = (props: RndBoxProps) => {
+	const {
+		id, 
+		children, 
+		onDelete, 
+		onSendStyleToController,
+	} = props;
+
+	const [layers, setLayers] = useRecoilState(LayersState);
 
 	const onClickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.stopPropagation();
@@ -64,7 +69,7 @@ export const DraggableResizableBox: React.FC<RndBoxProps> = ({
 		setWidth(_width);
 		setHeight(_height);
 
-		handleBoxSchemas(_x, _y, _width, _height);
+		onUpdateLayer(_x, _y, _width, _height);
 	};
 
 	const handleDragStop = (e: any, d: any) => {
@@ -73,74 +78,90 @@ export const DraggableResizableBox: React.FC<RndBoxProps> = ({
 		setX(_x);
 		setY(_y);
 
-		handleBoxSchemas(_x, _y, width, height);
+		onUpdateLayer(_x, _y, width, height);
 	};
 
-	const handleBoxSchemas = (x: number, y: number, width: number, height: number) => {
-		if (setSchemas) {
-			setSchemas((prev) => {
-				const newBoxSchemas = prev.map((box) => {
-					if (box.id === id) {
+	const onUpdateLayer = (x: number, y: number, width: number, height: number) => {
+		if (setLayers) {
+			setLayers((prev) => {
+				const newBoxlayers = prev.map((box) => {
+					if (box.props.id === id) {
 						return {
 							...box,
-							x,
-							y,
-							width,
-							height,
+							props: {
+								id,
+								x,
+								y,
+								width,
+								height,
+							},
 						};
 					}
 					return box;
 				});
-				return newBoxSchemas;
+				return newBoxlayers;
 			});
 
-			setUpdateSchema4Parent && setUpdateSchema4Parent(true);
+			setUpdateLayer4Parent && setUpdateLayer4Parent(true);
 		}
 	};
 
-	// add parent key to box schemas
-	const [updateBoxSchemas4Parent, setUpdateSchema4Parent] = useState(false);
+	// add parent key to box layers
+	const [updateLayer4Parent, setUpdateLayer4Parent] = useState(false);
 	React.useEffect(() => {
-		if (!updateBoxSchemas4Parent) return;
+		if (!updateLayer4Parent) return;
 
-		const findParent = (curSchema: LayoutSchema, schemas: LayoutSchemas): string | null => {
-			const parents: LayoutSchemas = [];
-			for (const schema of schemas) {
+		const findParent = (curLayer: Layer | undefined, layers: Layers | undefined): string | null => {
+			if (!curLayer || !curLayer.props) return null;
+			if (!layers) return null;
+
+			const parents: Layers = [];
+			for (const layer of layers) {
+				if (!layer.props) continue;
+
 				if (
-					curSchema.x >= schema.x &&
-					curSchema.y >= schema.y &&
-					curSchema.x + curSchema.width <= schema.x + schema.width &&
-					curSchema.y + curSchema.height <= schema.y + schema.height
+					curLayer.props.x >= layer.props.x &&
+					curLayer.props.y >= layer.props.y &&
+					curLayer.props.x + curLayer.props.width <=  layer.props.x + layer.props.width &&
+					curLayer.props.y + curLayer.props.height <= layer.props.y + layer.props.height
 				) {
-					if (curSchema.id === schema.id) continue;
-					parents.push(schema);
+					if (curLayer.props.id === layer.props.id) continue;
+					parents.push(layer);
 				}
 			}
-			parents.sort((a, b) => a.x - b.x);
-			return parents.length > 0 ? parents[parents.length - 1].id : null;
+			parents.sort((a, b) => {
+				if (!a.props || !b.props) return 0;
+				return a.props.x - b.props.x;
+			});
+			return parents.length > 0 ? parents[parents.length - 1].props.id : null;
 		};
 
-		const addParentId = (schemas: LayoutSchemas): LayoutSchemas => {
-			return schemas.map((schema) => {
-				const parentId = findParent(schema, schemas) || null;
-				return { ...schema, parent: schema.id === parentId ? undefined : parentId };
+		const addParentId = (layers: Layers): Layers => {
+			return layers.map((layer) => {
+				const parentId = findParent(layer, layers) || null;
+				return { ...layer, parent: layer.props.id === parentId ? undefined : parentId };
 			});
 		};
 
-		const temp = addParentId(schemas);
-		setSchemas(temp);
+		const temp = addParentId(layers);
+		setLayers(temp);
 
-		setUpdateSchema4Parent(false);
+		setUpdateLayer4Parent(false);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [updateBoxSchemas4Parent]);
+	}, [updateLayer4Parent]);
 
 	//해당 컴포넌트 생성 시 parent 구조 추가
 	React.useEffect(() => {
-		setUpdateSchema4Parent(true);
+		setUpdateLayer4Parent(true);
 	}, []);
 
 	return (
-		<div onClick={onClickHandler} onMouseDown={onMouseDownHandler}>
+		<div 
+			key={id}
+			id={id}
+			onClick={onClickHandler} 
+			onMouseDown={onMouseDownHandler}
+		>
 			<Rnd
 				style={{
 					...style,
@@ -159,7 +180,6 @@ export const DraggableResizableBox: React.FC<RndBoxProps> = ({
 				onDragStop={handleDragStop}
 			>
 				<Typography>{`[${x}, ${y}] ${width} x ${height}`}</Typography>
-				{onDelete && (
 					<div style={{ position: 'absolute', top: 0, right: 0 }}>
 						<GuideBox row>
 							<IconButton
@@ -177,12 +197,17 @@ export const DraggableResizableBox: React.FC<RndBoxProps> = ({
 							>
 								<Icon iconName='Style' />
 							</IconButton>
-							<IconButton transparent onClick={() => onDelete(id || '')}>
-								<Icon iconName='Close' />
-							</IconButton>
+							{onDelete && (
+								<IconButton transparent onClick={() => {
+									console.log('clicked');
+									console.log(id);
+									onDelete(id);
+								}}>
+									<Icon iconName='Close' />
+								</IconButton>
+							)}
 						</GuideBox>
 					</div>
-				)}
 				{children}
 			</Rnd>
 		</div>

@@ -2,15 +2,15 @@ import React from 'react';
 import { DraggableResizableBox } from './DraggableResizableBox';
 import { ControllerInputs } from '../../../types';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { LayoutBoxState, LayoutSchemaState } from '../recoilState';
+import { LayerRenderingBoxesState, LayersState } from '../recoilState';
 
 interface useBoxesProps {
 	initializeInputs: any;
 }
 
 export const useBoxes = (props: useBoxesProps) => {
-	const [boxes, setBoxes] = useRecoilState(LayoutBoxState);
-	const setSchemas = useSetRecoilState(LayoutSchemaState);
+	const [boxes, setBoxes] = useRecoilState(LayerRenderingBoxesState);
+	const setLayers = useSetRecoilState(LayersState);
 
 	const {
 		initializeInputs,
@@ -18,8 +18,8 @@ export const useBoxes = (props: useBoxesProps) => {
 
 	const handleClickDelete = React.useCallback((id: string) => {
 		setBoxes((prevBoxes) => prevBoxes.filter((box) => box.id !== id));
-		setSchemas((prevBoxSchemas) => prevBoxSchemas.filter((box) => box.id !== id));
-	}, [setBoxes, setSchemas]);
+		setLayers((prevBoxSchemas) => prevBoxSchemas.filter((box) => box.props.id !== id));
+	}, [setBoxes, setLayers]);
 
 	const handleClickPrevDelete = React.useCallback(() => {
 		let prevId = '';
@@ -33,8 +33,9 @@ export const useBoxes = (props: useBoxesProps) => {
 
 	const handleClickDelAllBoxes = React.useCallback(() => {
 		setBoxes([]);
-		setSchemas([]);
-	}, [setBoxes, setSchemas]);
+		setLayers([]);
+		initializeInputs();
+	}, [initializeInputs, setBoxes, setLayers]);
 
 	const createNewBox = React.useCallback((id: string, inputs: ControllerInputs) => {
 		return {
@@ -42,6 +43,7 @@ export const useBoxes = (props: useBoxesProps) => {
 			element: (
 				<DraggableResizableBox
 					key={id}
+					id={id}
 					defaultX={inputs.x}
 					defaultY={inputs.y}
 					defaultWidth={inputs.width}
@@ -50,8 +52,7 @@ export const useBoxes = (props: useBoxesProps) => {
 					dragGrid={[8, 8]}
 					resizeGrid={[8, 8]}
 					spacing={0}
-					id={id}
-					onDelete={(id) => handleClickDelete(id)}
+					onDelete={handleClickDelete}
 					onSendStyleToController={initializeInputs}
 				/>
 			),
@@ -90,17 +91,21 @@ export const useBoxes = (props: useBoxesProps) => {
 		//새로운 box 생성
 		const newBox = createNewBox(newId, newInputs);
 		setBoxes((prevBoxes) => [...prevBoxes, newBox]);
-		setSchemas((prevBoxSchemas) => [
+		setLayers((prevBoxSchemas) => [
 			...prevBoxSchemas,
 			{
-				id: newId,
-				x: modifiedX,
-				y: modifiedY,
-				width: inputs.width,
-				height: inputs.height,
+				type: 'FloatingBox',
+				props: {
+					id: newId,
+					x: modifiedX,
+					y: modifiedY,
+					width: inputs.width,
+					height: inputs.height,
+				},
+				children: [],
 			},
 		]);
-	}, [boxes.length, createNewBox, initializeInputs, setBoxes, setSchemas]);
+	}, [boxes.length, createNewBox, initializeInputs, setBoxes, setLayers]);
 
 	return {
 		handleClickDelete,

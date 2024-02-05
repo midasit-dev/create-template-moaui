@@ -81,7 +81,7 @@ const Kit = (props: KitProps) => {
 						</GuideBox>
 
 						<GuideBox>
-							<Panel variant="shadow2" padding={0} borderRadius='4px'>
+							<Panel variant="box" backgroundColor='#fff' padding={0} borderRadius='4px' border='1px solid #d1d1d1'>
 								<GuideBox width={350} padding={2}>
 									<GuideBox width='100%'>
 										<ToolsHome titleState={[title, setTitle]} containerSizeState={[containerSize, setContainerSize]} bgColorState={[bgColor, setBgColor]} />

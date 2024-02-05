@@ -28,18 +28,18 @@ interface LayoutBoxes extends Array<LayoutBox> {};
  * 		}
  * }
  * 
- * @typedef {Object} LayoutSchema2
+ * @typedef {Object} Layer
  * @property {string} type - UI 요소의 종류 (예: 'Button', 'Input', 'Form', 등)
  * @property {Object} props - UI 요소에 전달되는 속성들
- * @property {Array<LayoutSchemas2>} children - 하위 UI 요소들
+ * @property {Array<Layers>} children - 하위 UI 요소들
  */
-interface LayoutSchema2 {
+interface Layer {
 	type: 'FloatingBox' | 'Button';
-	props?: Record<string, any>;
-	children?: Array<LayoutSchema>;
+	props: Record<string, any>;
+	children?: Array<Layer>;
 }
 
-interface LayoutSchemas2 extends Array<LayoutSchema2> {};
+interface Layers extends Array<Layer> {};
 
 interface LayoutSchema {
 	id: string;
@@ -67,6 +67,6 @@ export type {
 	LayoutSchemas,
 	ControllerInputs,
 
-	LayoutSchema2,
-	LayoutSchemas2,
+	Layer,
+	Layers,
 }

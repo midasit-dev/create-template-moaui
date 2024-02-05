@@ -1,13 +1,21 @@
 import { ReactNode } from 'react';
-import { type LayoutSchemas } from '../../types';
+import { type Layers } from '../../types';
 import { atom } from 'recoil';
 
-export const LayoutBoxState = atom<{ id: string; element: ReactNode }[]>({
-  key: 'LayoutBoxState',
+export const CanvasState = atom({
+	key: 'CanvasState',
+	default: {
+		width: 592,
+		height: 512,
+	}
+});
+
+export const LayerRenderingBoxesState = atom<{ id: string; element: ReactNode }[]>({
+  key: 'LayerRenderingBoxesState',
 	default: [],
 });
 
-export const LayoutSchemaState = atom<LayoutSchemas>({
-	key: 'LayoutSchemaState',
+export const LayersState = atom<Layers>({
+	key: 'LayersState',
 	default: [],
 });

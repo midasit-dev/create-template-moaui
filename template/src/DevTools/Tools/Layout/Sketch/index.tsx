@@ -1,24 +1,24 @@
 import { GuideBox } from '@midasit-dev/moaui';
 import React from 'react';
-import { type LayoutSchemas } from '../../../types';
+import { type Layers } from '../../../types';
 import { useRecoilValue } from 'recoil';
-import { LayoutSchemaState } from '../recoilState';
+import { LayersState } from '../recoilState';
 
-const BoxContainerAbsolute = (props: { data: LayoutSchemas }) => {
+const BoxContainerAbsolute = (props: { data: Layers }) => {
   return (
     <div style={{ position: 'relative' }}>
       {props.data.map((box) => {
         const style: React.CSSProperties = {
           position: 'absolute',
-          left: `${box.x}px`,
-          top: `${box.y}px`,
-          width: `${box.width}px`,
-          height: `${box.height}px`,
+          left: `${box.props.x}px`,
+          top: `${box.props.y}px`,
+          width: `${box.props.width}px`,
+          height: `${box.props.height}px`,
           border: '1px solid black',
         };
 
         return (
-          <div key={box.id} style={style}>
+          <div key={box.props.id} style={style}>
             {/* You can add content for each box here. */}
           </div>
         );
@@ -67,8 +67,8 @@ const BoxContainerAbsolute = (props: { data: LayoutSchemas }) => {
 // };
 
 const App = () => {
-	const schemas = useRecoilValue(LayoutSchemaState);
-	if (!schemas) {
+	const layers = useRecoilValue(LayersState);
+	if (!layers) {
 		console.error('No layout schemas provided.');
 		return null;
 	}
@@ -77,13 +77,8 @@ const App = () => {
     <div>
       <GuideBox row spacing={3}>
         <GuideBox>
-          <BoxContainerAbsolute data={schemas} />
+          <BoxContainerAbsolute data={layers} />
         </GuideBox>
-
-        {/* <GuideBox>
-          <h1>Box Container with Relative Positioning</h1>
-          <BoxContainerRelative data={schemas} />
-        </GuideBox> */}
       </GuideBox>
     </div>
   );
