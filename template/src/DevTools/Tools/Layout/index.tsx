@@ -1,24 +1,24 @@
 import React from 'react';
-
 import {
 	GuideBox,
 } from '@midasit-dev/moaui';
-
-import SideBarButton from '../SharedComponents/SideBarButton';
+import SideBarButton from '../Shared/SideBarButton';
 import Generate from './Generate';
 import Sketch from './Sketch';
 
 function useStateApp() {
 	const [menu, setMenu] = React.useState<'Generate' | 'Sketch' | 'FloatingBox'>('Generate');
-	return {
-		menu, setMenu,
-	};
+	return { menu, setMenu };
 }
 
 const App = () => {
 	const {
 		menu, setMenu,
 	} = useStateApp();
+
+	React.useEffect(() => {
+
+	}, []);
 
 	return (
 		<GuideBox width="100%" height='inherit'>

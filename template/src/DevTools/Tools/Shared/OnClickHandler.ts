@@ -1,4 +1,4 @@
-import Constant from '../../../constant.json';
+import Constant from '../../constant.json';
 
 interface OnClickHandlerProps {
 	/**
@@ -16,7 +16,7 @@ interface OnClickHandlerProps {
 	 * 	color: color
 	 * }
 	 */
-	body: any;
+	body?: any;
 	/**
 	 * fetching method
 	 */
@@ -32,13 +32,15 @@ const onClickHandler = async (props: OnClickHandlerProps) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(body),
+			...(method === 'post' || method === 'put' ? {
+				body: JSON.stringify(body),
+			} : {}), // if method is post or put, then add body to the request
 		});
 
 		if (response.ok) {
-			console.log('Change Manifest.json successfully');
+			return await response.json();
 		} else {
-			console.error('Update failed');
+			console.error('request failed!');
 		}
 	} catch (error) {
 		console.error('An error occurred:', error);

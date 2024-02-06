@@ -88,13 +88,7 @@ export const DraggableResizableBox = (props: RndBoxProps) => {
 					if (box.props.id === id) {
 						return {
 							...box,
-							props: {
-								id,
-								x,
-								y,
-								width,
-								height,
-							},
+							props: { id, x, y, width, height, },
 						};
 					}
 					return box;

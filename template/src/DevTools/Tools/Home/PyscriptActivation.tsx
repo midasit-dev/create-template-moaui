@@ -5,7 +5,7 @@ import {
 	Switch, 
 	Typography 
 } from "@midasit-dev/moaui";
-import onClickHandler from './Shared/OnClickHandler';
+import onClickHandler from '../Shared/OnClickHandler';
 
 const PyscriptActivation = () => {
 	const [isActivated, setIsActivated] = React.useState(false);

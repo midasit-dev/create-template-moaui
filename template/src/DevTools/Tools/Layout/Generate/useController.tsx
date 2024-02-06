@@ -1,49 +1,41 @@
 import React, { useState } from 'react';
-import { ControllerInputs } from '../../../types';
 import { Rnd } from 'react-rnd';
 import './VirtualLayer.css';
-
-const handleSetter = (setter: React.Dispatch<React.SetStateAction<number>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
-  setter(Number(e.target.value));
-};
+import { useRecoilState } from 'recoil';
+import { defaultControllerState, ControllerState } from '../recoilState';
 
 export const useController = () => {
-	const defaultInputs: ControllerInputs = React.useMemo(() => ({
-		x: 0,
-		y: 0,
-		width: 160,
-		height: 48,
-		spacing: 0,
-	}), []);
+	const [controllerState, setControllerState] = useRecoilState(ControllerState);
 
-	const initialize = React.useCallback((inputs = defaultInputs) => {
-		setX(inputs.x);
-		setY(inputs.y);
-		setWidth(inputs.width);
-		setHeight(inputs.height);
-		setSpacing(inputs.spacing);
-	}, [defaultInputs]);
+	const initialize = React.useCallback((inputs = defaultControllerState) => {
+		setControllerState(inputs);
+	}, [setControllerState]);
 
 	const [showVirtualLayer, setShowVirtualLayer] = useState(true);
 
-	const [x, setX] = useState(defaultInputs.x);
-	const handleChangeX = handleSetter(setX);
+	const handleChangeX = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		setControllerState((prev) => ({ ...prev, x: Number(e.target.value) }));
+	}, [setControllerState]);
 
-	const [y, setY] = useState(defaultInputs.y);
-	const handleChangeY = handleSetter(setY);
+	const handleChangeY = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		setControllerState((prev) => ({ ...prev, y: Number(e.target.value) }));
+	}, [setControllerState]);
 
-	const [width, setWidth] = useState(defaultInputs.width);
-	const handleChangeWidth = handleSetter(setWidth);
+	const handleChangeWidth = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		setControllerState((prev) => ({ ...prev, width: Number(e.target.value) }));
+	}, [setControllerState]);
 
-	const [height, setHeight] = useState(defaultInputs.height);
-	const handleChangeHeight = handleSetter(setHeight);
+	const handleChangeHeight = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		setControllerState((prev) => ({ ...prev, height: Number(e.target.value) }));
+	}, [setControllerState]);
 
-	const [spacing, setSpacing] = useState(defaultInputs.spacing);
-	const handleChangeSpacing = handleSetter(setSpacing);
+	const handleChangeSpacing = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+		setControllerState((prev) => ({ ...prev, spacing: Number(e.target.value) }));
+	}, [setControllerState]);
 
-	const getInputs = React.useCallback(() => {
-		return { x, y, width, height, spacing, };
-	}, [x, y, width, height, spacing]);
+	const getCurrentControllerInputs = React.useCallback(() => {
+		return controllerState;
+	}, [controllerState]);
 
 	const VirtualLayer = React.useCallback(() => {
 		if (!showVirtualLayer) return null;
@@ -51,26 +43,27 @@ export const useController = () => {
 			<Rnd
 				className='virtual-layer'
 				default={{
-					x: x,
-					y: y,
-					width: width,
-					height: height,
+					x: controllerState.x,
+					y: controllerState.y,
+					width: controllerState.width,
+					height: controllerState.height,
 				}}
 				bounds="parent"
 				enableResizing={false}
 				disableDragging={true}
 			/>
 		);
-	}, [showVirtualLayer, x, y, width, height]);
+	}, [controllerState.height, controllerState.width, controllerState.x, controllerState.y, showVirtualLayer]);
 
 	return {
 		initialize,
-		x, setX, handleChangeX,
-		y, setY, handleChangeY,
-		width, handleChangeWidth,
-		height, handleChangeHeight,
-		spacing, handleChangeSpacing,
-		getInputs,
+		controllerState,
+		handleChangeX,
+		handleChangeY,
+		handleChangeWidth,
+		handleChangeHeight,
+		handleChangeSpacing,
+		getCurrentControllerInputs,
 		showVirtualLayer, setShowVirtualLayer,
 		VirtualLayer,
 	};

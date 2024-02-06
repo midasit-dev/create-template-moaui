@@ -1,10 +1,3 @@
-interface LayoutBox {
-	id: string;
-	element: JSX.Element;
-}
-
-interface LayoutBoxes extends Array<LayoutBox> {};
-
 /**
  * {
  * 		type: {
@@ -41,6 +34,16 @@ interface Layer {
 
 interface Layers extends Array<Layer> {};
 
+interface Canvas {
+	width: number;
+	height: number;
+}
+
+interface ExportLayers {
+	canvas: Canvas,
+	layers: Layers,
+}
+
 interface LayoutSchema {
 	id: string;
   x: number;
@@ -61,12 +64,12 @@ type ControllerInputs = {
 }
 
 export type {
-	LayoutBox,
-	LayoutBoxes,
 	LayoutSchema,
 	LayoutSchemas,
 	ControllerInputs,
 
 	Layer,
 	Layers,
+	Canvas,
+	ExportLayers,
 }

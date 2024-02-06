@@ -4,7 +4,7 @@ import {
 	Panel,
 } from '@midasit-dev/moaui';
 import MidasController from '@midasit-dev/moaui/Components/MidasController';
-import SideBarButton from './Tools/SharedComponents/SideBarButton';
+import SideBarButton from './Tools/Shared/SideBarButton';
 import { default as ToolsHome } from './Tools/Home';
 import { default as ToolsLayout } from './Tools/Layout';
 

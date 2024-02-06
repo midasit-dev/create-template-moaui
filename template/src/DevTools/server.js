@@ -22,6 +22,80 @@ const currentBaseUrl = () => {
 	return `http://${defaultHost}:${currentPort()}`;
 }
 
+const responseHandler = (text, type = 'ok') => {
+	if (type === 'error') {
+		return {
+			error: text
+		}
+	}
+
+	return {
+		message: text
+	}
+}
+
+app.get('/exports/layers/:filename', (req, res) => {
+	logServerON(currentPort(), currentBaseUrl());
+	console.log(`\n\x1b[36mGet Export layer json ...\x1b[0m`);
+
+	const { filename } = req.params;
+	const exportDir = path.join(__dirname, '../../src/Exports/Layers');
+	const exportFilePath = path.join(exportDir, filename);
+
+	if (!fs.existsSync(exportFilePath)) {
+		console.error('Export file does not exist');
+		return res.status(404).send(responseHandler('Export file does not exist', 'error'));
+	}
+
+	const exportFile = fs.readFileSync(exportFilePath, 'utf-8');
+	console.log(`import file text, ${exportFile.slice(0, 100)} ...`);
+	res.send(exportFile);
+
+	console.log(`\x1b[36mGetting the layer json is completed!\x1b[0m`);
+});
+
+app.get('/exports/layers', (req, res) => {
+	logServerON(currentPort(), currentBaseUrl());
+	console.log(`\n\x1b[36mGet Export layer file names ...\x1b[0m`);
+
+	const exportDir = path.join(__dirname, '../../src/Exports/Layers');
+	if (!fs.existsSync(exportDir)) {
+		console.error('Export directory does not exist');
+		return res.send(responseHandler('Export directory does not exist!', 'error'));
+	}
+
+	const exportFiles = fs.readdirSync(exportDir);
+	const exportList = exportFiles.filter((file) => file.endsWith('.json'));
+	res.send(exportList);
+
+	console.log(`\x1b[36mGetting the layer file names is completed!\x1b[0m\n`);
+});
+
+app.post('/exports/layers', (req, res) => {
+	logServerON(currentPort(), currentBaseUrl());
+  console.log(`\n\x1b[36mExport layer json ...\x1b[0m`);
+
+	const {
+		fileName,
+		content
+	} = req.body;
+
+	try {
+		const exportDir = path.join(__dirname, '../../src/Exports/Layers');
+		if (!fs.existsSync(exportDir)) fs.mkdirSync(exportDir, { recursive: true });
+		const exportFilePath = path.join(exportDir, fileName);
+		fs.writeFileSync(exportFilePath, content, 'utf-8');
+		const resText = `saved at ${exportFilePath}`;
+		console.log(resText);
+		res.send(responseHandler(resText));
+	} catch (error) {
+		console.error(`Error executing 'npm run export:layer': ${error.stderr.toString()}`);
+		res.status(500).send(responseHandler('An error occurred during npm run export:layer', 'error'));
+	}
+
+	console.log(`\x1b[36mExport layer json Completed!\x1b[0m\n`);
+});
+
 app.put('/public/manifest-json', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
   console.log(`\n\x1b[36mPUT /public/manifest-json ...\x1b[0m\n`);
@@ -52,13 +126,13 @@ app.put('/public/manifest-json', (req, res) => {
     fs.writeFileSync(manifestPath, JSON.stringify(newData, null, 2), (err) => {
       if (err) {
         console.error(err);
-        return res.status(500).send('An error occurred');
+        return res.status(500).send(responseHandler('An error occurred', 'error'));
       }
-      res.send('manifest.json updated successfully!');
+      res.send(responseHandler('manifest.json updated successfully!'));
     });
   } catch (error) {
     console.error('Error updating manifest.json:', error);
-    return res.status(500).send('An error occurred');
+    return res.status(500).send(responseHandler('An error occurred', 'error'));
   } finally {
 		logServerON(currentPort(), currentBaseUrl());
 		console.log(`\x1b[36mPUT /public/manifest-json Completed!\x1b[0m`);
@@ -77,8 +151,8 @@ app.get('/build', (req, res) => {
 		// console.log(buildStdout.toString());
     res.send(JSON.stringify({ message: buildStdout.toString() }));
   } catch (error) {
-    console.error(`Error executing 'npm run build': ${error.stderr.toString()}`);
-    res.status(500).send('An error occurred during npm run build');
+    console.error(responseHandler(`Error executing 'npm run build': ${error.stderr.toString()}`, 'error'));
+    res.status(500).send(responseHandler('An error occurred during npm run build', 'error'));
   }
 
 	logServerON(currentPort(), currentBaseUrl());
@@ -103,12 +177,12 @@ app.get('/upgrade/moaui', (req, res) => {
 		console.log(`installed! \x1b[37m\x1b[1m${listStdout.toString()}\x1b[0m`);
 	} catch (error) {
 		console.error(`Error executing 'npm upgrade @midasit-dev/moaui': ${error.stderr.toString()}`);
-		res.status(500).send('An error occurred during npm upgrade @midasit-dev/moaui');
+		res.status(500).send(responseHandler('An error occurred during npm upgrade @midasit-dev/moaui', 'error'));
 	}
 });
 
 app.get('/health', (req, res) => {
-	res.send('ok');
+	res.send(responseHandler('ok'));
 });
 
 const inactivatePyscript = () => {
@@ -140,20 +214,20 @@ app.put('/activation/pyscript', (req, res) => {
 	if (value === 'inactivate') {
 		try {
 			inactivatePyscript();
-			res.send('inactivate pyscript completed!');
+			res.send(responseHandler('inactivate pyscript completed!'));
 		} catch (error) {
 			console.error('Error inactivate pyscript:', error);
-			res.status(500).send('An error occurred during inactivate pyscript');
+			res.status(500).send(responseHandler('An error occurred during inactivate pyscript', 'error'));
 		}
 	}
 
 	if (value === 'activate') {
 		try {
 			activatePyscript();
-			res.send('activate pyscript completed!');
+			res.send(responseHandler('activate pyscript completed!'));
 		} catch (error) {
 			console.error('Error activate pyscript:', error);
-			res.status(500).send('An error occurred during activate pyscript');
+			res.status(500).send(responseHandler('An error occurred during activate pyscript', 'error'));
 		}
 	}
 

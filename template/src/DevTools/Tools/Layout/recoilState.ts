@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { type Layers } from '../../types';
+import { ControllerInputs, type Layers } from '../../types';
 import { atom } from 'recoil';
 
 export const CanvasState = atom({
@@ -8,6 +8,19 @@ export const CanvasState = atom({
 		width: 592,
 		height: 512,
 	}
+});
+
+export const defaultControllerState = {
+	x: 0,
+	y: 0,
+	width: 160,
+	height: 48,
+	spacing: 0,
+};
+
+export const ControllerState = atom<ControllerInputs>({
+	key: 'ControllerState',
+	default: defaultControllerState,
 });
 
 export const LayerRenderingBoxesState = atom<{ id: string; element: ReactNode }[]>({
