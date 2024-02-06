@@ -22,7 +22,7 @@ const Welcome = () => {
 					<Typography>And type the command below.</Typography>
 				</GuideBox>
 				<CodeBlock language="bash" title="in terminal" radius={0}>
-					npm run dev
+					{`npm run dev`}
 				</CodeBlock>
 			</GuideBox>
 		</Panel>

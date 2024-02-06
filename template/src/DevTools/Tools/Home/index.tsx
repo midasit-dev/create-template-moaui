@@ -9,6 +9,7 @@ import HomeManifestContainerBackgroundUpdator from './Manifest/ContainerBackgrou
 
 import HomeBuilder from './Builder';
 import HomeUpgrade from './Upgrade';
+import HomePyscriptActivation from './PyscriptActivation';
 
 interface HomeProps {
 	titleState: [string, React.Dispatch<React.SetStateAction<string>>];
@@ -37,6 +38,7 @@ const Home = (props: HomeProps) => {
 			<GuideBox width="100%" spacing={3}>
 				<HomeBuilder />
 				<HomeUpgrade />
+				<HomePyscriptActivation />
 			</GuideBox>
 		</GuideBox>
 	)

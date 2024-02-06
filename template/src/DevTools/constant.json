@@ -1,5 +1,4 @@
 {
-  "initial": false,
   "port": 3010,
   "host": "localhost",
   "baseUrl": "http://localhost:3010"

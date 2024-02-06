@@ -12,23 +12,6 @@ const constantPath = path.join(__dirname, 'constant.json');
 const constantJson = fs.readFileSync(constantPath, 'utf-8');
 const constant = JSON.parse(constantJson);
 
-//서버 실행 시, 초기 상태인지 확인 후, WelcomDevTools를 지워준다.
-if (constant.initial === true) {
-	const appPath = path.join(__dirname, '../../src/App.tsx');
-	const appText = fs.readFileSync(appPath, 'utf-8');
-	const deleteAppText = 
-		appText
-			.replace(/import { default as WelcomeDevTools } from '.\/DevTools\/Welcome';/g, '',)
-				.replace(/const opacity = 0.5;/g, '')
-					.replace(/<WelcomeDevTools \/>/g, '')
-						.replaceAll(/ opacity={opacity}/g, '')
-	fs.writeFileSync(appPath, deleteAppText, 'utf-8');
-
-	//constant json 갱신
-	constant.initial = false;
-	fs.writeFileSync(constantPath, JSON.stringify(constant, null, 2), 'utf-8');
-}
-
 const defaultPort = constant.port;
 const defaultHost = constant.host;
 let anotherPort = '';
@@ -128,6 +111,55 @@ app.get('/health', (req, res) => {
 	res.send('ok');
 });
 
+const inactivatePyscript = () => {
+	const publicIndexPath = path.join(__dirname, '../../public/index.html');
+	const inactiveIndexHtmlString = require('./server-pyscript-activation').inactive_index_html;
+	fs.writeFileSync(publicIndexPath, inactiveIndexHtmlString, 'utf-8');
+
+	const wrapperPath = path.join(__dirname, '../../src/Wrapper.tsx');
+	const inactiveWrapperTsxString = require('./server-pyscript-activation').inactive_wrapper_tsx;
+	fs.writeFileSync(wrapperPath, inactiveWrapperTsxString, 'utf-8');
+}
+
+const activatePyscript = () => {
+	const publicIndexPath = path.join(__dirname, '../../public/index.html');
+	const activeIndexHtmlString = require('./server-pyscript-activation').active_index_html;
+	fs.writeFileSync(publicIndexPath, activeIndexHtmlString, 'utf-8');
+
+	const wrapperPath = path.join(__dirname, '../../src/Wrapper.tsx');
+	const activeWrapperTsxString = require('./server-pyscript-activation').active_wrapper_tsx;
+	fs.writeFileSync(wrapperPath, activeWrapperTsxString, 'utf-8');
+}
+
+app.put('/activation/pyscript', (req, res) => {
+	const { value } = req.body;
+
+	logServerON(currentPort(), currentBaseUrl());
+	console.log(`\n\x1b[36mStart activation pyscript (${value}) ...\x1b[0m`);
+
+	if (value === 'inactivate') {
+		try {
+			inactivatePyscript();
+			res.send('inactivate pyscript completed!');
+		} catch (error) {
+			console.error('Error inactivate pyscript:', error);
+			res.status(500).send('An error occurred during inactivate pyscript');
+		}
+	}
+
+	if (value === 'activate') {
+		try {
+			activatePyscript();
+			res.send('activate pyscript completed!');
+		} catch (error) {
+			console.error('Error activate pyscript:', error);
+			res.status(500).send('An error occurred during activate pyscript');
+		}
+	}
+
+	console.log(`\x1b[36mActivation pyscript (${value}) Completed!\x1b[0m\n`);
+});
+
 //./Utils.ts의 const devServerStatus: string = ''; 
 //부분을 const devServerStatus: string = 'listening'; 으로 변경한다
 const changeServerStatus = (status) => {
@@ -162,7 +194,7 @@ const resetConstant = () => {
 	fs.writeFileSync(constantPath, JSON.stringify(constant, null, 2), 'utf-8');
 }
 
-function findAvailablePortAndStartServer(port) {
+const findAvailablePortAndStartServer = (port) => {
   const server = app.listen(port, () => {
     logServerON(currentPort(), currentBaseUrl());
     changeServerStatus('listening');
@@ -205,8 +237,6 @@ function findAvailablePortAndStartServer(port) {
 	});
 }
 
-findAvailablePortAndStartServer(currentPort());
-
 const logServerON = (_port, _baseUrl) => {
 	console.clear();
 	console.log(`\n\x1b[32m┌─┐┌─┐┬─┐┬  ┬┌─┐┬─┐  ╔═╗╔╗╔\n└─┐├┤ ├┬┘└┐┌┘├┤ ├┬┘  ║ ║║║║\n└─┘└─┘┴└─ └┘ └─┘┴└─  ╚═╝╝╚╝\x1b[0m\n`);
@@ -220,3 +250,27 @@ const logServerOFF = () => {
 	console.log(`\n\x1b[31m┌─┐┌─┐┬─┐┬  ┬┌─┐┬─┐  ╔═╗╔═╗╔═╗\n└─┐├┤ ├┬┘└┐┌┘├┤ ├┬┘  ║ ║╠╣ ╠╣ \n└─┘└─┘┴└─ └┘ └─┘┴└─  ╚═╝╚  ╚  \x1b[0m\n`);
 	console.log(`Bye, moaui-cra dev mode!\n`);
 }
+
+// main function
+function serverStart() {
+	//서버 실행 시, 초기 상태인지 확인 후, WelcomDevTools를 지워준다.
+	// if (constant.initial === true) {
+	// 	const appPath = path.join(__dirname, '../../src/App.tsx');
+	// 	const appText = fs.readFileSync(appPath, 'utf-8');
+	// 	const deleteAppText = 
+	// 		appText
+	// 			.replace(/import { default as WelcomeDevTools } from '.\/DevTools\/Welcome';/g, '',)
+	// 				.replace(/const opacity = 0.5;/g, '')
+	// 					.replace(/<WelcomeDevTools \/>/g, '')
+	// 						.replaceAll(/ opacity={opacity}/g, '')
+	// 	fs.writeFileSync(appPath, deleteAppText, 'utf-8');
+
+	// 	//constant json 갱신
+	// 	constant.initial = false;
+	// 	fs.writeFileSync(constantPath, JSON.stringify(constant, null, 2), 'utf-8');
+	// }
+
+	findAvailablePortAndStartServer(currentPort());
+}
+
+serverStart();
