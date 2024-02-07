@@ -3,6 +3,7 @@ import { DraggableResizableBox } from './DraggableResizableBox';
 import { ControllerInputs } from '../../../types';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { LayerRenderingBoxesState, LayersState } from '../recoilState';
+import { v4 as uuid4 } from 'uuid';
 
 interface useBoxesProps {
 	initializeInputs: any;
@@ -63,7 +64,9 @@ export const useBoxes = (props: useBoxesProps) => {
 		type: 'default' | 'left' | 'right' | 'top' | 'bottom' = 'default',
 		inputs: ControllerInputs
 	) => {
-		const newId = `box-${Date.now()}`;
+		//생성 시점 UUID 기록
+		const addUUID = uuid4().slice(0, 8);
+		const newId = `layer${boxes.length + 1}-${addUUID}`; //id 생성
 
 		let modifiedX = inputs.x;
 		if (boxes.length > 0) {

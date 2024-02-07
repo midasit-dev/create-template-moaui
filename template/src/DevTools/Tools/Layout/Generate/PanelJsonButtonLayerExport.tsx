@@ -5,6 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { CanvasState, LayersState } from '../recoilState';
 import { ExportLayers } from '../../../types';
 import { useSnackbar } from 'notistack';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Time {
 	year: number;
@@ -13,7 +14,8 @@ interface Time {
 	hour: number;
 	minute: number;
 	second: number;
-	full: () => string;
+	fullString: string;
+	fullStringWithDash: string;
 	fullWithExtension: (postfix: string) => string;
 	sample: () => string;
 }
@@ -21,12 +23,19 @@ interface Time {
 const getCurrentTime = (): Time => {
 	const date = new Date();
 	const year = date.getFullYear();
+	const sYear = `${year}`.slice(2, 4);
 	const month = date.getMonth() + 1;
+	const sMonth = `${month}`.length === 1 ? `0${month}` : `${month}`;
 	const day = date.getDate();
+	const sDay = `${day}`.length === 1 ? `0${day}` : `${day}`;
 	const hour = date.getHours();
+	const sHour = `${hour}`.length === 1 ? `0${hour}` : `${hour}`;
 	const minute = date.getMinutes();
+	const sMinute = `${minute}`.length === 1 ? `0${minute}` : `${minute}`;
 	const second = date.getSeconds();
-	const fullString = `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}-${hour < 10 ? `0${hour}` : hour}-${minute < 10 ? `0${minute}` : minute}-${second < 10 ? `0${second}` : second}`;
+	const sSecond = `${second}`.length === 1 ? `0${second}` : `${second}`;
+	const fullString = `${sYear}${sMonth}${sDay}${sHour}${sMinute}${sSecond}`;
+	const fullStringWithDash = `${year}${sMonth}${sDay}-${sHour}${sMinute}${sSecond}`;
 	return {
 		year,
 		month,
@@ -34,8 +43,9 @@ const getCurrentTime = (): Time => {
 		hour,
 		minute,
 		second,
-		full: () => fullString,
-		fullWithExtension: (postfix: string) => `${fullString}.${postfix}`,
+		fullString,
+		fullStringWithDash,
+		fullWithExtension: (postfix: string) => `${fullStringWithDash}.${postfix}`,
 		sample: () => '{{Current Date}}.json'
 	};
 };
@@ -60,6 +70,11 @@ const App = () => {
 			<IconButton
 				transparent
 				onClick={async () => {
+					//동일한 id, key일 경우 리렌더링이 되지 않는 문제 해결을 위해
+					//id값에 uuid를 붙여준다.
+					//저장 시점 UUID 기록
+					const saveUUID = uuidv4().slice(0, 8);
+
 					let prevValue = value;
 					if (prevValue === '') {
 						prevValue = getCurrentTime().fullWithExtension('json');
@@ -70,7 +85,26 @@ const App = () => {
 							width: canvas.width,
 							height: canvas.height,
 						},
-						layers: layers,
+						layers: layers.map((layer) => {
+							let saveId = layer.props.id;
+							if (saveId.split('-').length === 2) {
+								saveId = `${saveId}-${saveUUID}`;
+							} else if (saveId.split('-').length === 3) {
+								const newIdArr = saveId.split('-');
+								newIdArr[2] = saveUUID;
+								saveId = newIdArr.join('-');
+							} else {
+								console.error('Invalid id format (layer00-CreateUUID) or (layer00-CreateUUID-SaveUUID)');
+							}
+
+							return {
+								...layer,
+								props: {
+									...layer.props,
+									id: saveId,
+								}
+							}	
+						}),
 					};
 
 					const data = await onClickHandler({

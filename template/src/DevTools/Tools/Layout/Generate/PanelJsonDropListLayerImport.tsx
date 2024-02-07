@@ -112,7 +112,7 @@ const ImportDialog = ({
 		setValue(event.target.value);
 	}
 
-	const [scaleValue, setScaleValue] = useState(0.4);
+	const [scaleValue, setScaleValue] = useState(0.5);
 
 	return (
 		<Dialog
@@ -132,39 +132,19 @@ const ImportDialog = ({
 						</IconButton>
 						<DropList 
 							itemList={items} 
-							width="200px" 
+							width="260px" 
 							defaultValue="NONE"
 							value={value}
 							onChange={onChangeHandler}
 						/>
 					</GuideBox>
-					<Button
-						onClick={onClickHandlerSelect}
-						color='negative'
-					>
-						Select
-					</Button>
 				</GuideBox>
 				<GuideBox width="100%" spacing={2}>
-					<Separator direction='horizontal' />
-					<GuideBox width="100%" row horSpaceBetween verCenter>
-						<Typography>Scale</Typography>
-						<TextFieldV2
-							type="number"
-							value={scaleValue.toString()}
-							onChange={(e: any) => setScaleValue(Number(e.target.value))}
-							numberOptions={{
-								min: 0,
-								max: 1,
-								step: 0.1,
-								onlyInteger: false,
-							}}
-						/>
-					</GuideBox>
 					<GuideBox width="100%" height="auto">
 						<Panel
 							padding={0}
-							variant='shadow2'
+							variant='box'
+							border="1px solid #d1d1d1"
 							width={tempCanvas.width * scaleValue}
 							height={tempCanvas.height * scaleValue}
 						>
@@ -175,6 +155,14 @@ const ImportDialog = ({
 						</Panel>
 					</GuideBox>
 				</GuideBox>
+				<GuideBox width="100%" row horRight>
+					<Button
+						onClick={onClickHandlerSelect}
+						color='negative'
+					>
+						Select
+					</Button>
+				</GuideBox>
 			</GuideBox>
 		</Dialog>
 	)
@@ -184,15 +172,15 @@ const JsonToSvg = ({ scale, data }: any) => {
   return (
     <svg width="100%" height='100%'>
       {data.map((item: any, index: any) => (
-        <rect
-          key={item.props.id}
-          x={item.props.x * scale}
-          y={item.props.y * scale}
-          width={item.props.width * scale}
-          height={item.props.height * scale}
-          fill="none"
-          stroke="black"
-        />
+				<rect
+					key={item.props.id}
+					x={item.props.x * scale}
+					y={item.props.y * scale}
+					width={item.props.width * scale}
+					height={item.props.height * scale}
+					fill="#d1d1d1" // 채우기 색상 없음
+					opacity={0.5}
+				/>
       ))}
     </svg>
   );

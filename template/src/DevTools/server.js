@@ -36,7 +36,7 @@ const responseHandler = (text, type = 'ok') => {
 
 app.get('/exports/layers/:filename', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
-	console.log(`\n\x1b[36mGet Export layer json ...\x1b[0m`);
+	console.log(`\n\x1b[36mGet layer json ...\x1b[0m`);
 
 	const { filename } = req.params;
 	const exportDir = path.join(__dirname, '../../src/Exports/Layers');
@@ -56,7 +56,7 @@ app.get('/exports/layers/:filename', (req, res) => {
 
 app.get('/exports/layers', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
-	console.log(`\n\x1b[36mGet Export layer file names ...\x1b[0m`);
+	console.log(`\n\x1b[36mGet Exported layer file names ...\x1b[0m`);
 
 	const exportDir = path.join(__dirname, '../../src/Exports/Layers');
 	if (!fs.existsSync(exportDir)) {
