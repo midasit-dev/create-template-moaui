@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Button, Dialog, DropList, GuideBox, Icon, IconButton, Panel, TextFieldV2, Typography, Separator } from "@midasit-dev/moaui";
+import { Button, Dialog, DropList, GuideBox, Icon, IconButton, Panel } from "@midasit-dev/moaui";
 import onClickHandler from '../../Shared/OnClickHandler';
 import { useSetRecoilState } from 'recoil';
 import { CanvasState, LayersState } from '../recoilState';
@@ -112,7 +112,7 @@ const ImportDialog = ({
 		setValue(event.target.value);
 	}
 
-	const [scaleValue, setScaleValue] = useState(0.5);
+	const [scaleValue, ] = useState(0.5);
 
 	return (
 		<Dialog

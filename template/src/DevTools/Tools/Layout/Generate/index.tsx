@@ -68,10 +68,6 @@ const App = () => {
 		setBoxes(newBoxes);
 	}, [createNewBox, layers, setBoxes]);
 
-	//setBoxes를 newBoxes로 업데이트 해도 import한 key가 같으면 리렌더링되지 않는 문제해결을 위해
-	//강제 리렌더링용 상태 정의
-	const [forceRender, setForceRender] = React.useState(true);
-
   return (
     <GuideBox row width="100%">
 			<div

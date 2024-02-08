@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { ControllerInputs, type Layers } from '../../types';
-import { atom, selector } from 'recoil';
+import { atom } from 'recoil';
 
 export const CanvasState = atom({
 	key: 'CanvasState',
