@@ -52,10 +52,10 @@ const Kit = (props: KitProps) => {
 	} = useStateKit();
 
 	return (
-		<GuideBox show row width="100%" height='100vh' fill={"#e9ebef"}>
+		<GuideBox show row width="100%" height='100vh' fill={"#e6e6e7"}>
 
 			{/** Sidebar */}
-			<GuideBox width="auto" height='inherit' paddingLeft={2} paddingY={2}>
+			<GuideBox width="auto" height='inherit' paddingY={2} paddingLeft={2}>
 				<GuideBox row height="inherit" spacing={3}>
 					{/** Sidebar Buttons */}
 					<GuideBox height='inherit' spacing={2}>
@@ -71,7 +71,7 @@ const Kit = (props: KitProps) => {
 					<GuideBox width='100%' row>
 						<GuideBox flexGrow={1} center height="100vh">
 							<div id='container'>
-								<Panel variant="shadow2" padding={0} borderRadius='4px'>
+								<Panel variant="shadow2" padding={0} borderRadius='4px' border='1px solid #a7a777a'>
 									<GuideBox width="auto">
 										<MidasController icoSrc={`${process.env.PUBLIC_URL}/favicon.ico`} title={title} />
 										{children}

@@ -9,18 +9,21 @@ import {
 import { useBoxes } from './useBoxes';
 import { useController } from './useController';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { CanvasState, LayerRenderingBoxesState, LayersState } from '../recoilState';
+import { CanvasState, LayerRenderingBoxesState, LayersMenuState, LayersState } from '../recoilState';
 import PanelCanvas from './PanelCanvas';
 import PanelControllerVirtualLayerValues from './PanelControllerVirtualLayerValues';
 import PanelControllerJoystick from './PanelControllerJoystick';
 import PanelJsonDropListLayerImport from './PanelJsonDropListLayerImport';
 import PanelJsonButtonLayerView from './PanelJsonButtonLayerView';
 import PanelJsonButtonLayerSave from './PanelJsonButtonLayerExport';
+import { type DraggableData, Rnd } from 'react-rnd';
+import { type DraggableEvent } from 'react-draggable';
 
 const App = () => {
 	const [boxes, setBoxes] = useRecoilState(LayerRenderingBoxesState);
 	const layers = useRecoilValue(LayersState);
 
+	const [layersMenuState, setLayersMenuState] = useRecoilState(LayersMenuState);
 	const canvasState = useRecoilValue(CanvasState);
 
   const {
@@ -98,41 +101,96 @@ const App = () => {
 					{boxes.map((box) => box.element)}
 				</div>
 			</div>
-			<GuideBox spacing={2} marginLeft={2}>
-				<Panel width="100%" variant="box" padding={2} marginLeft={2} border='1px solid #d1d1d1' backgroundColor='#fff'>
-					<GuideBox spacing={2}>
-						<GuideBox width="100%" row horSpaceBetween verCenter>
-							<Typography variant='h1'>Canvas</Typography>
-						</GuideBox>
-						<PanelCanvas />
-					</GuideBox>
-				</Panel>
-				<div tabIndex={1} onKeyDown={handleOnKeyDown}>
-					<Panel variant="box" padding={2} border='1px solid #d1d1d1' backgroundColor='#fff'>
-						<GuideBox row spacing={2}>
+			<GuideBox show>
+				<div
+					style={{
+						position: 'relative',
+						width: 'auto',
+						height: 'auto',
+					}}
+				>
+
+					<Rnd 
+						{...layersMenuState.canvas} 
+						onDragStop={(e: DraggableEvent, d: DraggableData) => {
+							if (layersMenuState.canvas.default === undefined) {
+								return console.error('layersMenuState.canvas.default is undefined');
+							}
+							setLayersMenuState({ ...layersMenuState, 
+								canvas: { ...layersMenuState.canvas,
+									default: { ...layersMenuState.canvas.default, x: d.x, y: d.y, }
+								}
+							});
+						}}
+					>
+						<Panel width={300} variant="shadow2" padding={2} border='1px solid #d1d1d1' backgroundColor='#fff'>
+							<GuideBox spacing={2}>
+								<GuideBox width="100%" row horSpaceBetween verCenter>
+									<Typography variant='h1'>Canvas</Typography>
+								</GuideBox>
+								<PanelCanvas />
+							</GuideBox>
+						</Panel>
+					</Rnd>
+
+					<Rnd 
+						{...layersMenuState.controller} 
+						onDragStop={(e: DraggableEvent, d: DraggableData) => {
+							if (layersMenuState.controller.default === undefined) {
+								return console.error('layersMenuState.controller.default is undefined');
+							}
+							setLayersMenuState({ ...layersMenuState, 
+								controller: { ...layersMenuState.controller,
+									default: { ...layersMenuState.controller.default, x: d.x, y: d.y, }
+								}
+							});
+						}}
+					>
+						<div tabIndex={1} onKeyDown={handleOnKeyDown}>
+							<Panel width={300} variant="shadow2" padding={2} border='1px solid #d1d1d1' backgroundColor='#fff'>
+								<GuideBox row spacing={2}>
+									<GuideBox width="100%" spacing={2}>
+										<GuideBox width="100%" row horSpaceBetween verCenter>
+											<Typography variant='h1'>Controller</Typography>
+											<IconButton transparent onClick={() => setShowVirtualLayer(!showVirtualLayer)}>
+												<Icon iconName='Visibility' />
+											</IconButton>
+										</GuideBox>
+										<PanelControllerVirtualLayerValues />
+										<PanelControllerJoystick />
+										</GuideBox>
+								</GuideBox>
+							</Panel>
+						</div>
+					</Rnd>
+
+					<Rnd 
+						{...layersMenuState.json} 
+						onDragStop={(e: DraggableEvent, d: DraggableData) => {
+							if (layersMenuState.json.default === undefined) {
+								return console.error('layersMenuState.json.default is undefined');
+							}
+							setLayersMenuState({ ...layersMenuState, 
+								json: { ...layersMenuState.json,
+									default: { ...layersMenuState.json.default, x: d.x, y: d.y, }
+								}
+							});
+						}}
+					>
+						<Panel width={300} variant="shadow2" padding={2} border='1px solid #d1d1d1' backgroundColor='#fff'>
 							<GuideBox width="100%" spacing={2}>
 								<GuideBox width="100%" row horSpaceBetween verCenter>
-									<Typography variant='h1'>Controller</Typography>
-									<IconButton transparent onClick={() => setShowVirtualLayer(!showVirtualLayer)}>
-										<Icon iconName='Visibility' />
-									</IconButton>
+									<Typography variant='h1'>JSON</Typography>
 								</GuideBox>
-								<PanelControllerVirtualLayerValues />
-								<PanelControllerJoystick />
-								</GuideBox>
-						</GuideBox>
-					</Panel>
+								<PanelJsonDropListLayerImport />
+								<PanelJsonButtonLayerView />
+								<PanelJsonButtonLayerSave />
+							</GuideBox>
+						</Panel>
+					</Rnd>
+
 				</div>
-				<Panel width="100%" variant="box" padding={2} border='1px solid #d1d1d1' backgroundColor='#fff'>
-					<GuideBox width="100%" spacing={2}>
-						<GuideBox width="100%" row horSpaceBetween verCenter>
-							<Typography variant='h1'>JSON</Typography>
-						</GuideBox>
-						<PanelJsonDropListLayerImport />
-						<PanelJsonButtonLayerView />
-						<PanelJsonButtonLayerSave />
-					</GuideBox>
-				</Panel>
+
 			</GuideBox>
     </GuideBox>
   );

@@ -23,7 +23,7 @@ const App = () => {
 	} = useBoxes({initializeInputs});
 
 	return (
-		<GuideBox show fill='#f1f1f1' width="100%" borderRadius={1} padding={1} border='1px solid #ddd' spacing={1}>
+		<GuideBox show fill='#f5f5f7' width="100%" borderRadius={1} padding={1} border='1px solid #ddd' spacing={1}>
 			<GuideBox width='100%' row horSpaceBetween verCenter>
 				<GuideBox>
 					<GuideBox row>

@@ -3,11 +3,11 @@ import {
 	GuideBox,
 } from '@midasit-dev/moaui';
 import SideBarButton from '../Shared/SideBarButton';
-import Generate from './Generate';
-import Sketch from './Sketch';
+import Layers from './Layers';
+import Componentized from './Componentized';
 
 function useStateApp() {
-	const [menu, setMenu] = React.useState<'Generate' | 'Sketch' | 'FloatingBox'>('Generate');
+	const [menu, setMenu] = React.useState<'Layers' | 'Componentized'>('Layers');
 	return { menu, setMenu };
 }
 
@@ -25,13 +25,12 @@ const App = () => {
 			<GuideBox width="100%" row height="inherit" spacing={3}>
 				{/** Sidebar Buttons */}
 				<GuideBox height='inherit' spacing={2}>
-					<SideBarButton currentMenuState={[menu, setMenu]} iconName='Gesture' menuName='Generate' />
-					<SideBarButton currentMenuState={[menu, setMenu]} iconName='HighlightAlt' menuName='Sketch' />
-					<SideBarButton currentMenuState={[menu, setMenu]} iconName='Houseboat' menuName='FloatingBox' />
+					<SideBarButton currentMenuState={[menu, setMenu]} iconName='Dashboard' menuName='Layers' />
+					<SideBarButton currentMenuState={[menu, setMenu]} iconName='Adjust' menuName='Componentized' />
 				</GuideBox>
 
-				{menu === 'Generate' && <Generate />}
-				{menu === 'Sketch' && <Sketch />}
+				{menu === 'Layers' && <Layers />}
+				{menu === 'Componentized' && <Componentized />}
 			</GuideBox>
 		</GuideBox>
 	)

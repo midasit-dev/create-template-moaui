@@ -20,6 +20,7 @@ const SideBarButton = (
 		borderRadius: 1,
 		show: currentMenu === menuName,
 		border: currentMenu === menuName ? '1px solid #d1d1d1' : '1px solid transparent',
+		opacity: currentMenu === menuName ? 1 : 0.5,
 	}
 	
 	return (
