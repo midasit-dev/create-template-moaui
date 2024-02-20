@@ -10,19 +10,13 @@ const App = () => {
 
 	return (
 		<GuideBox	width="100%" row horSpaceBetween verCenter>
-			<Button 
+			<IconButton 
 				onClick={() => setOpen(true)} 
 				color='negative'
-				width="100%"
 			>
-				Try to Import
-			</Button>
-			{open &&
-				<ImportDialog 
-					open={open}
-					setOpen={setOpen}
-				/>
-			}
+				<Icon iconName='FolderOpen' />
+			</IconButton>
+			{open && <ImportDialog open={open} setOpen={setOpen} />}
 		</GuideBox>
 	);
 }
@@ -173,7 +167,7 @@ const JsonToSvg = ({ scale, data }: any) => {
     <svg width="100%" height='100%'>
       {data.map((item: any, index: any) => (
 				<rect
-					key={item.props.id}
+					key={item.id}
 					x={item.props.x * scale}
 					y={item.props.y * scale}
 					width={item.props.width * scale}

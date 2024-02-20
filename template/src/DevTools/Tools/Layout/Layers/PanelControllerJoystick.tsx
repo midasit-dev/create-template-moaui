@@ -79,7 +79,7 @@ const App = () => {
 					</Tooltip>
 				</GuideBox>
 			</GuideBox>
-			<GuideBox show fill='#e8e8e8' padding={1} border='1px solid #ddd'>
+			<GuideBox show width="100%" fill='#e8e8e8' padding={1} border='1px solid #ddd'>
 				<TextFieldV2 title="spacing" onChange={handleChangeSpacing} numberOptions={{ onlyInteger: true, min: 0 }} type="number" value={controllerState.spacing.toString()} />
 			</GuideBox>
 		</GuideBox>

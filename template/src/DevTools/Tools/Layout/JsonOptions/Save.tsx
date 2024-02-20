@@ -3,9 +3,29 @@ import { GuideBox, Icon, IconButton, TextField } from '@midasit-dev/moaui';
 import onClickHandler from '../../Shared/OnClickHandler';
 import { useRecoilValue } from 'recoil';
 import { CanvasState, LayersState } from '../recoilState';
-import { ExportLayers } from '../../../types';
+import { ExportLayers, Layer, Layers } from '../../../types';
 import { useSnackbar } from 'notistack';
 import { v4 as uuidv4 } from 'uuid';
+
+function replaceIds(layers: Layers, saveUUID: string): Layers {
+	function createNewId(id: string) {
+		const idArr = id.split('-');
+		if (idArr.length === 3) idArr.push(saveUUID);
+		if (idArr.length === 4) idArr[3] = saveUUID;
+		if (idArr.length !== 3 && idArr.length !== 4) throw new Error('Invalid id Type');
+		return idArr.join('-');
+	}
+
+	function findAndReplaceId(layer: Layer): Layer {
+		return {
+			...layer,
+			id: createNewId(layer.id),
+			children: layer.children ? layer.children.map(findAndReplaceId) : [],
+		}
+	}
+
+	return layers.map(layer => findAndReplaceId(layer));
+}
 
 interface Time {
 	year: number;
@@ -58,17 +78,17 @@ const App = () => {
 	const { enqueueSnackbar } = useSnackbar();
 
 	return (
-		<GuideBox width="100%" row horSpaceBetween>
+		<GuideBox row horSpaceBetween spacing={1}>
 			<GuideBox flexGrow={1}>
 				<TextField 
-					width='100%'
+					width='250px'
 					placeholder={getCurrentTime().sample()}
 					value={value}
 					onChange={(e) => setValue(e.target.value)}
 				/>
 			</GuideBox>
 			<IconButton
-				transparent
+				color='negative'
 				onClick={async () => {
 					//동일한 id, key일 경우 리렌더링이 되지 않는 문제 해결을 위해
 					//id값에 uuid를 붙여준다.
@@ -85,26 +105,7 @@ const App = () => {
 							width: canvas.width,
 							height: canvas.height,
 						},
-						layers: layers.map((layer) => {
-							let saveId = layer.props.id;
-							if (saveId.split('-').length === 2) {
-								saveId = `${saveId}-${saveUUID}`;
-							} else if (saveId.split('-').length === 3) {
-								const newIdArr = saveId.split('-');
-								newIdArr[2] = saveUUID;
-								saveId = newIdArr.join('-');
-							} else {
-								console.error('Invalid id format (layer00-CreateUUID) or (layer00-CreateUUID-SaveUUID)');
-							}
-
-							return {
-								...layer,
-								props: {
-									...layer.props,
-									id: saveId,
-								}
-							}	
-						}),
+						layers: replaceIds(layers, saveUUID),
 					};
 
 					const data = await onClickHandler({

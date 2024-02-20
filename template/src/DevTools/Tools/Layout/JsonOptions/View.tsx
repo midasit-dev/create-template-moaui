@@ -16,11 +16,12 @@ const App = () => {
 	const layers = useRecoilValue(LayersState);
 
 	return (
-		<GuideBox width="100%" row horSpaceBetween verCenter>
-			<Typography>{`Layer Count: ${layers.length}`}</Typography>
-			<IconButton transparent onClick={() => { setOpenLayerJson(true) }}>
-				<Icon iconName='Face5' />
+		<GuideBox row horSpaceBetween verCenter spacing={1}>
+			<IconButton color='negative' onClick={() => { setOpenLayerJson(true) }}>
+				<Icon iconName='ViewDay' />
 			</IconButton>
+			<Typography>{`${layers.length}`}</Typography>
+
 			<Dialog
 				open={openLayerJson}
 				setOpen={setOpenLayerJson}

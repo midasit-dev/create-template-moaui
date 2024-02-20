@@ -85,10 +85,10 @@ export const DraggableResizableBox = (props: RndBoxProps) => {
 		if (setLayers) {
 			setLayers((prev) => {
 				const newBoxlayers = prev.map((box) => {
-					if (box.props.id === id) {
+					if (box.id === id) {
 						return {
 							...box,
-							props: { id, x, y, width, height, },
+							props: { ...box.props, x, y, width, height, },
 						};
 					}
 					return box;
@@ -119,7 +119,7 @@ export const DraggableResizableBox = (props: RndBoxProps) => {
 					curLayer.props.x + curLayer.props.width <=  layer.props.x + layer.props.width &&
 					curLayer.props.y + curLayer.props.height <= layer.props.y + layer.props.height
 				) {
-					if (curLayer.props.id === layer.props.id) continue;
+					if (curLayer.id === layer.id) continue;
 					parents.push(layer);
 				}
 			}
@@ -127,13 +127,13 @@ export const DraggableResizableBox = (props: RndBoxProps) => {
 				if (!a.props || !b.props) return 0;
 				return a.props.x - b.props.x;
 			});
-			return parents.length > 0 ? parents[parents.length - 1].props.id : null;
+			return parents.length > 0 ? parents[parents.length - 1].id : null;
 		};
 
 		const addParentId = (layers: Layers): Layers => {
 			return layers.map((layer) => {
 				const parentId = findParent(layer, layers) || null;
-				return { ...layer, parent: layer.props.id === parentId ? undefined : parentId };
+				return { ...layer, parent: layer.id === parentId ? undefined : parentId };
 			});
 		};
 
@@ -192,11 +192,7 @@ export const DraggableResizableBox = (props: RndBoxProps) => {
 								<Icon iconName='Style' />
 							</IconButton>
 							{onDelete && (
-								<IconButton transparent onClick={() => {
-									console.log('clicked');
-									console.log(id);
-									onDelete(id);
-								}}>
+								<IconButton transparent onClick={() => onDelete(id)}>
 									<Icon iconName='Close' />
 								</IconButton>
 							)}

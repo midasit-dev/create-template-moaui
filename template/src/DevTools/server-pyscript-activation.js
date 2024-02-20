@@ -241,7 +241,9 @@ import {
  Typography, 
  IconButton, 
  Icon,
+ Signature as SignatureMoaui,
 } from '@midasit-dev/moaui';
+import Signature from './Signature';
 import { 
  SnackbarProvider, 
  closeSnackbar 

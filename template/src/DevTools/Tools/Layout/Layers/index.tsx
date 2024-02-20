@@ -13,9 +13,6 @@ import { CanvasState, LayerRenderingBoxesState, LayersMenuState, LayersState } f
 import PanelCanvas from './PanelCanvas';
 import PanelControllerVirtualLayerValues from './PanelControllerVirtualLayerValues';
 import PanelControllerJoystick from './PanelControllerJoystick';
-import PanelJsonDropListLayerImport from './PanelJsonDropListLayerImport';
-import PanelJsonButtonLayerView from './PanelJsonButtonLayerView';
-import PanelJsonButtonLayerSave from './PanelJsonButtonLayerExport';
 import { type DraggableData, Rnd } from 'react-rnd';
 import { type DraggableEvent } from 'react-draggable';
 
@@ -59,7 +56,7 @@ const App = () => {
 		//layers가 초기에 값이 []인데, 채워져 있으면 실행한다.
 		const newBoxes = [];
 		for (const schema of layers) {
-			newBoxes.push(createNewBox(schema.props.id, {
+			newBoxes.push(createNewBox(schema.id, {
 				x: schema.props.x,
 				y: schema.props.y,
 				width: schema.props.width,
@@ -72,7 +69,9 @@ const App = () => {
 	}, [createNewBox, layers, setBoxes]);
 
   return (
-    <GuideBox row width="100%">
+    <GuideBox row width="100%" onKeyDown={(e) => {
+			if (e.ctrlKey && e.key === '[') console.log('ctrl + [');
+		}}>
 			<div
 				style={{
 					width: '100%',
@@ -109,7 +108,6 @@ const App = () => {
 						height: 'auto',
 					}}
 				>
-
 					<Rnd 
 						{...layersMenuState.canvas} 
 						onDragStop={(e: DraggableEvent, d: DraggableData) => {
@@ -163,32 +161,6 @@ const App = () => {
 							</Panel>
 						</div>
 					</Rnd>
-
-					<Rnd 
-						{...layersMenuState.json} 
-						onDragStop={(e: DraggableEvent, d: DraggableData) => {
-							if (layersMenuState.json.default === undefined) {
-								return console.error('layersMenuState.json.default is undefined');
-							}
-							setLayersMenuState({ ...layersMenuState, 
-								json: { ...layersMenuState.json,
-									default: { ...layersMenuState.json.default, x: d.x, y: d.y, }
-								}
-							});
-						}}
-					>
-						<Panel width={300} variant="shadow2" padding={2} border='1px solid #d1d1d1' backgroundColor='#fff'>
-							<GuideBox width="100%" spacing={2}>
-								<GuideBox width="100%" row horSpaceBetween verCenter>
-									<Typography variant='h1'>JSON</Typography>
-								</GuideBox>
-								<PanelJsonDropListLayerImport />
-								<PanelJsonButtonLayerView />
-								<PanelJsonButtonLayerSave />
-							</GuideBox>
-						</Panel>
-					</Rnd>
-
 				</div>
 
 			</GuideBox>

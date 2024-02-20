@@ -18,7 +18,7 @@ const BoxContainerAbsolute = (props: { data: Layers }) => {
         };
 
         return (
-          <div key={box.props.id} style={style}>
+          <div key={box.id} style={style}>
             {/* You can add content for each box here. */}
           </div>
         );

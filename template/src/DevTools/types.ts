@@ -27,7 +27,15 @@
  * @property {Array<Layers>} children - 하위 UI 요소들
  */
 interface Layer {
-	type: 'FloatingBox' | 'Button';
+	id: string;
+	type: 
+		string
+		| 'FloatingBox' 
+		| 'Button' 
+		| 'TextField' 
+		| 'TextFieldV2' 
+		| 'Panel' 
+		| 'DropList';
 	props: Record<string, any>;
 	children?: Array<Layer>;
 }
@@ -63,6 +71,11 @@ type ControllerInputs = {
   spacing: number;
 }
 
+interface Box {
+	id: string;
+	element: JSX.Element;
+}
+
 export type {
 	LayoutSchema,
 	LayoutSchemas,
@@ -72,4 +85,5 @@ export type {
 	Layers,
 	Canvas,
 	ExportLayers,
+	Box,
 }

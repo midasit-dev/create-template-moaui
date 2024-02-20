@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Rnd } from 'react-rnd';
-import './VirtualLayer.css';
+import '../VirtualLayer.css';
 import { useRecoilState } from 'recoil';
 import { defaultControllerState, ControllerState } from '../recoilState';
 

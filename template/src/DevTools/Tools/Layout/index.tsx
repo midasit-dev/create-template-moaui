@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-	GuideBox,
+	GuideBox, Typography,
 } from '@midasit-dev/moaui';
 import SideBarButton from '../Shared/SideBarButton';
+import JsonOptions from './JsonOptions';
 import Layers from './Layers';
 import Componentized from './Componentized';
 
@@ -12,23 +13,32 @@ function useStateApp() {
 }
 
 const App = () => {
-	const {
-		menu, setMenu,
-	} = useStateApp();
+	const { menu, setMenu, } = useStateApp();
 
-	React.useEffect(() => {
+	//Toogle Menu Event 등록/삭제
+	useEffect(() => {
+		window.addEventListener('keydown', (e) => {
+			if (e.ctrlKey && e.key === ']') setMenu((prev) => prev === 'Layers' ? 'Componentized' : 'Layers');
+		});
 
-	}, []);
+		return () => window.removeEventListener('keydown', () => { });
+	}, [setMenu]);
 
 	return (
-		<GuideBox width="100%" height='inherit'>
-			<GuideBox width="100%" row height="inherit" spacing={3}>
+		<GuideBox width="100%" height='inherit' spacing={2}>
+			<GuideBox row width="100%" verCenter horSpaceBetween>
+				<JsonOptions />
 				{/** Sidebar Buttons */}
-				<GuideBox height='inherit' spacing={2}>
-					<SideBarButton currentMenuState={[menu, setMenu]} iconName='Dashboard' menuName='Layers' />
-					<SideBarButton currentMenuState={[menu, setMenu]} iconName='Adjust' menuName='Componentized' />
+				<GuideBox height='inherit' row verCenter spacing={1}>
+					<Typography color='#a5a5a7'>Ctrl + ]</Typography>
+					<GuideBox row verCenter>
+						<SideBarButton currentMenuState={[menu, setMenu]} iconName='Dashboard' menuName='Layers' />
+						<SideBarButton currentMenuState={[menu, setMenu]} iconName='Adjust' menuName='Componentized' />
+					</GuideBox>
 				</GuideBox>
+			</GuideBox>
 
+			<GuideBox width="100%" row height="inherit" spacing={3}>
 				{menu === 'Layers' && <Layers />}
 				{menu === 'Componentized' && <Componentized />}
 			</GuideBox>

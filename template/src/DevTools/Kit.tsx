@@ -51,6 +51,9 @@ const Kit = (props: KitProps) => {
 		setCurrentMenu,
 	} = useStateKit();
 
+	const currentMenuState: { currentMenuState: [string, React.Dispatch<React.SetStateAction<string>>]; } 
+		= { currentMenuState: [currentMenu, setCurrentMenu] };
+
 	return (
 		<GuideBox show row width="100%" height='100vh' fill={"#e6e6e7"}>
 
@@ -59,8 +62,8 @@ const Kit = (props: KitProps) => {
 				<GuideBox row height="inherit" spacing={3}>
 					{/** Sidebar Buttons */}
 					<GuideBox height='inherit' spacing={2}>
-						<SideBarButton currentMenuState={[currentMenu, setCurrentMenu]} iconName='Home' menuName='Home'/>
-						<SideBarButton currentMenuState={[currentMenu, setCurrentMenu]} iconName='GridOn' menuName='Layout' />
+						<SideBarButton {...currentMenuState} iconName='Home' menuName='Home' placement='right' />
+						<SideBarButton {...currentMenuState} iconName='GridOn' menuName='Layout' placement='right' />
 					</GuideBox>
 				</GuideBox>
 			</GuideBox>

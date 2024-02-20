@@ -10,9 +10,10 @@ const SideBarButton = (
 		currentMenuState: [string, React.Dispatch<React.SetStateAction<string | any>>],
 		iconName: string,
 		menuName: string,
+		placement?: 'bottom' | 'top' | 'left' | 'right',
 	}
 ) => {
-	const { currentMenuState, iconName, menuName } = props;
+	const { currentMenuState, iconName, menuName, placement } = props;
 	const [currentMenu, setCurrentMenu] = currentMenuState;
 
 	const optionalProps = {
@@ -25,7 +26,7 @@ const SideBarButton = (
 	
 	return (
 		<GuideBox {...optionalProps}>
-			<Tooltip title={menuName} placement='right'>
+			<Tooltip title={menuName} placement={placement || 'bottom'}>
 				<IconButton
 					transparent
 					onClick={() => setCurrentMenu(menuName)}

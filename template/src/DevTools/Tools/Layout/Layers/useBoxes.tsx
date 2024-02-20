@@ -19,7 +19,7 @@ export const useBoxes = (props: useBoxesProps) => {
 
 	const handleClickDelete = React.useCallback((id: string) => {
 		setBoxes((prevBoxes) => prevBoxes.filter((box) => box.id !== id));
-		setLayers((prevBoxSchemas) => prevBoxSchemas.filter((box) => box.props.id !== id));
+		setLayers((prevBoxSchemas) => prevBoxSchemas.filter((box) => box.id !== id));
 	}, [setBoxes, setLayers]);
 
 	const handleClickPrevDelete = React.useCallback(() => {
@@ -66,7 +66,7 @@ export const useBoxes = (props: useBoxesProps) => {
 	) => {
 		//생성 시점 UUID 기록
 		const addUUID = uuid4().slice(0, 8);
-		const newId = `layer${boxes.length + 1}-${addUUID}`; //id 생성
+		const newId = `${boxes.length + 1}-FloatingBox-${addUUID}`; //id 생성
 
 		let modifiedX = inputs.x;
 		if (boxes.length > 0) {
@@ -92,14 +92,16 @@ export const useBoxes = (props: useBoxesProps) => {
 		initializeInputs(newInputs);
 
 		//새로운 box 생성
-		const newBox = createNewBox(newId, newInputs);
-		setBoxes((prevBoxes) => [...prevBoxes, newBox]);
+		setBoxes(prevBoxes => {
+			const newBox = createNewBox(newId, newInputs);
+			return [...prevBoxes, newBox];
+		});
 		setLayers((prevBoxSchemas) => [
 			...prevBoxSchemas,
 			{
+				id: newId,
 				type: 'FloatingBox',
 				props: {
-					id: newId,
 					x: modifiedX,
 					y: modifiedY,
 					width: inputs.width,
