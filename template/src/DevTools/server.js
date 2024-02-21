@@ -127,15 +127,20 @@ app.get('/exports/codes', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
 	console.debug(`\n\x1b[36mGet Exported code file names ...\x1b[0m`);
 
-	const exportDir = path.join(__dirname, '../../src/Exports/Codes');
-	if (!fs.existsSync(exportDir)) {
-		console.error('Export directory does not exist');
-		return res.send(responseHandler('Export directory does not exist!', 'error'));
+	try {
+		const exportDir = path.join(__dirname, '../../src/Exports/Codes');
+		if (!fs.existsSync(exportDir)) {
+			console.error('Export directory does not exist');
+			return res.send(responseHandler('Export directory does not exist!', 'error'));
+		}
+	
+		const exportFiles = fs.readdirSync(exportDir);
+		const exportList = exportFiles.filter((file) => file.endsWith('.ts') || file.endsWith('.tsx'));
+		res.send(exportList);
+	} catch (error) {
+		console.error(`Error executing 'npm run export:code': ${error.stderr.toString()}`);
+		res.status(500).send(responseHandler('An error occurred during npm run export:code', 'error'));
 	}
-
-	const exportFiles = fs.readdirSync(exportDir);
-	const exportList = exportFiles.filter((file) => file.endsWith('.ts') || file.endsWith('.tsx'));
-	res.send(exportList);
 
 	console.debug(`\x1b[36mGetting the code file names is completed!\x1b[0m\n`);
 });

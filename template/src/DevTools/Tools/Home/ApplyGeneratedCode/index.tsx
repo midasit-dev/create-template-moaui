@@ -25,12 +25,13 @@ const DialogApplyGeneratedCode = (props: {
 	}, []);
 
 	const init = useCallback(async () => {
-		const data: string[] = await onClickHandler({
+		const data: string[] | any = await onClickHandler({
 			path: '/exports/codes',
 			method: 'get',
 		});
 
-		if (data.length === 0) {
+		if (data.error) {
+			enqueueSnackbar(data.error, { variant: 'error' });
 			setValue(1);
 			return;
 		}
@@ -103,7 +104,7 @@ const ApplyGeneratedCode = () => {
 			<Button color="negative" width="90px" onClick={() => setOpen(true)}>
 				Apply
 			</Button>
-			<DialogApplyGeneratedCode {...{open, setOpen}} />
+			{open && <DialogApplyGeneratedCode {...{open, setOpen}} />}
 		</GuideBox>
 	)
 }
