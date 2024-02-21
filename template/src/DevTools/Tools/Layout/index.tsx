@@ -6,6 +6,7 @@ import SideBarButton from '../Shared/SideBarButton';
 import JsonOptions from './JsonOptions';
 import Layers from './Layers';
 import Componentized from './Componentized';
+import GenerateCode from './GenerateCode';
 
 function useStateApp() {
 	const [menu, setMenu] = React.useState<'Layers' | 'Componentized'>('Layers');
@@ -27,7 +28,10 @@ const App = () => {
 	return (
 		<GuideBox width="100%" height='inherit' spacing={2}>
 			<GuideBox row width="100%" verCenter horSpaceBetween>
-				<JsonOptions />
+				<GuideBox row verCenter spacing={2}>
+					<JsonOptions />
+					<GenerateCode />
+				</GuideBox>
 				{/** Sidebar Buttons */}
 				<GuideBox height='inherit' row verCenter spacing={1}>
 					<Typography color='#a5a5a7'>Ctrl + ]</Typography>

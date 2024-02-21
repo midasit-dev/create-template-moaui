@@ -7,6 +7,7 @@ import {
 	Typography,
 	IconButton,
 	Icon,
+	Tooltip,
 } from "@midasit-dev/moaui";
 
 const App = () => {
@@ -16,11 +17,13 @@ const App = () => {
 	const layers = useRecoilValue(LayersState);
 
 	return (
-		<GuideBox row horSpaceBetween verCenter spacing={1}>
-			<IconButton color='negative' onClick={() => { setOpenLayerJson(true) }}>
-				<Icon iconName='ViewDay' />
-			</IconButton>
+		<GuideBox row horSpaceBetween verCenter spacing={2}>
 			<Typography>{`${layers.length}`}</Typography>
+			<Tooltip title='View Layer Json'>
+				<IconButton color='negative' onClick={() => { setOpenLayerJson(true) }}>
+					<Icon iconName='ViewDay' />
+				</IconButton>
+			</Tooltip>
 
 			<Dialog
 				open={openLayerJson}

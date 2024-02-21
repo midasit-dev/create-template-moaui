@@ -149,21 +149,17 @@ const ValidWrapper = (props: any) => {
 							</IconButton>
 						)}
 					>
-						{/** Production Mode */}
-						{!devTools.IsDevEnv() &&
-							<GuideBox tag="AppBackground" show center fill={bgColor} width="100%">
+					{process.env.NODE_ENV === 'development' && isDevServerListening() ?
+						<DevKit bgColorState={[bgColor, setBgColor]}>
+							<GuideBox tag="AppBackground" show center fill={bgColor} borderRadius='0 0 4px 4px' spacing={3}>
 								<App />
 							</GuideBox>
-						}
-
-						{/** Development Mode */}
-						{devTools.IsDevEnv() &&
-							<devTools.Kit bgColorState={[bgColor, setBgColor]}>
-								<GuideBox tag="AppBackground" show center fill={bgColor} borderRadius='0 0 4px 4px' spacing={3}>
-									<App />
-								</GuideBox>
-							</devTools.Kit>
-						}
+						</DevKit>
+						:
+						<GuideBox tag="AppBackground" show center fill={bgColor} width="100%">
+							<App />
+						</GuideBox>
+					}
 					</SnackbarProvider>
 				</RecoilRoot>
 			)}
@@ -253,13 +249,11 @@ import devTools from "./DevTools"
 const ValidWrapper = (props: any) => {
  const { isIntalledPyscript } = props;
 
- //변경
- const [isInitialized, setIsInitialized] = React.useState(true);
- //변경
- const [isValid, setIsValid] = React.useState(true);
- const [checkUri, setCheckUri] = React.useState(false);
- const [checkMapiKey, setCheckMapiKey] = React.useState(false);
- const [checkMapiKeyMsg, setCheckMapiKeyMsg] = React.useState("");
+ const [isInitialized, ] = React.useState(true);
+ const [isValid, ] = React.useState(true);
+ const [checkUri, ] = React.useState(false);
+ const [checkMapiKey, ] = React.useState(false);
+ const [checkMapiKeyMsg, ] = React.useState("");
 
  const ValidationComponent = ({
 	 title = 'undefiend',
@@ -310,21 +304,17 @@ const ValidWrapper = (props: any) => {
 						 </IconButton>
 					 )}
 				 >
-					 {/** Production Mode */}
-					 {!devTools.IsDevEnv() &&
-						 <GuideBox tag="AppBackground" show center fill={bgColor} width="100%">
-							 <App />
-						 </GuideBox>
-					 }
-
-					 {/** Development Mode */}
-					 {devTools.IsDevEnv() && 
-						 <devTools.Kit bgColorState={[bgColor, setBgColor]}>
-							 <GuideBox tag="AppBackground" show center fill={bgColor} borderRadius='0 0 4px 4px' spacing={3}>
-								 <App />
-							 </GuideBox>
-						 </devTools.Kit>
-					 }
+				 {process.env.NODE_ENV === 'development' && isDevServerListening() ?
+					<DevKit bgColorState={[bgColor, setBgColor]}>
+						<GuideBox tag="AppBackground" show center fill={bgColor} borderRadius='0 0 4px 4px' spacing={3}>
+							<App />
+						</GuideBox>
+					</DevKit>
+					:
+					<GuideBox tag="AppBackground" show center fill={bgColor} width="100%">
+						<App />
+					</GuideBox>
+				}
 				 </SnackbarProvider>
 			 </RecoilRoot>
 		 )}

@@ -1,17 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Moaui, {
-	Panel,
 	GuideBox,
 	Typography,
 	DropList,
 	Button,
 	Dialog,
 } from '@midasit-dev/moaui';
-import ToPropComponents from './ToPropComponents';
+import ToPropComponents, { type EnableSamplePropComponent } from './ToPropComponents';
 import { LayersState, OpacityBySelectedLayerIdState, PropComponentLayerAddValueState, SelectedLayerIdState, SelectedLayerState } from '../recoilState';
 import { Layer, Layers } from '../../../types';
 import { v4 as uuid4 } from 'uuid';
+import ShowHideButton from '../../Shared/ShowHideButton';
 
 const App = () => {
 	//itemList를 만들기 위한 useState
@@ -20,7 +20,7 @@ const App = () => {
 	useEffect(() => {
 		setItems(new Map<string, number>(Object.keys(Moaui)
 			.filter((key => !excludeComponentList.includes(key)))
-				.map((key: string, index: number) => [key, index + 1])));
+			.map((key: string, index: number) => [key, index + 1])));
 	}, []);
 	useEffect(() => {
 		if (items.size !== 0) {
@@ -32,28 +32,41 @@ const App = () => {
 
 	//for Drop List
 	const [value, setValue] = useState(1);
-	function onChangeHandler(event: any){
+	function onChangeHandler(event: any) {
 		setValue(event.target.value);
 	}
-
-	//Add 버튼 클릭 시, 
 
 	//Component Type이 변경되면 propCompLayerAddValue를 초기화
 	const [propCompLayerAddValue, setPropCompLayerAddValue] = useRecoilState(PropComponentLayerAddValueState);
 	const selectedLayer = useRecoilValue(SelectedLayerState);
 	useEffect(() => {
-		const curComponentType = reverseItems.get(value) as string;
-		if (curComponentType === undefined) return;
+		const curComponentType = reverseItems.get(value) as EnableSamplePropComponent;
+		if (!curComponentType) return;
 		setPropCompLayerAddValue((prev: Layer) => {
 			const isEqualType = curComponentType === prev.type;
 			//생성 시점 UUID 기록
 			const addUUID = uuid4().slice(0, 8);
 			const countChildrenLength = (selectedLayer?.children?.length || 0) + 1;
 			const newId = `${countChildrenLength}-${curComponentType}-${addUUID}`;
+
+			//이전과 컴포넌트가 다른 타입이면, props를 초기화한다.
+			//children과 같은 형태는 props에 넣으면 오류가 있으므로 우선 제외한다.
+			//ToPropComponents.tsx 참고 (Function하고 Map type은 우선 제외한다.)
+			let newProps: { [key: string]: any } = {};
+			if (!isEqualType) {
+				const sampleProps = Moaui[curComponentType].sampleProps as { [key: string]: any };
+				for (const key of Object.keys(sampleProps)) {
+					if (sampleProps[key] instanceof Map) continue;
+					if (typeof sampleProps[key] === 'function') continue;
+					if (typeof sampleProps[key] === 'object') continue;
+
+					newProps[key] = sampleProps[key];
+				}
+			}
 			return {
 				id: newId,
 				type: curComponentType,
-				props: isEqualType ? prev.props : {},
+				props: isEqualType ? prev.props : newProps,
 				children: isEqualType ? prev.children : [],
 			}
 		});
@@ -90,12 +103,16 @@ const App = () => {
 		if (e.ctrlKey && e.key === 'Enter') onClickHandlerAdd();
 	}, [onClickHandlerAdd]);
 
-	return (
-		<div onKeyDown={onKeyDownHandler}>
-			<Panel width={300} variant="shadow2" padding={2} border='1px solid #d1d1d1' backgroundColor='#fff'>
+	const [show, setShow] = useState(true);
 
-				<GuideBox spacing={2} opacity={opacityBySelectedLayerId}>
+	return (
+		<div onKeyDown={onKeyDownHandler} style={{ width: '100%' }}>
+			<GuideBox width="100%" spacing={2} opacity={opacityBySelectedLayerId}>
+				<GuideBox width="100%" row horSpaceBetween verCenter>
 					<Typography variant='h1'>Add Component</Typography>
+					<ShowHideButton state={[show, setShow]} />
+				</GuideBox>
+				{show &&
 					<GuideBox width="100%" spacing={2}>
 						<GuideBox width="100%" row horSpaceBetween verCenter>
 							<DropList
@@ -121,7 +138,7 @@ const App = () => {
 										>
 											Add
 										</Button>
-										<Button 
+										<Button
 											onClick={() => setOpen(true)}
 											disabled={selectedLayerId === null}
 										>
@@ -142,9 +159,8 @@ const App = () => {
 							</GuideBox>
 						</GuideBox>
 					</GuideBox>
-				</GuideBox>
-
-			</Panel>
+				}
+			</GuideBox>
 		</div>
 	)
 }

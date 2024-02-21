@@ -36,7 +36,7 @@ const responseHandler = (text, type = 'ok') => {
 
 app.get('/exports/layers/:filename', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
-	console.log(`\n\x1b[36mGet layer json ...\x1b[0m`);
+	console.debug(`\n\x1b[36mGet layer json ...\x1b[0m`);
 
 	const { filename } = req.params;
 	const exportDir = path.join(__dirname, '../../src/Exports/Layers');
@@ -48,15 +48,15 @@ app.get('/exports/layers/:filename', (req, res) => {
 	}
 
 	const exportFile = fs.readFileSync(exportFilePath, 'utf-8');
-	console.log(`import file text, ${exportFile.slice(0, 100)} ...`);
+	console.debug(`import file text, ${exportFile.slice(0, 100)} ...`);
 	res.send(exportFile);
 
-	console.log(`\x1b[36mGetting the layer json is completed!\x1b[0m`);
+	console.debug(`\x1b[36mGetting the layer json is completed!\x1b[0m`);
 });
 
 app.get('/exports/layers', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
-	console.log(`\n\x1b[36mGet Exported layer file names ...\x1b[0m`);
+	console.debug(`\n\x1b[36mGet Exported layer file names ...\x1b[0m`);
 
 	const exportDir = path.join(__dirname, '../../src/Exports/Layers');
 	if (!fs.existsSync(exportDir)) {
@@ -68,12 +68,12 @@ app.get('/exports/layers', (req, res) => {
 	const exportList = exportFiles.filter((file) => file.endsWith('.json'));
 	res.send(exportList);
 
-	console.log(`\x1b[36mGetting the layer file names is completed!\x1b[0m\n`);
+	console.debug(`\x1b[36mGetting the layer file names is completed!\x1b[0m\n`);
 });
 
 app.post('/exports/layers', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
-  console.log(`\n\x1b[36mExport layer json ...\x1b[0m`);
+  console.debug(`\n\x1b[36mExport layer json ...\x1b[0m`);
 
 	const {
 		fileName,
@@ -86,19 +86,94 @@ app.post('/exports/layers', (req, res) => {
 		const exportFilePath = path.join(exportDir, fileName);
 		fs.writeFileSync(exportFilePath, content, 'utf-8');
 		const resText = `saved at ${exportFilePath}`;
-		console.log(resText);
+		console.debug(resText);
 		res.send(responseHandler(resText));
 	} catch (error) {
 		console.error(`Error executing 'npm run export:layer': ${error.stderr.toString()}`);
 		res.status(500).send(responseHandler('An error occurred during npm run export:layer', 'error'));
 	}
 
-	console.log(`\x1b[36mExport layer json Completed!\x1b[0m\n`);
+	console.debug(`\x1b[36mExport layer json Completed!\x1b[0m\n`);
+});
+
+app.post('/exports/codes', (req, res) => {
+	logServerON(currentPort(), currentBaseUrl());
+	console.debug(`\n\x1b[36mExport code ...\x1b[0m`);
+
+	const {
+		fileName,
+		content
+	} = req.body;
+
+	try {
+		//넘어온 content(codeString)을 exports/codes에 저장한다.
+		const exportDir = path.join(__dirname, '../../src/Exports/Codes');
+		if (!fs.existsSync(exportDir)) fs.mkdirSync(exportDir, { recursive: true });
+		const exportFilePath = path.join(exportDir, fileName);
+		fs.writeFileSync(exportFilePath, content, 'utf-8');
+		const resText = `saved at ${exportFilePath}`;
+		console.debug(resText);
+		res.send(responseHandler(resText));
+	} catch (error) {
+		console.error(`Error executing 'npm run export:code': ${error.stderr.toString()}`);
+		res.status(500).send(responseHandler('An error occurred during npm run export:code', 'error'));
+	}
+
+	console.debug(`\x1b[36mExport code Completed!\x1b[0m\n`);
+});
+
+// GET exports/codes
+app.get('/exports/codes', (req, res) => {
+	logServerON(currentPort(), currentBaseUrl());
+	console.debug(`\n\x1b[36mGet Exported code file names ...\x1b[0m`);
+
+	const exportDir = path.join(__dirname, '../../src/Exports/Codes');
+	if (!fs.existsSync(exportDir)) {
+		console.error('Export directory does not exist');
+		return res.send(responseHandler('Export directory does not exist!', 'error'));
+	}
+
+	const exportFiles = fs.readdirSync(exportDir);
+	const exportList = exportFiles.filter((file) => file.endsWith('.ts') || file.endsWith('.tsx'));
+	res.send(exportList);
+
+	console.debug(`\x1b[36mGetting the code file names is completed!\x1b[0m\n`);
+});
+
+// POST /apptsx
+app.post('/apptsx', (req, res) => {
+	logServerON(currentPort(), currentBaseUrl());
+	console.debug(`\n\x1b[36mPOST /apptsx ...\x1b[0m`);
+
+	const {
+		fileName
+	} = req.body;
+
+	try {
+		//저장 후 ../../src/App-000000-000000.tsx.bak 로 백업!
+		const appPath = path.join(__dirname, '../../src/App.tsx');
+		const appText = fs.readFileSync(appPath, 'utf-8');
+		const backupAppPath = path.join(__dirname, `../../src/App-${fileName}.bak`);
+		fs.writeFileSync(backupAppPath, appText, 'utf-8');
+
+		//../../src/Exports/Codes에 저장된 fileName을 읽어와서 app.tsx에 저장한다.
+		const exportDir = path.join(__dirname, '../../src/Exports/Codes');
+		const exportFilePath = path.join(exportDir, fileName);
+		const exportFile = fs.readFileSync(exportFilePath, 'utf-8');
+		fs.writeFileSync(appPath, exportFile, 'utf-8');
+		console.debug(`saved at ${exportFilePath}`);
+		res.send(responseHandler('App.tsx updated successfully!'));
+	} catch (error) {
+		console.error(`Error executing 'npm run export:code': ${error.stderr.toString()}`);
+		res.status(500).send(responseHandler('An error occurred during npm run export:code', 'error'));
+	}
+
+	console.debug(`\x1b[36mPOST /apptsx Completed!\x1b[0m\n`);
 });
 
 app.put('/public/manifest-json', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
-  console.log(`\n\x1b[36mPUT /public/manifest-json ...\x1b[0m\n`);
+  console.debug(`\n\x1b[36mPUT /public/manifest-json ...\x1b[0m\n`);
 
   const { 
 		short_name, 
@@ -135,20 +210,20 @@ app.put('/public/manifest-json', (req, res) => {
     return res.status(500).send(responseHandler('An error occurred', 'error'));
   } finally {
 		logServerON(currentPort(), currentBaseUrl());
-		console.log(`\x1b[36mPUT /public/manifest-json Completed!\x1b[0m`);
-		console.log(`modified at \x1b[37m\x1b[1m${manifestPath}\x1b[0m`);
-		console.log('modified data:', req.body, '\n');
+		console.debug(`\x1b[36mPUT /public/manifest-json Completed!\x1b[0m`);
+		console.debug(`modified at \x1b[37m\x1b[1m${manifestPath}\x1b[0m`);
+		console.debug('modified data:', req.body, '\n');
 	}
 });
 
 app.get('/build', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
-  console.log(`\n\x1b[36mStart Plug-in Item Package Build ...\x1b[0m\n`);
+  console.debug(`\n\x1b[36mStart Plug-in Item Package Build ...\x1b[0m\n`);
 
   try {
     // 동기적으로 npm run build 실행
     const buildStdout = execSync('npm run build');
-		// console.log(buildStdout.toString());
+		// console.debug(buildStdout.toString());
     res.send(JSON.stringify({ message: buildStdout.toString() }));
   } catch (error) {
     console.error(responseHandler(`Error executing 'npm run build': ${error.stderr.toString()}`, 'error'));
@@ -156,25 +231,25 @@ app.get('/build', (req, res) => {
   }
 
 	logServerON(currentPort(), currentBaseUrl());
-  console.log(`\x1b[36mPlug-in Item Package Build Completed!\x1b[0m`);
+  console.debug(`\x1b[36mPlug-in Item Package Build Completed!\x1b[0m`);
 	const buildPath = path.join(__dirname, '../../build/index.html');
-	console.log(`production build, \x1b[37m\x1b[1m${buildPath}\x1b[0m`);
+	console.debug(`production build, \x1b[37m\x1b[1m${buildPath}\x1b[0m`);
 });
 
 app.get('/upgrade/moaui', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
-	console.log(`\n\x1b[36mStart @midasit-dev/moaui upgrade ...\x1b[0m\n`);
+	console.debug(`\n\x1b[36mStart @midasit-dev/moaui upgrade ...\x1b[0m\n`);
 
 	try {
 		// 동기적으로 npm run build 실행
 		const upgradeStdout = execSync('npm upgrade @midasit-dev/moaui');
 		const listStdout = execSync('npm list @midasit-dev/moaui');
-		// console.log(upgradeStdout.toString());
+		// console.debug(upgradeStdout.toString());
 		res.send(JSON.stringify({ message: upgradeStdout.toString() }));
 
 		logServerON(currentPort(), currentBaseUrl());
-		console.log(`\x1b[36m@midasit-dev/moaui upgrade Completed!\x1b[0m`);
-		console.log(`installed! \x1b[37m\x1b[1m${listStdout.toString()}\x1b[0m`);
+		console.debug(`\x1b[36m@midasit-dev/moaui upgrade Completed!\x1b[0m`);
+		console.debug(`installed! \x1b[37m\x1b[1m${listStdout.toString()}\x1b[0m`);
 	} catch (error) {
 		console.error(`Error executing 'npm upgrade @midasit-dev/moaui': ${error.stderr.toString()}`);
 		res.status(500).send(responseHandler('An error occurred during npm upgrade @midasit-dev/moaui', 'error'));
@@ -209,7 +284,7 @@ app.put('/activation/pyscript', (req, res) => {
 	const { value } = req.body;
 
 	logServerON(currentPort(), currentBaseUrl());
-	console.log(`\n\x1b[36mStart activation pyscript (${value}) ...\x1b[0m`);
+	console.debug(`\n\x1b[36mStart activation pyscript (${value}) ...\x1b[0m`);
 
 	if (value === 'inactivate') {
 		try {
@@ -231,7 +306,7 @@ app.put('/activation/pyscript', (req, res) => {
 		}
 	}
 
-	console.log(`\x1b[36mActivation pyscript (${value}) Completed!\x1b[0m\n`);
+	console.debug(`\x1b[36mActivation pyscript (${value}) Completed!\x1b[0m\n`);
 });
 
 //./Utils.ts의 const devServerStatus: string = ''; 
@@ -276,7 +351,7 @@ const findAvailablePortAndStartServer = (port) => {
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.log(`Port ${port} is already in use, trying the next one...`);
+      console.debug(`Port ${port} is already in use, trying the next one...`);
 			anotherPort = port + 1;
 			changeConstant(anotherPort);
 
@@ -288,7 +363,7 @@ const findAvailablePortAndStartServer = (port) => {
 
   server.on('listening', () => {
     logServerON(currentPort(), currentBaseUrl());
-    console.log(`\x1b[36mServer is running on port ${port}\x1b[0m`);
+    console.debug(`\x1b[36mServer is running on port ${port}\x1b[0m`);
   });
 
 	// 서버 종료 이벤트 리스너
@@ -301,7 +376,7 @@ const findAvailablePortAndStartServer = (port) => {
 	// 어떤 이유로든 서버를 강제로 종료
 	// 예시: Ctrl+C를 눌러 프로세스를 종료하는 경우
 	process.on('SIGINT', () => {
-		console.log(`\n\x1b[36mServer Closing ...\x1b[0m`)
+		console.debug(`\n\x1b[36mServer Closing ...\x1b[0m`)
 		server.close(() => {
 			logServerOFF();
 			changeServerStatus('');
@@ -313,16 +388,16 @@ const findAvailablePortAndStartServer = (port) => {
 
 const logServerON = (_port, _baseUrl) => {
 	console.clear();
-	console.log(`\n\x1b[32m┌─┐┌─┐┬─┐┬  ┬┌─┐┬─┐  ╔═╗╔╗╔\n└─┐├┤ ├┬┘└┐┌┘├┤ ├┬┘  ║ ║║║║\n└─┘└─┘┴└─ └┘ └─┘┴└─  ╚═╝╝╚╝\x1b[0m\n`);
-  console.log(`Welcome, moaui-cra dev mode!\n`);
-	console.log(`  Port:\t\t\x1b[1m${_port}\x1b[0m`);
-	console.log(`  Base URL:\t\x1b[1m${_baseUrl}\x1b[0m\n`);	
+	console.debug(`\n\x1b[32m┌─┐┌─┐┬─┐┬  ┬┌─┐┬─┐  ╔═╗╔╗╔\n└─┐├┤ ├┬┘└┐┌┘├┤ ├┬┘  ║ ║║║║\n└─┘└─┘┴└─ └┘ └─┘┴└─  ╚═╝╝╚╝\x1b[0m\n`);
+  console.debug(`Welcome, moaui-cra dev mode!\n`);
+	console.debug(`  Port:\t\t\x1b[1m${_port}\x1b[0m`);
+	console.debug(`  Base URL:\t\x1b[1m${_baseUrl}\x1b[0m\n`);	
 }
 
 const logServerOFF = () => {
 	console.clear();
-	console.log(`\n\x1b[31m┌─┐┌─┐┬─┐┬  ┬┌─┐┬─┐  ╔═╗╔═╗╔═╗\n└─┐├┤ ├┬┘└┐┌┘├┤ ├┬┘  ║ ║╠╣ ╠╣ \n└─┘└─┘┴└─ └┘ └─┘┴└─  ╚═╝╚  ╚  \x1b[0m\n`);
-	console.log(`Bye, moaui-cra dev mode!\n`);
+	console.debug(`\n\x1b[31m┌─┐┌─┐┬─┐┬  ┬┌─┐┬─┐  ╔═╗╔═╗╔═╗\n└─┐├┤ ├┬┘└┐┌┘├┤ ├┬┘  ║ ║╠╣ ╠╣ \n└─┘└─┘┴└─ └┘ └─┘┴└─  ╚═╝╚  ╚  \x1b[0m\n`);
+	console.debug(`Bye, moaui-cra dev mode!\n`);
 }
 
 // main function

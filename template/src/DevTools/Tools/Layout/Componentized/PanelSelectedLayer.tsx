@@ -3,18 +3,18 @@ import {
 	Color,
 	GuideBox,
 	type GuideBoxProps,
-	Icon,
-	IconButton,
 	Panel,
 	Separator,
 	Switch,
 	TextFieldV2,
 	Typography,
 	CodeBlock,
+	Button,
 } from '@midasit-dev/moaui';
 import { LayersState, OpacityBySelectedLayerIdState, SelectedLayerGuideBoxPropsState, SelectedLayerIdState, SelectedLayerState } from '../recoilState';
 import { useCallback, useEffect, useState } from 'react';
 import { Layer, Layers } from '../../../types';
+import ShowHideButton from '../../Shared/ShowHideButton';
 
 const TextFieldV2Component = (props: { 
 	title: string; 
@@ -22,8 +22,21 @@ const TextFieldV2Component = (props: {
 		'spacing'
 }) => {
 	const { title, propKey } = props;
-	const [, setGuideBoxProps] = useRecoilState(SelectedLayerGuideBoxPropsState);
-	const [value, setValue] = useState('');
+	const [guideBoxProps, setGuideBoxProps] = useRecoilState(SelectedLayerGuideBoxPropsState);
+	const [value, setValue] = useState((guideBoxProps && guideBoxProps[propKey] ? guideBoxProps[propKey] : 0)?.toString());
+
+	useEffect(() => {
+		if (guideBoxProps && guideBoxProps[propKey] !== undefined) {
+			const numberValue = guideBoxProps[propKey];
+			if (numberValue !== undefined) {
+				setValue(numberValue.toString());
+			} else {
+				setValue('0');
+			}
+		} else {
+			setValue('0');
+		}
+	}, [guideBoxProps, propKey, title]);
 
 	return (
 		<GuideBox width="100%" row horSpaceBetween verCenter>
@@ -137,18 +150,6 @@ const SwitchComponent = (props: {
 	);
 }
 
-const ShowHideButton = (props: {
-	state: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-}) => {
-	const { state } = props;
-	const [show, setShow] = state;
-	return (
-		<IconButton onClick={() => setShow((prev) => !prev)} transparent={show}>
-			{show ? <Icon iconName='KeyboardDoubleArrowUp' /> : <Icon iconName='KeyboardDoubleArrowDown' />}
-		</IconButton>
-	);
-}
-
 const GuideBoxOptions = (props: {
 	guideBoxProps: GuideBoxProps | null;
 	setGuideBoxProps: React.Dispatch<React.SetStateAction<GuideBoxProps | null>>;
@@ -158,8 +159,8 @@ const GuideBoxOptions = (props: {
 		guideBoxPropsState: [GuideBoxProps | null, React.Dispatch<React.SetStateAction<GuideBoxProps | null>>];
 	} = { guideBoxPropsState: [guideBoxProps, setGuideBoxProps] };
 
-	const [showPosition, setShowPosition] = useState(false);
 	const [showDirection, setShowDirection] = useState(false);
+	const [showPosition, setShowPosition] = useState(false);
 	const [showJson, setShowJson] = useState(false);
 
 	return (
@@ -168,6 +169,20 @@ const GuideBoxOptions = (props: {
 			<GuideBox width='100%' spacing={1}>
 				<ParentSizeInheritComponent {...guideBoxPropsState} />
 				<TextFieldV2Component title='spacing' propKey="spacing" />
+			</GuideBox>
+
+			<GuideBox width="100%" spacing={1}>
+				<GuideBox width="100%" row horSpaceBetween verCenter>
+					<Typography variant='h1'>Direction</Typography>
+					<ShowHideButton state={[showDirection, setShowDirection]} />
+				</GuideBox>
+					{showDirection &&
+						<GuideBox width="100%">
+							<SwitchComponent {...guideBoxPropsState} title='row' propKey="row" />
+							<SwitchComponent {...guideBoxPropsState} title='row reverse' propKey="rowReverse" />
+							<SwitchComponent {...guideBoxPropsState} title='column reverse' propKey="columnReverse" />
+						</GuideBox>
+					}
 			</GuideBox>
 
 			<GuideBox width="100%" spacing={1}>
@@ -189,19 +204,6 @@ const GuideBoxOptions = (props: {
 					</GuideBox>	
 				}
 			</GuideBox>
-			<GuideBox width="100%" spacing={1}>
-				<GuideBox width="100%" row horSpaceBetween verCenter>
-					<Typography variant='h1'>Direction</Typography>
-					<ShowHideButton state={[showDirection, setShowDirection]} />
-				</GuideBox>
-					{showDirection &&
-						<GuideBox width="100%">
-							<SwitchComponent {...guideBoxPropsState} title='row' propKey="row" />
-							<SwitchComponent {...guideBoxPropsState} title='row reverse' propKey="rowReverse" />
-							<SwitchComponent {...guideBoxPropsState} title='column reverse' propKey="columnReverse" />
-						</GuideBox>
-					}
-			</GuideBox>
 
 			{guideBoxProps &&
 				<GuideBox width="100%" spacing={1}>
@@ -220,7 +222,7 @@ const GuideBoxOptions = (props: {
 
 /* Main Component */
 const App = () => {
-	const [selectedLayerId,] = useRecoilState(SelectedLayerIdState);
+	const [selectedLayerId, setSelectedLayerId] = useRecoilState(SelectedLayerIdState);
 	const selectedLayer = useRecoilValue(SelectedLayerState);
 	const opacityBySelectedLayerId = useRecoilValue(OpacityBySelectedLayerIdState);
 	
@@ -259,9 +261,12 @@ const App = () => {
 	}, [guideBoxProps]);
 
 	return (
-		<Panel width={350} variant="shadow2" padding={2} border='1px solid #d1d1d1' backgroundColor='#fff'>
+		<Panel width={350} variant="shadow2" padding={2} border={`1px solid ${selectedLayerId ? Color.secondary.main : '#d1d1d1'}`} backgroundColor='#fff'>
 			<GuideBox width="100%" spacing={2} opacity={opacityBySelectedLayerId}>
-				<Typography variant='h1'>Selected Layer</Typography>
+				<GuideBox width="100%" row horSpaceBetween verCenter>
+					<Typography variant='h1'>Selected Layer</Typography>
+					<Button color='negative' onClick={() => setSelectedLayerId(null)}>Reset</Button>
+				</GuideBox>
 				<GuideBox width="100%" row horSpaceBetween verCenter>
 					<Typography variant='body1'>Selected Layer Id:</Typography>
 					<Typography variant='body1' color={getSelectedLayerIdColor(selectedLayerId)}>{`${selectedLayerId}`}</Typography>

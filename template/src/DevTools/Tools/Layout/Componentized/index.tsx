@@ -1,13 +1,12 @@
-import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import {
 	CanvasState,
 	LayersState,
 } from '../recoilState';
 import {
-	Color,
 	GuideBox,
 	Panel,
+	Separator,
 } from '@midasit-dev/moaui';
 import { Rnd } from 'react-rnd';
 import { type Layer } from '../../../types';
@@ -36,14 +35,17 @@ const App = () => {
 
 			<GuideBox>
 				<div style={{ position: 'relative', width: 'auto', height: 'auto' }}>
-					<Rnd default={{ x: -300, y: 0, width: 300, height: 0, }}>
-						<PanelOptionsAdd />
-					</Rnd>
-					<Rnd default={{ x: -300 - 16 - 300, y: 0, width: 300, height: 0, }}>
-						<PanelOptionsModifyDelete />
-					</Rnd>
-					<Rnd default={{ x: -300 - 16 - 300 - 16 - 350, y: 0, width: 350, height: 0, }}>
+					<Rnd default={{ x: -400-16-350, y: 0, width: 350, height: 0, }}>
 						<PanelSelectedLayerId />
+					</Rnd>
+					<Rnd default={{ x: -400, y: 0, width: 400, height: 0, }}>
+						<Panel width={400} variant="shadow2" padding={2} border='1px solid #d1d1d1' backgroundColor='#fff'>
+							<GuideBox width="100%" spacing={2}>
+								<PanelOptionsAdd />
+								<Separator />
+								<PanelOptionsModifyDelete />
+							</GuideBox>
+						</Panel>
 					</Rnd>
 				</div>
 			</GuideBox>

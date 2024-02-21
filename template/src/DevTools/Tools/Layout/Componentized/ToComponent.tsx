@@ -53,7 +53,7 @@ const ToFloatingBox = (props: { layer: Layer; }) => {
 				setSelectedLayerId(layer.id);
 			} else {
 				//이미 눌린 상태인데 한번 더 누른 경우 (해제)
-				setSelectedLayerId(null);
+				// setSelectedLayerId(null);
 			}
 		},
 	};

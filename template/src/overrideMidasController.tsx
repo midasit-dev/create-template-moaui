@@ -1,9 +1,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import MidasController from '@midasit-dev/moaui/Components/MidasController';
-import devTools from './DevTools';
+import { isDevServerListening } from './DevTools/ServerListening';
 
-if (!devTools.IsDevEnv()) {
+if (process.env.NODE_ENV === 'production' || !isDevServerListening()) {
 	const MidasControllerWrapper = () => {
 		const [manifest, setManifest] = React.useState<any>({});
 		React.useEffect(() =>{

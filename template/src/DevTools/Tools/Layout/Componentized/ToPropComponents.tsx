@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { Layer } from '../../../types';
 import Moaui, {
 	TextFieldV2,
@@ -8,7 +8,7 @@ import Moaui, {
 	Typography,
 	GuideBox,
 } from '@midasit-dev/moaui';
-import { PropComponentLayerAddValueState, PropComponentLayerModifyValueState, SelectedLayerState } from '../recoilState';
+import { PropComponentLayerAddValueState, PropComponentLayerModifyValueState } from '../recoilState';
 import ToPropComponentArray from './ToPropComponentsArray';
 
 export interface PropComponentProps<T> {
@@ -30,6 +30,7 @@ export const usePropComponent = (type: string, name: string, value: any, hookTyp
 	else if (hookType === 'Modify') setValue = setModifyValue;
 	else console.error('hookType is not valid');
 
+	//변경 될 때 마다 Add State에 추가해둠.
 	useEffect(() => {
 		setValue((prev: Layer) => ({
 			...prev, 
@@ -49,7 +50,7 @@ export const usePropComponent = (type: string, name: string, value: any, hookTyp
 
 const ToPropComponentMap = (props: PropComponentProps<Map<any, any>>): JSX.Element => {
 	//추가하는 것 부터 조금 고민이 필요해보인다 =_=
-	const { type, name, value, hookType } = props;
+	const { name, value } = props;
 	// const callbackValue = useCallback(() => value, [value]);
 	// const { localValue, } = usePropComponent(type, name, callbackValue);
 	return (
@@ -66,7 +67,7 @@ const ToPropComponentMap = (props: PropComponentProps<Map<any, any>>): JSX.Eleme
 
 const ToPropComponentFunction = (props: PropComponentProps<Function>): JSX.Element => {
 	//추가하는 것 부터 조금 고민이 필요해보인다 =_=
-	const { type, name, value, hookType } = props;
+	const { name, value } = props;
 	// const { localValue, } = usePropComponent(type, name, value, hookType);
 	return (
 		<GuideBox width="100%" row horSpaceBetween verCenter opacity={0.5}>
@@ -161,7 +162,7 @@ const ToPropComponentBoolean = (props: PropComponentProps<boolean>): JSX.Element
 }
 
 const ToPropComponentObject = (props: PropComponentProps<object>): JSX.Element => {
-	const { type, name, value, hookType } = props;
+	const { name, value } = props;
 	// const { localValue, } = usePropComponent(type, name, value, hookType);
 	return (
 		<GuideBox width="100%" row horSpaceBetween verCenter opacity={0.5}>
@@ -176,7 +177,7 @@ const ToPropComponentObject = (props: PropComponentProps<object>): JSX.Element =
 }
 
 const ToPropComponentDefault = (props: PropComponentProps<any>): JSX.Element => {
-	const { type, name, value, hookType } = props;
+	const { name, value } = props;
 	return (
 		<GuideBox width="100%" row horSpaceBetween verCenter opacity={0.5}>
 			<Typography variant='body1'>*default {name}</Typography>
@@ -192,7 +193,6 @@ const ToPropComponentDefault = (props: PropComponentProps<any>): JSX.Element => 
 const ToPropComponent = (props: PropComponentProps<any>): JSX.Element => {
 	const { type, name, value, hookType } = props;
 
-	// console.log((typeof value).toString(), value);
 	if (value instanceof Array) {
 		return <ToPropComponentArray type={type} name={name} value={value} hookType={hookType} />;
 	} else if (value instanceof Map) {
@@ -227,24 +227,14 @@ const ToPropComponents = (props: ToPropComponentsProps): JSX.Element => {
 
 	const [options, setOptions] = useState({});
 	useEffect(() => {
-		switch (componentType) {
-			//지금은 아래 컴포넌트들만 sampleProps을 가지고 있음.
-			//추후에 다른 컴포넌트들도 추가되면 아래 case 분기가 필요 없어짐.
-			case 'Button': 
-			case 'Panel':
-			case 'DropList':
-			case 'TextField': 
-			case 'TextFieldV2':
-				if (!customProps) {
-					setOptions(Moaui[componentType].sampleProps);
-				} else {
-					setOptions(customProps);
-				}
-				break;
-			default: 
-				setOptions({});
-				break;
-		}
+		//지금은 아래 컴포넌트들만 sampleProps을 가지고 있음.
+		//추후에 다른 컴포넌트들도 추가되면 아래 case 분기가 필요 없어짐.
+		const enableSamplePropComp: EnableSamplePropComponent = componentType as EnableSamplePropComponent;
+		if (!enableSamplePropComp) return;
+		
+		if (customProps) setOptions(customProps);
+		else setOptions(Moaui[enableSamplePropComp].sampleProps);
+
 	}, [componentType, customProps]);
 
 	return (
@@ -257,3 +247,11 @@ const ToPropComponents = (props: ToPropComponentsProps): JSX.Element => {
 }
 
 export default ToPropComponents;
+
+export type EnableSamplePropComponent = 
+	'Button'
+	| 'Panel'
+	| 'DropList'
+	| 'TextField'
+	| 'TextFieldV2'
+	//추가되면 여기에;

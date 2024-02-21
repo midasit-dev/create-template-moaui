@@ -1,5 +1,5 @@
 import {
-	GuideBox,
+	GuideBox, Separator,
 } from '@midasit-dev/moaui';
 
 import ManifestHeadLine from './Manifest/HeadLine';
@@ -10,6 +10,8 @@ import HomeManifestContainerBackgroundUpdator from './Manifest/ContainerBackgrou
 import HomeBuilder from './Builder';
 import HomeUpgrade from './Upgrade';
 import HomePyscriptActivation from './PyscriptActivation';
+
+import HomeApplyGeneratedCode from './ApplyGeneratedCode';
 
 interface HomeProps {
 	titleState: [string, React.Dispatch<React.SetStateAction<string>>];
@@ -23,7 +25,7 @@ const Home = (props: HomeProps) => {
 	const [bgColor, setBgColor] = props.bgColorState;
 
 	return (
-		<GuideBox width='100%' spacing={5}>
+		<GuideBox width='100%' spacing={3}>
 			<GuideBox width="100%" spacing={1}>
 				<ManifestHeadLine
 					title={title}
@@ -35,10 +37,18 @@ const Home = (props: HomeProps) => {
 				<HomeManifestContainerBackgroundUpdator containerBackgroundColorState={[bgColor, setBgColor]} />
 			</GuideBox>
 
-			<GuideBox width="100%" spacing={3}>
+			<Separator />
+
+			<GuideBox width="100%" spacing={2}>
 				<HomeBuilder />
 				<HomeUpgrade />
 				<HomePyscriptActivation />
+			</GuideBox>
+
+			<Separator />
+
+			<GuideBox width="100%" spacing={3}>
+				<HomeApplyGeneratedCode />
 			</GuideBox>
 		</GuideBox>
 	)

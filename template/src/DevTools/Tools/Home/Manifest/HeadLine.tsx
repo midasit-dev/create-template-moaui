@@ -59,8 +59,6 @@ const HeadLine = (props: HeadLineProps) => {
 					</Moaui.Button>
 				</Moaui.Tooltip>
 			</Moaui.GuideBox>
-			<Moaui.Separator />
-
 		</Moaui.GuideBox>
 	)
 }

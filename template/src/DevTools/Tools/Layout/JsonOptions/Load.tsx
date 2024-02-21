@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Button, Dialog, DropList, GuideBox, Icon, IconButton, Panel } from "@midasit-dev/moaui";
+import { Button, Dialog, DropList, GuideBox, Icon, IconButton, Panel, Tooltip } from "@midasit-dev/moaui";
 import onClickHandler from '../../Shared/OnClickHandler';
 import { useSetRecoilState } from 'recoil';
 import { CanvasState, LayersState } from '../recoilState';
@@ -10,12 +10,14 @@ const App = () => {
 
 	return (
 		<GuideBox	width="100%" row horSpaceBetween verCenter>
-			<IconButton 
-				onClick={() => setOpen(true)} 
-				color='negative'
-			>
-				<Icon iconName='FolderOpen' />
-			</IconButton>
+			<Tooltip title='Import Layer JSON'>
+				<IconButton 
+					onClick={() => setOpen(true)} 
+					color='negative'
+				>
+					<Icon iconName='FolderOpen' />
+				</IconButton>
+			</Tooltip>
 			{open && <ImportDialog open={open} setOpen={setOpen} />}
 		</GuideBox>
 	);
