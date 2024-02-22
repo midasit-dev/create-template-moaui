@@ -124,7 +124,7 @@ const App = () => {
 						<Panel width={300} variant="shadow2" padding={2} border='1px solid #d1d1d1' backgroundColor='#fff'>
 							<GuideBox spacing={2}>
 								<GuideBox width="100%" row horSpaceBetween verCenter>
-									<Typography variant='h1'>Canvas</Typography>
+									<Typography variant='h1'>Canvas Controller</Typography>
 								</GuideBox>
 								<PanelCanvas />
 							</GuideBox>
@@ -149,7 +149,7 @@ const App = () => {
 								<GuideBox row spacing={2}>
 									<GuideBox width="100%" spacing={2}>
 										<GuideBox width="100%" row horSpaceBetween verCenter>
-											<Typography variant='h1'>Controller</Typography>
+											<Typography variant='h1'>Layer Controller</Typography>
 											<IconButton transparent onClick={() => setShowVirtualLayer(!showVirtualLayer)}>
 												<Icon iconName='Visibility' />
 											</IconButton>

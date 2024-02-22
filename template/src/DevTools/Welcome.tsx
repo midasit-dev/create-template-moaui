@@ -21,7 +21,7 @@ const Welcome = () => {
 					<Typography>To turn on the development mode, open the windows terminal.</Typography>
 					<Typography>And type the command below.</Typography>
 				</GuideBox>
-				<CodeBlock language="bash" title="in terminal" radius={0}>
+				<CodeBlock language="markdown" title="in terminal" radius={0}>
 					{`npm run dev`}
 				</CodeBlock>
 			</GuideBox>
