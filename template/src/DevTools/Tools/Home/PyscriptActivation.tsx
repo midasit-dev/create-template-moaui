@@ -11,20 +11,22 @@ const PyscriptActivation = () => {
 	const [isActivated, setIsActivated] = React.useState(false);
 
 	React.useEffect(() => {
-		const fetchData = async () => {
-			if (isActivated) {
-				onClickHandler({
-					path: '/activation/pyscript',
-					body: {
-						value: isActivated ? 'activate' : 'inactivate',
-					},
-					method: 'put',
-				});
-			}
+		if (typeof pyscript !== 'undefined' && typeof pyscript.interpreter !== 'undefined') {
+			setIsActivated(true);
+		} else {
+			setIsActivated(false);
 		}
+	}, []);
 
-		fetchData();
-	}, [isActivated]);
+	const onChagneHandler = React.useCallback(async (isActivated: boolean) => {
+		onClickHandler({
+			path: '/activation/pyscript',
+			body: {
+				value: isActivated ? 'activate' : 'inactivate',
+			},
+			method: 'put',
+		});
+	}, []);
 
 	return (
 		<GuideBox width="100%" spacing={1.5} verCenter row horSpaceBetween>
@@ -36,7 +38,10 @@ const PyscriptActivation = () => {
 			</GuideBox>
 			<Switch
 				checked={isActivated}
-				onChange={(e: any) => setIsActivated(e.target.checked)}
+				onChange={async (e: any) => {
+					setIsActivated(e.target.checked);
+					await onChagneHandler(e.target.checked);
+				}}
 			/>
 		</GuideBox>
 	);

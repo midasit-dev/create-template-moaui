@@ -34,7 +34,8 @@ import {
 } from './utils_pyscript';
 import Signature from './Signature';
 import { Signature as SignatureMoaui } from '@midasit-dev/moaui';
-import devTools from "./DevTools"
+import { isDevServerListening } from './DevTools/ServerListening';
+import DevKit from './DevTools/Kit';
 
 // PY Terminal 삭제하는 코드
 //// py-terminal 태그를 가진 모든 요소 가져오기
@@ -244,7 +245,8 @@ import {
  SnackbarProvider, 
  closeSnackbar 
 } from 'notistack';
-import devTools from "./DevTools"
+import { isDevServerListening } from './DevTools/ServerListening';
+import DevKit from './DevTools/Kit';
 
 const ValidWrapper = (props: any) => {
  const { isIntalledPyscript } = props;
