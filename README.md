@@ -18,7 +18,7 @@ cra-template is available as an [npm package](https://www.npmjs.com/package/@mid
 **npm:**
 
 ```bash
-npx create-react-app my-app --template @midasit-dev/cra-templte-moaui
+npx create-react-app my-app --template @midasit-dev/cra-template-moaui
 ```
 
 ## License
