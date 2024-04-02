@@ -37,6 +37,8 @@ import { Signature as SignatureMoaui } from '@midasit-dev/moaui';
 import { isDevServerListening } from './DevTools/ServerListening';
 import DevKit from './DevTools/Kit';
 
+import { useTranslation } from "react-i18next";
+
 // PY Terminal 삭제하는 코드
 //// py-terminal 태그를 가진 모든 요소 가져오기
 //const pyTerminals = document.querySelectorAll('py-terminal');
@@ -54,6 +56,7 @@ const ValidWrapper = (props: any) => {
 	const [checkUri, setCheckUri] = React.useState(false);
 	const [checkMapiKey, setCheckMapiKey] = React.useState(false);
 	const [checkMapiKeyMsg, setCheckMapiKeyMsg] = React.useState("");
+  const { i18n } = useTranslation();
 
 	React.useEffect(() => {
 		const callback = async () => {
@@ -133,6 +136,11 @@ const ValidWrapper = (props: any) => {
 			SignatureMoaui.log();
 		}
 	}, [isInitialized, isValid]);
+
+	React.useEffect(() => {
+    if (window.location.pathname === "/") window.location.pathname = "/en";
+    i18n.changeLanguage(window.location.pathname.split("/")[1]);
+  }, [window.location.pathname]);
 
 	return (
 		<>
@@ -248,6 +256,8 @@ import {
 import { isDevServerListening } from './DevTools/ServerListening';
 import DevKit from './DevTools/Kit';
 
+import { useTranslation } from "react-i18next";
+
 const ValidWrapper = (props: any) => {
  const { isIntalledPyscript } = props;
 
@@ -256,6 +266,7 @@ const ValidWrapper = (props: any) => {
  const [checkUri, ] = React.useState(false);
  const [checkMapiKey, ] = React.useState(false);
  const [checkMapiKeyMsg, ] = React.useState("");
+ const { i18n } = useTranslation();
 
  const ValidationComponent = ({
 	 title = 'undefiend',
@@ -289,6 +300,11 @@ const ValidWrapper = (props: any) => {
 		SignatureMoaui.log();
 	}
 }, [isInitialized, isValid]);
+
+React.useEffect(() => {
+	if (window.location.pathname === "/") window.location.pathname = "/en";
+	i18n.changeLanguage(window.location.pathname.split("/")[1]);
+}, [window.location.pathname]);
 
  return (
 	 <>
@@ -415,8 +431,8 @@ const inactive_index_html = `<!DOCTYPE html>
 </html>`;
 
 module.exports = {
-	active_wrapper_tsx,
-	inactive_wrapper_tsx,
-	active_index_html,
-	inactive_index_html,
+  active_wrapper_tsx,
+  inactive_wrapper_tsx,
+  active_index_html,
+  inactive_index_html,
 };
