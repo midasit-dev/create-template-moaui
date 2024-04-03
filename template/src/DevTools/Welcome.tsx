@@ -50,18 +50,23 @@ const Welcome = () => {
     >
       <GuideBox spacing={2}>
         <GuideBox row width="100%" horSpaceBetween verCenter>
+					<GuideBox pulse spacing={1}>
+						💚💚💚
+					</GuideBox>
+					<GuideBox row verCenter spacing={2}>
+						<Typography>Select a Language</Typography>
+						<DropList
+							width="auto"
+							itemList={languageList}
+							value={language}
+							onChange={onChangeLangHandler}
+						/>
+					</GuideBox>
+				</GuideBox>
+        <GuideBox row width="100%" horSpaceBetween verCenter>
           <Typography variant="h1">
             {translate("welcome_midas_plugin")}
           </Typography>
-          <DropList
-            width="auto"
-            itemList={languageList}
-            value={language}
-            onChange={onChangeLangHandler}
-          />
-          <GuideBox pulse spacing={1}>
-            💚💚💚
-          </GuideBox>
         </GuideBox>
         <GuideBox spacing={0.7}>
           <Typography>{translate("dev_mode_developing")}</Typography>
