@@ -31,6 +31,8 @@ import { isDevServerListening } from "./DevTools/ServerListening";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
+const StandardLanguage = ["en", "ko", "ja"];
+
 const ValidWrapper = (props: any) => {
   const navigate = useNavigate();
   const { isIntalledPyscript } = props;
@@ -81,7 +83,11 @@ const ValidWrapper = (props: any) => {
 
   React.useEffect(() => {
     if (window.location.pathname === "/") navigate("/en");
-    i18n.changeLanguage(window.location.pathname.split("/")[1]);
+
+    const urlLastPath = window.location.pathname.split("/").pop();
+    if (urlLastPath && StandardLanguage.indexOf(urlLastPath) !== -1) {
+      i18n.changeLanguage(urlLastPath);
+    }
   }, [window.location.pathname]);
 
   return (
