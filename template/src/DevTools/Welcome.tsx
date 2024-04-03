@@ -8,23 +8,37 @@ import {
 } from "@midasit-dev/moaui";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+
+const StandardLanguage = ["en", "ko", "ja"];
 
 const languageList = new Map([
-  ["English", "en"],
-  ["Korean", "ko"],
-  ["Japanese", "ja"],
+  ["English", StandardLanguage[0]],
+  ["Korean", StandardLanguage[1]],
+  ["Japanese", StandardLanguage[2]],
 ]);
 
+const initLanguage = () => {
+  const urlPath = window.location.pathname.split("/")[1];
+  if (StandardLanguage.indexOf(urlPath) !== -1) {
+    return urlPath; // url path is included in StandardLanguage
+  } else {
+    return StandardLanguage[0]; // url path is not included in StandardLanguage. so, set default language 'en'
+  }
+};
+
 const Welcome = () => {
+  const navigate = useNavigate();
   const { t: translate, i18n: internationalization } = useTranslation();
-  const [language, setLanguage] = React.useState(
-    window.location.pathname.split("/")[1]
-  );
+  const [language, setLanguage] = React.useState(initLanguage);
+
+  React.useEffect(() => {
+    navigate(`/${language}`); // change url path to selected language
+  }, [language]);
 
   function onChangeLangHandler(event: any) {
-    setLanguage(event.target.value);
-    window.location.pathname = `/${event.target.value}`;
-    internationalization.changeLanguage(event.target.value);
+    setLanguage(event.target.value); // event.target.value is language code (en, ko, ja)
+    internationalization.changeLanguage(event.target.value); // change language
   }
 
   return (

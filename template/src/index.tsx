@@ -13,6 +13,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Wrapper from "./Wrapper";
 import "./overrideMidasController";
 import "./i18n";
@@ -21,8 +22,18 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+function RouteWrapper() {
+  const location = useLocation();
+
+  return (
+    <Routes location={location}>
+      <Route path={"/*"} element={<Wrapper />} />
+    </Routes>
+  );
+}
+
 root.render(
-  <React.Fragment>
-    <Wrapper />
-  </React.Fragment>
+  <BrowserRouter>
+    <RouteWrapper />
+  </BrowserRouter>
 );

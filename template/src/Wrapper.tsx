@@ -29,8 +29,10 @@ import DevKit from "./DevTools/Kit";
 import { isDevServerListening } from "./DevTools/ServerListening";
 
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const ValidWrapper = (props: any) => {
+  const navigate = useNavigate();
   const { isIntalledPyscript } = props;
 
   const [isInitialized] = React.useState(true);
@@ -78,7 +80,7 @@ const ValidWrapper = (props: any) => {
   }, [isInitialized, isValid]);
 
   React.useEffect(() => {
-    if (window.location.pathname === "/") window.location.pathname = "/en";
+    if (window.location.pathname === "/") navigate("/en");
     i18n.changeLanguage(window.location.pathname.split("/")[1]);
   }, [window.location.pathname]);
 
