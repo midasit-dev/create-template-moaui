@@ -14,8 +14,8 @@
       "react-scripts": "^5.0.1"
     },
     "dependencies": {
-      "@midasit-dev/moaui": "^0.1.126",
-      "@midasit-dev/playground" : "^0.0.8",
+      "@midasit-dev/moaui": "latest",
+      "@midasit-dev/playground" : "latest",
       "cors": "^2.8.5",
       "i18next": "^23.10.1",
       "i18next-browser-languagedetector": "^7.2.1",
