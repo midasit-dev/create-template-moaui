@@ -55,7 +55,7 @@ const Kit = (props: KitProps) => {
 		= { currentMenuState: [currentMenu, setCurrentMenu] };
 
 	return (
-		<GuideBox show row width="100%" height='100vh' fill={"#e6e6e7"}>
+		<GuideBox show row width="100%" height='100vh' fill={"transparent"}>
 
 			{/** Sidebar */}
 			<GuideBox width="auto" height='inherit' paddingY={2} paddingLeft={2}>
