@@ -33,7 +33,8 @@ const Welcome = () => {
   const [language, setLanguage] = React.useState(initLanguage);
 
   React.useEffect(() => {
-    navigate(`/${language}`); // change url path to selected language
+		const querys = window.location.search;
+    navigate(`/${language}${querys}`); // change url path to selected language
 		// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language]);
 

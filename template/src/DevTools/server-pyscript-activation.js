@@ -211,7 +211,7 @@ const PyscriptWrapper = () => {
 
 	return (
 		<>
-			<InactivatePyscript />
+			{!VerifyUtil.isExistQueryStrings('mapiKey') && <InactivatePyscript />}
 			<VerifyDialog loading={!installed} />
 			{installed && VerifyUtil.isExistQueryStrings('mapiKey') &&
 				<ValidWrapper isIntalledPyscript={installed} />
