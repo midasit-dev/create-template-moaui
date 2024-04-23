@@ -17,6 +17,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Wrapper from "./Wrapper";
 import "./overrideMidasController";
 import "./i18n";
+import "./output.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
