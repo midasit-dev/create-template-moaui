@@ -6,7 +6,7 @@ import {
 import MidasController from '@midasit-dev/moaui/Components/MidasController';
 import SideBarButton from './Tools/Shared/SideBarButton';
 import { default as ToolsHome } from './Tools/Home';
-import { default as ToolsLayout } from './Tools/Layout';
+import Playground from '@midasit-dev/playground';
 
 const useStateKit = () => {
 	const [title, setTitle] = React.useState('');
@@ -95,7 +95,7 @@ const Kit = (props: KitProps) => {
 					</GuideBox>
 				)}
 
-				{currentMenu === 'Layout' && ( <ToolsLayout /> )}
+				{currentMenu === 'Layout' && ( <Playground /> )}
 			</GuideBox>
 
 		</GuideBox>
