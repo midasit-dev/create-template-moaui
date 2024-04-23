@@ -10,7 +10,7 @@
  * @description sign of cra-template-moaui
  */
 
-const currentVersionFromPackageJson = '1.1.91';
+const currentVersionFromPackageJson = '1.1.92';
 
 export const log = () => {
 	/**
