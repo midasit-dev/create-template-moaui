@@ -53,7 +53,7 @@ const DialogApplyGeneratedCode = (props: {
 	const onClickApplyHandler = useCallback(async () => {
 		const selectFileName = reverseItems.get(value);
 		const data = await onClickHandler({
-			path: '/apptsx',
+			path: '/apply-code',
 			body: { fileName: selectFileName },
 			method: 'post',
 		});
@@ -74,7 +74,7 @@ const DialogApplyGeneratedCode = (props: {
 		>
 			<GuideBox width="100%" spacing={2}>
 				<DropList
-					width={200}
+					width={300}
 					itemList={items}
 					defaultValue="NONE"
 					value={value}

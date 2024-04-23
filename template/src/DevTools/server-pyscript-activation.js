@@ -225,8 +225,8 @@ export default PyscriptWrapper;
 const InactivatePyscript = () => {
 	const [isHover, setIsHover] = React.useState(false);
 
-	const inactivatePyscript = useCallback(() => {
-		onClickHandler({
+	const inactivatePyscript = useCallback(async () => {
+		await onClickHandler({
 			path: '/activation/pyscript',
 			body: { value: 'inactivate', },
 			method: 'put',

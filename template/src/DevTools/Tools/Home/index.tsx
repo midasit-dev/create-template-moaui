@@ -25,7 +25,7 @@ const App = (props: any) => {
         exit={{ opacity: 0 }}
       >
         <GuideBox show width="100%" row fill="#f5f6f7">
-          <GuideBox flexGrow={1} center height="100vh">
+					<div className='w-auto h-[100vh] justify-center items-center flex flex-grow z-0'>
             <div id="container">
               <Panel
                 variant="shadow2"
@@ -33,25 +33,26 @@ const App = (props: any) => {
                 borderRadius="4px"
                 border="1px solid #a7a777a"
               >
-                <GuideBox width="auto">
+                <div className="w-auto">
                   <MidasController
                     icoSrc={`${process.env.PUBLIC_URL}/favicon.ico`}
                     title={title}
                   />
                   {children}
-                </GuideBox>
+                </div>
               </Panel>
             </div>
-          </GuideBox>
+					</div>
 
           <motion.div
-            className="fixed top-[24px] right-[24px] w-auto h-auto"
+            className="fixed top-[24px] right-[24px] w-auto h-auto z-1"
             animate={isOpen ? "open" : "closed"}
           >
             <motion.div
+							className="hidden"
               variants={{
-                open: { opacity: 1, x: 0 },
-                closed: { opacity: 0, x: 350 },
+                open: { display: 'flex', opacity: 1, x: 0 },
+                closed: { display: 'none', opacity: 0, x: 350 },
               }}
             >
               <Panel
@@ -77,12 +78,12 @@ const App = (props: any) => {
               <motion.div
                 className="w-10 h-10 cursor-pointer"
                 variants={{
-                  open: { rotate: 0 },
-                  closed: { rotate: 180 },
+                  open: { rotate: 180 },
+                  closed: { rotate: 0 },
                 }}
                 onClick={() => setOpen(!isOpen)}
-								whileHover={{ scale: 1.1 }}
-								whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
                 <SvgMinimize />
               </motion.div>
@@ -105,7 +106,7 @@ const SvgMinimize = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M9 18L15 12L9 6"
+      d="M15 18L9 12L15 6"
       stroke="#353a3e"
       stroke-width="2"
       stroke-linecap="round"

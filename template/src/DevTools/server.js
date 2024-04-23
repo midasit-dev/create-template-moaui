@@ -34,12 +34,12 @@ const responseHandler = (text, type = 'ok') => {
 	}
 }
 
-app.get('/exports/layers/:filename', (req, res) => {
+app.get('/exports/schemas/:filename', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
 	console.debug(`\n\x1b[36mGet layer json ...\x1b[0m`);
 
 	const { filename } = req.params;
-	const exportDir = path.join(__dirname, '../../src/Exports/Layers');
+	const exportDir = path.join(__dirname, '../../src/Exports/Schemas');
 	const exportFilePath = path.join(exportDir, filename);
 
 	if (!fs.existsSync(exportFilePath)) {
@@ -54,11 +54,11 @@ app.get('/exports/layers/:filename', (req, res) => {
 	console.debug(`\x1b[36mGetting the layer json is completed!\x1b[0m`);
 });
 
-app.get('/exports/layers', (req, res) => {
+app.get('/exports/schemas', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
 	console.debug(`\n\x1b[36mGet Exported layer file names ...\x1b[0m`);
 
-	const exportDir = path.join(__dirname, '../../src/Exports/Layers');
+	const exportDir = path.join(__dirname, '../../src/Exports/Schemas');
 	if (!fs.existsSync(exportDir)) {
 		console.error('Export directory does not exist');
 		return res.send(responseHandler('Export directory does not exist!', 'error'));
@@ -71,7 +71,7 @@ app.get('/exports/layers', (req, res) => {
 	console.debug(`\x1b[36mGetting the layer file names is completed!\x1b[0m\n`);
 });
 
-app.post('/exports/layers', (req, res) => {
+app.post('/exports/schemas', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
   console.debug(`\n\x1b[36mExport layer json ...\x1b[0m`);
 
@@ -81,7 +81,7 @@ app.post('/exports/layers', (req, res) => {
 	} = req.body;
 
 	try {
-		const exportDir = path.join(__dirname, '../../src/Exports/Layers');
+		const exportDir = path.join(__dirname, '../../src/Exports/Schemas');
 		if (!fs.existsSync(exportDir)) fs.mkdirSync(exportDir, { recursive: true });
 		const exportFilePath = path.join(exportDir, fileName);
 		fs.writeFileSync(exportFilePath, content, 'utf-8');
@@ -135,7 +135,7 @@ app.get('/exports/codes', (req, res) => {
 		}
 	
 		const exportFiles = fs.readdirSync(exportDir);
-		const exportList = exportFiles.filter((file) => file.endsWith('.ts') || file.endsWith('.tsx'));
+		const exportList = exportFiles.filter((file) => file.endsWith('.json'));
 		res.send(exportList);
 	} catch (error) {
 		console.error(`Error executing 'npm run export:code': ${error.stderr.toString()}`);
@@ -145,27 +145,43 @@ app.get('/exports/codes', (req, res) => {
 	console.debug(`\x1b[36mGetting the code file names is completed!\x1b[0m\n`);
 });
 
-// POST /apptsx
-app.post('/apptsx', (req, res) => {
+// POST /apply-code
+app.post('/apply-code', (req, res) => {
 	logServerON(currentPort(), currentBaseUrl());
-	console.debug(`\n\x1b[36mPOST /apptsx ...\x1b[0m`);
+	console.debug(`\n\x1b[36mPOST /apply-code ...\x1b[0m`);
 
 	const {
 		fileName
 	} = req.body;
 
 	try {
-		//저장 후 ../../src/App-000000-000000.tsx.bak 로 백업!
-		const appPath = path.join(__dirname, '../../src/App.tsx');
-		const appText = fs.readFileSync(appPath, 'utf-8');
-		const backupAppPath = path.join(__dirname, `../../src/App-${fileName}.bak`);
-		fs.writeFileSync(backupAppPath, appText, 'utf-8');
-
-		//../../src/Exports/Codes에 저장된 fileName을 읽어와서 app.tsx에 저장한다.
 		const exportDir = path.join(__dirname, '../../src/Exports/Codes');
 		const exportFilePath = path.join(exportDir, fileName);
 		const exportFile = fs.readFileSync(exportFilePath, 'utf-8');
-		fs.writeFileSync(appPath, exportFile, 'utf-8');
+		const exportCodes = JSON.parse(exportFile);
+
+		if ('tsx' in exportCodes) {
+			//백업한다.
+			const appPath = path.join(__dirname, '../../src/App.tsx');
+			const appText = fs.readFileSync(appPath, 'utf-8');
+			const backupAppPath = path.join(__dirname, `../../src/App-${fileName}.bak`);
+			fs.writeFileSync(backupAppPath, appText, 'utf-8');
+
+			//기존 파일에 exportCode를 적용한다.
+			fs.writeFileSync(appPath, exportCodes.tsx, 'utf-8');
+		}
+
+		if ('py' in exportCodes) {
+			//백업한다.
+			const pyPath = path.join(__dirname, '../../public/pyscript_main.py');
+			const pyText = fs.readFileSync(pyPath, 'utf-8');
+			const backupPyPath = path.join(__dirname, `../../public/pyscript_main.py-${fileName}.bak`);
+			fs.writeFileSync(backupPyPath, pyText, 'utf-8');
+
+			//기존 파일에 exportCode를 적용한다.
+			fs.writeFileSync(pyPath, exportCodes.py, 'utf-8');
+		}
+		
 		console.debug(`saved at ${exportFilePath}`);
 		res.send(responseHandler('App.tsx updated successfully!'));
 	} catch (error) {
@@ -173,7 +189,7 @@ app.post('/apptsx', (req, res) => {
 		res.status(500).send(responseHandler('An error occurred during npm run export:code', 'error'));
 	}
 
-	console.debug(`\x1b[36mPOST /apptsx Completed!\x1b[0m\n`);
+	console.debug(`\x1b[36mPOST /apply-code Completed!\x1b[0m\n`);
 });
 
 app.put('/public/manifest-json', (req, res) => {

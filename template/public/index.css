@@ -235,7 +235,7 @@ html, body {
   margin-left: auto;
   margin-right: auto;
 }
-input {
+/* input {
   text-rendering: auto;
   color: -internal-light-dark(black, white);
   letter-spacing: normal;
@@ -255,7 +255,7 @@ input {
   border-style: inset;
   border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
   border-image: initial;
-}
+} */
 .py-button {
   --tw-text-opacity: 1;
   color: rgba(255, 255, 255, var(--tw-text-opacity));
