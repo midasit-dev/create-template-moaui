@@ -12,7 +12,7 @@ const active_wrapper_tsx = `
 * @next ./src/App.tsx
 */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { RecoilRoot } from 'recoil';
 import App from './App';
 import {
@@ -36,6 +36,7 @@ import Signature from './Signature';
 import { Signature as SignatureMoaui } from '@midasit-dev/moaui';
 import { isDevServerListening } from './DevTools/ServerListening';
 import DevKit from './DevTools/Kit';
+import onClickHandler from './DevTools/Tools/Shared/OnClickHandler';
 
 import { useTranslation } from "react-i18next";
 
@@ -140,6 +141,7 @@ const ValidWrapper = (props: any) => {
 	React.useEffect(() => {
     if (window.location.pathname === "/") window.location.pathname = "/en";
     i18n.changeLanguage(window.location.pathname.split("/")[1]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.pathname]);
 
 	return (
@@ -213,6 +215,7 @@ const PyscriptWrapper = () => {
 
 	return (
 		<>
+			<InactivatePyscript />
 			<VerifyDialog loading={!installed} />
 			{installed && VerifyUtil.isExistQueryStrings('mapiKey') &&
 				<ValidWrapper isIntalledPyscript={installed} />
@@ -221,7 +224,41 @@ const PyscriptWrapper = () => {
 	)
 }
 
-export default PyscriptWrapper;`;
+export default PyscriptWrapper;
+
+const InactivatePyscript = () => {
+	const [isHover, setIsHover] = React.useState(false);
+
+	const inactivatePyscript = useCallback(() => {
+		onClickHandler({
+			path: '/activation/pyscript',
+			body: { value: 'inactivate', },
+			method: 'put',
+		})
+	}, []);
+
+	return (
+		<div 
+			style={{ position: 'fixed', top: 24, right: 24, zIndex: 9999, backgroundColor: '#fff', width: 60, height: 60, borderRadius: '99px', padding: 10, cursor: 'pointer', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',}}
+			onMouseOver={() => setIsHover(true)}
+			onMouseOut={() => setIsHover(false)}
+			onClick={inactivatePyscript}
+		>
+			<SvgFlipBackward />
+			{isHover && (
+				<div style={{ position: 'absolute', top: 70, right: 0, width: 170, height: 'auto', backgroundColor: '#353a3e', zIndex: 9999, boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)', padding: 10, borderRadius: 4 }}>
+					<Typography variant="body1" color="#fff" center>Click to inactivate Pyscript</Typography>
+				</div>
+			)}
+		</div>
+	)
+}
+
+const SvgFlipBackward = () => (
+	<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+ 		<path d="M3 9H16.5C18.9853 9 21 11.0147 21 13.5C21 15.9853 18.9853 18 16.5 18H12M3 9L7 5M3 9L7 13" stroke="#353a3e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+ 	</svg>
+)`;
 
 const inactive_wrapper_tsx = `
 /**
@@ -304,6 +341,7 @@ const ValidWrapper = (props: any) => {
 React.useEffect(() => {
 	if (window.location.pathname === "/") window.location.pathname = "/en";
 	i18n.changeLanguage(window.location.pathname.split("/")[1]);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [window.location.pathname]);
 
  return (

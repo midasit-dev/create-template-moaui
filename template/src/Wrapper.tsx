@@ -88,6 +88,7 @@ const ValidWrapper = (props: any) => {
     if (urlLastPath && StandardLanguage.indexOf(urlLastPath) !== -1) {
       i18n.changeLanguage(urlLastPath);
     }
+		// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.pathname]);
 
   return (

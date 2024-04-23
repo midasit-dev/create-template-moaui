@@ -34,6 +34,7 @@ const Welcome = () => {
 
   React.useEffect(() => {
     navigate(`/${language}`); // change url path to selected language
+		// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language]);
 
   function onChangeLangHandler(event: any) {
