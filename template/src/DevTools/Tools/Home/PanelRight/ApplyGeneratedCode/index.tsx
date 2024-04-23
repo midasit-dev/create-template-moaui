@@ -7,7 +7,7 @@ import {
 	Button,
 	DropList,
 } from "@midasit-dev/moaui";
-import onClickHandler from '../../Shared/OnClickHandler';
+import onClickHandler from '../../../Shared/OnClickHandler';
 import { enqueueSnackbar } from 'notistack';
 
 const DialogApplyGeneratedCode = (props: {

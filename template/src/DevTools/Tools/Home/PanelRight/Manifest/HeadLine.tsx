@@ -1,6 +1,6 @@
 import React from 'react';
 import Moaui from '@midasit-dev/moaui';
-import onClickHandler from '../../Shared/OnClickHandler';
+import onClickHandler from '../../../Shared/OnClickHandler';
 
 interface HeadLineProps {
 	title: string;

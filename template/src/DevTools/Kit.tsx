@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-	GuideBox,
-	Panel,
-} from '@midasit-dev/moaui';
-import MidasController from '@midasit-dev/moaui/Components/MidasController';
-import SideBarButton from './Tools/Shared/SideBarButton';
-import { default as ToolsHome } from './Tools/Home';
+import { GuideBox, } from '@midasit-dev/moaui';
+import Home from './Tools/Home';
 import Playground from '@midasit-dev/playground';
 
 const useStateKit = () => {
@@ -51,48 +46,33 @@ const Kit = (props: KitProps) => {
 		setCurrentMenu,
 	} = useStateKit();
 
-	const currentMenuState: { currentMenuState: [string, React.Dispatch<React.SetStateAction<string>>]; } 
-		= { currentMenuState: [currentMenu, setCurrentMenu] };
+	const currentMenuState: { currentMenuState: [string, React.Dispatch<React.SetStateAction<string>>]; } = { currentMenuState: [currentMenu, setCurrentMenu] };
 
 	return (
-		<GuideBox show row width="100%" height='100vh' fill={"transparent"}>
+		<GuideBox row width="100%" height='100vh'>
 
-			{/** Sidebar */}
-			<GuideBox width="auto" height='inherit' paddingY={2} paddingLeft={2}>
+			{/* <GuideBox width="auto" height='inherit' paddingY={2} paddingLeft={2}>
 				<GuideBox row height="inherit" spacing={3}>
-					{/** Sidebar Buttons */}
 					<GuideBox height='inherit' spacing={2}>
 						<SideBarButton {...currentMenuState} iconName='Home' menuName='Home' placement='right' />
 						<SideBarButton {...currentMenuState} iconName='GridOn' menuName='Layout' placement='right' />
 					</GuideBox>
 				</GuideBox>
-			</GuideBox>
+			</GuideBox> */}
 
-			<GuideBox width="100%" padding={2}>
+			<GuideBox width="100%">
 
 				{currentMenu === 'Home' && (
-					<GuideBox width='100%' row>
-						<GuideBox flexGrow={1} center height="100vh">
-							<div id='container'>
-								<Panel variant="shadow2" padding={0} borderRadius='4px' border='1px solid #a7a777a'>
-									<GuideBox width="auto">
-										<MidasController icoSrc={`${process.env.PUBLIC_URL}/favicon.ico`} title={title} />
-										{children}
-									</GuideBox>
-								</Panel>
-							</div>
-						</GuideBox>
-
-						<GuideBox>
-							<Panel variant="box" backgroundColor='#fff' padding={0} borderRadius='4px' border='1px solid #d1d1d1'>
-								<GuideBox width={350} padding={2}>
-									<GuideBox width='100%'>
-										<ToolsHome titleState={[title, setTitle]} containerSizeState={[containerSize, setContainerSize]} bgColorState={[bgColor, setBgColor]} />
-									</GuideBox>
-								</GuideBox>
-							</Panel>
-						</GuideBox>
-					</GuideBox>
+					<Home
+						title={title}
+						setTitle={setTitle}
+						containerSize={containerSize}
+						setContainerSize={setContainerSize}
+						bgColor={bgColor}
+						setBgColor={setBgColor}
+					>
+						{children}
+					</Home>
 				)}
 
 				{currentMenu === 'Layout' && ( <Playground /> )}

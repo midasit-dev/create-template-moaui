@@ -1,57 +1,115 @@
-import {
-	GuideBox, Separator,
-} from '@midasit-dev/moaui';
+import { useState } from "react";
+import { GuideBox, Panel, MidasController } from "@midasit-dev/moaui";
+import { default as ToolsHome } from "./PanelRight";
+import { AnimatePresence, motion } from "framer-motion";
 
-import ManifestHeadLine from './Manifest/HeadLine';
-import HomeManifestTitleUpdator from './Manifest/TitleUpdator';
-import HomeManifestContainerSizeUpdator from './Manifest/ContainerSizeUpdator';
-import HomeManifestContainerBackgroundUpdator from './Manifest/ContainerBackgroundUpdator';
+const App = (props: any) => {
+  const {
+    children,
+    title,
+    setTitle,
+    containerSize,
+    setContainerSize,
+    bgColor,
+    setBgColor,
+  } = props;
 
-import HomeBuilder from './Builder';
-import HomeUpgrade from './Upgrade';
-import HomePyscriptActivation from './PyscriptActivation';
+  const [isOpen, setOpen] = useState(false);
 
-import HomeApplyGeneratedCode from './ApplyGeneratedCode';
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="w-full h-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <GuideBox show width="100%" row fill="#f5f6f7">
+          <GuideBox flexGrow={1} center height="100vh">
+            <div id="container">
+              <Panel
+                variant="shadow2"
+                padding={0}
+                borderRadius="4px"
+                border="1px solid #a7a777a"
+              >
+                <GuideBox width="auto">
+                  <MidasController
+                    icoSrc={`${process.env.PUBLIC_URL}/favicon.ico`}
+                    title={title}
+                  />
+                  {children}
+                </GuideBox>
+              </Panel>
+            </div>
+          </GuideBox>
 
-interface HomeProps {
-	titleState: [string, React.Dispatch<React.SetStateAction<string>>];
-	containerSizeState: [{ width: number, height: number }, React.Dispatch<React.SetStateAction<{ width: number; height: number; }>>];
-	bgColorState: [string, React.Dispatch<React.SetStateAction<string>>];
-}
+          <motion.div
+            className="fixed top-[24px] right-[24px] w-auto h-auto"
+            animate={isOpen ? "open" : "closed"}
+          >
+            <motion.div
+              variants={{
+                open: { opacity: 1, x: 0 },
+                closed: { opacity: 0, x: 350 },
+              }}
+            >
+              <Panel
+                variant="box"
+                backgroundColor="#fff"
+                padding={0}
+                borderRadius="4px"
+                border="1px solid #d1d1d1"
+              >
+                <GuideBox width={350} padding={2}>
+                  <GuideBox width="100%">
+                    <ToolsHome
+                      titleState={[title, setTitle]}
+                      containerSizeState={[containerSize, setContainerSize]}
+                      bgColorState={[bgColor, setBgColor]}
+                    />
+                  </GuideBox>
+                </GuideBox>
+              </Panel>
+            </motion.div>
 
-const Home = (props: HomeProps) => {
-	const [title, setTitle] = props.titleState;
-	const [containerSize, setContainerSize] = props.containerSizeState;
-	const [bgColor, setBgColor] = props.bgColorState;
+            <motion.div className="fixed bottom-[24px] right-[24px]">
+              <motion.div
+                className="w-10 h-10 cursor-pointer"
+                variants={{
+                  open: { rotate: 0 },
+                  closed: { rotate: 180 },
+                }}
+                onClick={() => setOpen(!isOpen)}
+								whileHover={{ scale: 1.1 }}
+								whileTap={{ scale: 0.9 }}
+              >
+                <SvgMinimize />
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </GuideBox>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
 
-	return (
-		<GuideBox width='100%' spacing={3}>
-			<GuideBox width="100%" spacing={1}>
-				<ManifestHeadLine
-					title={title}
-					containerSize={containerSize}
-					bgColor={bgColor}
-				/>
-				<HomeManifestTitleUpdator titleState={[title, setTitle]} />
-				<HomeManifestContainerSizeUpdator containerSizeState={[containerSize, setContainerSize]} />
-				<HomeManifestContainerBackgroundUpdator containerBackgroundColorState={[bgColor, setBgColor]} />
-			</GuideBox>
+export default App;
 
-			<Separator />
-
-			<GuideBox width="100%" spacing={2}>
-				<HomeBuilder />
-				<HomeUpgrade />
-				<HomePyscriptActivation />
-			</GuideBox>
-
-			<Separator />
-
-			<GuideBox width="100%" spacing={3}>
-				<HomeApplyGeneratedCode />
-			</GuideBox>
-		</GuideBox>
-	)
-}
-
-export default Home;
+const SvgMinimize = () => (
+  <svg
+    width="100%"
+    height="100%"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M9 18L15 12L9 6"
+      stroke="#353a3e"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
