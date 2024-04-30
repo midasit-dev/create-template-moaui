@@ -160,7 +160,7 @@ app.post('/apply-code', (req, res) => {
 		const exportFile = fs.readFileSync(exportFilePath, 'utf-8');
 		const exportCodes = JSON.parse(exportFile);
 
-		if ('tsx' in exportCodes) {
+		if ('tsx' in exportCodes && exportCodes.tsx !== "") {
 			//백업한다.
 			const appPath = path.join(__dirname, '../../src/App.tsx');
 			const appText = fs.readFileSync(appPath, 'utf-8');
@@ -171,11 +171,11 @@ app.post('/apply-code', (req, res) => {
 			fs.writeFileSync(appPath, exportCodes.tsx, 'utf-8');
 		}
 
-		if ('py' in exportCodes) {
+		if ('py' in exportCodes && exportCodes.py !== "") {
 			//백업한다.
-			const pyPath = path.join(__dirname, '../../public/pyscript_main.py');
+			const pyPath = path.join(__dirname, '../../public/py_main.py');
 			const pyText = fs.readFileSync(pyPath, 'utf-8');
-			const backupPyPath = path.join(__dirname, `../../public/pyscript_main.py-${fileName}.bak`);
+			const backupPyPath = path.join(__dirname, `../../public/py_main.py-${fileName}.bak`);
 			fs.writeFileSync(backupPyPath, pyText, 'utf-8');
 
 			//기존 파일에 exportCode를 적용한다.

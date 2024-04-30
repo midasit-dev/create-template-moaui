@@ -42,23 +42,27 @@ const sidebar = {
 	},
 };
 
-const SideMenu = () => {
+const SideMenu = (props: any) => {
+	const { sideMenuRef } = props;
+
 	const [isOpen, toggleOpen] = useCycle(false, true);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const { height } = useDimensions(containerRef);
 
 	useEffect(() => {
-		if (!isOpen && containerRef.current) {
+		if (!isOpen && containerRef.current && sideMenuRef.current) {
 			// list 닫혔을 대
 			// delay를 0.5초 줘서 zIndex를 100으로 변경한다.
 			setTimeout(() => {
 				if (containerRef.current) containerRef.current.style.zIndex = ZINDEX.zindex_navbar_closed.toString();
+				if (sideMenuRef.current) sideMenuRef.current.style.zIndex = ZINDEX.zindex_navbar_closed.toString();
 			}, 800);
 		} else {
 			// list 열렸을 때
 			if (containerRef.current) containerRef.current.style.zIndex = ZINDEX.zindex_navbar_opend.toString();
+			if (sideMenuRef.current) sideMenuRef.current.style.zIndex = ZINDEX.zindex_navbar_opend.toString();
 		}
-	}, [isOpen]);
+	}, [isOpen, sideMenuRef]);
 
 	return (
     <motion.nav
@@ -75,7 +79,7 @@ const SideMenu = () => {
         style={styleBackground}
         className="bg-pg-black-medium"
       />
-      <MenuItems isOpen={isOpen} />
+      <MenuItems isOpen={isOpen} toggle={toggleOpen} />
 
       <MenuToggle isOpen={isOpen} toggle={() => toggleOpen()} />
     </motion.nav>

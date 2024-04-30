@@ -8,7 +8,7 @@
  *  ╚═════╝    ╚═╝   ╚═╝╚══════╝  ╚═╝     ╚═╝╚═╝        ╚═╝   ╚═╝ 
  * 
  * @description Functions for executing python script in typescript
- * @linkcode ./public/pyscript_main.py
+ * @linkcode ./public/py_main.py
  */
 
 import { VerifyUtil } from "@midasit-dev/moaui";
@@ -50,7 +50,7 @@ export function getGlobalVariable() {
 
 /**
  * @description this function is for python script to create data in database
- * @see ./public/pyscript_main.py
+ * @see ./public/py_main.py
  * @param item: item to create
  * @returns
  * @example
@@ -65,7 +65,7 @@ export function dbCreate(itemName: string, items: any) {
 
 /**
  * @description this function is for python script to create data in database
- * @see ./public/pyscript_main.py
+ * @see ./public/py_main.py
  * @param key: key of item
  * @param item: item to create
  * @returns 
@@ -81,7 +81,7 @@ export function dbCreateItem(itemName: string, key: string, item: any) {
 
 /**
  * @description this function is for python script to read data from database
- * @see ./public/pyscript_main.py
+ * @see ./public/py_main.py
  * @param itemName: name of item
  * @param key: key of item
  * @returns
@@ -97,7 +97,7 @@ export function dbRead(itemName: string): any {
 
 /**
  * @description this function is for python script to read data each item from database
- * @see ./public/pyscript_main.py
+ * @see ./public/py_main.py
  * @param itemName: name of item
  * @param key: key of item
  * @returns
@@ -113,7 +113,7 @@ export function dbReadItem(itemName: string, key: string): any {
 
 /**
  * @description this function is for python script to update data in database
- * @see ./public/pyscript_main.py
+ * @see ./public/py_main.py
  * @param itemName name of item
  * @param items items to update
  * @returns 
@@ -129,7 +129,7 @@ export function dbUpdate(itemName: string, items: any) {
 
 /**
  * @description this function is for python script to update data in database
- * @see ./public/pyscript_main.py
+ * @see ./public/py_main.py
  * @param itemName name of item
  * @param key key of item
  * @param item item to update
@@ -146,7 +146,7 @@ export function dbUpdateItem(itemName: string, key: string, item: any) {
 
 /**
  * @description this function is for python script to delete data in database
- * @see ./public/pyscript_main.py
+ * @see ./public/py_main.py
  * @param itemName name of item
  * @returns 
  * @example

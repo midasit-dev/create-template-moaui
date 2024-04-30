@@ -5,7 +5,8 @@
 	"fetch": [
 		{
 			"files": [
-				"./pyscript_engineers_web.py"
+				"./py_base_sub.py",
+				"./py_base.py"
 			]
 		}
 	]

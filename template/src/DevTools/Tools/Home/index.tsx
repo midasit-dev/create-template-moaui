@@ -25,7 +25,7 @@ const App = (props: any) => {
         exit={{ opacity: 0 }}
       >
         <GuideBox show width="100%" row fill="#f5f6f7">
-					<div className='w-auto h-[100vh] justify-center items-center flex flex-grow z-0'>
+					<div className='w-auto h-[calc(100vh-56px)] justify-center items-center flex flex-grow z-0'>
             <div id="container">
               <Panel
                 variant="shadow2"

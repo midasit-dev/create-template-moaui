@@ -21,9 +21,14 @@ const variants = {
 	},
 };
 
-const App = () => {
+const App = (props: any) => {
+	const { toggle } = props;
+
 	const setCurrentMenu = useSetRecoilState(CurrentMenuState);
-	const onClickHandler = useCallback(() => setCurrentMenu('Playground'), [setCurrentMenu]);
+	const onClickHandler = useCallback(() => {
+		setCurrentMenu('Playground');
+		toggle();
+	}, [setCurrentMenu, toggle]);
 
 	return (
 		<motion.li

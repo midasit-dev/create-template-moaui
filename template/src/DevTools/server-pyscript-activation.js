@@ -401,7 +401,7 @@ const active_index_html = `<!DOCTYPE html>
 
 	<!-- PYSCRIPT Configuration -->
 	<script defer src="https://pyscript.net/latest/pyscript.js"></script>
-	<py-config type="json" src="./pyscript_config.json"></py-config>
+	<py-config type="json" src="./py_config.json"></py-config>
 
 	<script>
     fetch('./manifest.json').then(response => response.json()).then(data => {
@@ -419,7 +419,7 @@ const active_index_html = `<!DOCTYPE html>
 	<div id="midas-controller"></div>
 
 	<div id="root"></div>
-	<py-script src="./pyscript_main.py"></py-script>
+	<py-script src="./py_main.py"></py-script>
 </body>
 
 </html>`;
@@ -437,7 +437,7 @@ const inactive_index_html = `<!DOCTYPE html>
 
 	<!-- PYSCRIPT Configuration -->
 	<!-- <script defer src="https://pyscript.net/latest/pyscript.js"></script> -->
-	<!-- <py-config type="json" src="./pyscript_config.json"></py-config> -->
+	<!-- <py-config type="json" src="./py_config.json"></py-config> -->
 
 	<script>
     fetch('./manifest.json').then(response => response.json()).then(data => {
@@ -455,7 +455,7 @@ const inactive_index_html = `<!DOCTYPE html>
 	<div id="midas-controller"></div>
 
 	<div id="root"></div>
-	<!-- <py-script src="./pyscript_main.py"></py-script> -->
+	<!-- <py-script src="./py_main.py"></py-script> -->
 </body>
 
 </html>`;

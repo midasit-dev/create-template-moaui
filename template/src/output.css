@@ -619,8 +619,8 @@ video {
   z-index: 0;
 }
 
-.z-\[1\] {
-  z-index: 1;
+.z-\[200\] {
+  z-index: 200;
 }
 
 .m-0 {
@@ -667,12 +667,16 @@ video {
   height: 50px;
 }
 
-.h-auto {
-  height: auto;
+.h-\[56px\] {
+  height: 56px;
 }
 
-.h-\[100vh\] {
-  height: 100vh;
+.h-\[calc\(100vh-56px\)\] {
+  height: calc(100vh - 56px);
+}
+
+.h-auto {
+  height: auto;
 }
 
 .w-10 {

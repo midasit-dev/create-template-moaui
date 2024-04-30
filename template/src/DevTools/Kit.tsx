@@ -43,12 +43,16 @@ const Kit = (props: KitProps) => {
 	const appSchemaStateForImport = useRecoilValue(AppSchemaStateForImport);
 	const setAppSchemaStateForExport = useSetRecoilState(AppSchemaStateForExport);
 
+	const sideMenuRef = React.useRef<HTMLDivElement>(null);
+
   return (
-    <GuideBox row width="100%" height="100vh">
-      <SideMenu />
+    <GuideBox width="100%" height="100vh">
+      <div className="w-full h-[56px] z-0" ref={sideMenuRef}>
+        <SideMenu sideMenuRef={sideMenuRef} />
+      </div>
 
       {currentMenu === "Home" && (
-        <div className="w-full z-0">
+        <div className="w-full z-[200]">
           <Home
             title={title}
             setTitle={setTitle}

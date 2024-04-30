@@ -18,7 +18,7 @@ const variants = {
 };
 
 const MenuItems = (props: any) => {
-	const { ulRef, isOpen } = props;
+	const { ulRef, isOpen, toggle } = props;
 	const currentMenuState = useRecoilValue(CurrentMenuState);
 
   return (
@@ -27,8 +27,8 @@ const MenuItems = (props: any) => {
       variants={variants}
       className="m-0 p-[25px] absolute top-[100px] w-[300x]"
     >
-      <MenuHome />
-      <MenuPlayground />
+      <MenuHome toggle={toggle} />
+      <MenuPlayground toggle={toggle} />
       {isOpen && currentMenuState === "Playground" && (
         <div className="ml-10">
           <SubMenuSchemaSave />
