@@ -1,7 +1,7 @@
 <!-- markdownlint-disable-next-line -->
 <br />
 <p align="center">
-  <a href="https://midasit.com/" rel="noopener" target="_blank"><img width="150" src="https://raw.githubusercontent.com/midasit-dev/moaui/main/logo_circle.svg" alt="moaui logo"></a>
+  <a href="https://midasit.com/" rel="noopener" target="_blank"><img width="150" src="https://raw.githubusercontent.com/midasit-dev/moaui-fixed-repo/main/svg/logo_circle_30p.svg" alt="moaui logo"></a>
 </p>
 
 <h1 align="center">cra-template-moaui (for code)</h1>
