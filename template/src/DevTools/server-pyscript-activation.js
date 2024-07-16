@@ -36,6 +36,8 @@ import onClickHandler from './DevTools/Tools/Shared/OnClickHandler';
 
 import { useTranslation } from "react-i18next";
 
+import InnerContentSize from './InnerContentSize';
+
 // PY Terminal 삭제하는 코드
 //// py-terminal 태그를 가진 모든 요소 가져오기
 //const pyTerminals = document.querySelectorAll('py-terminal');
@@ -159,7 +161,9 @@ const ValidWrapper = (props: any) => {
 					{process.env.NODE_ENV === 'development' && isDevServerListening() ?
 						<DevKit bgColorState={[bgColor, setBgColor]}>
 							<GuideBox tag="AppBackground" show center fill={bgColor} borderRadius='0 0 4px 4px' spacing={3}>
-								<App />
+								<InnerContentSize>
+									<App />
+								</InnerContentSize>
 							</GuideBox>
 						</DevKit>
 						:
@@ -287,6 +291,8 @@ import DevKit from './DevTools/Kit';
 
 import { useTranslation } from "react-i18next";
 
+import InnerContentSize from './InnerContentSize';
+
 const ValidWrapper = (props: any) => {
  const { isIntalledPyscript } = props;
 
@@ -355,7 +361,9 @@ React.useEffect(() => {
 				 {process.env.NODE_ENV === 'development' && isDevServerListening() ?
 					<DevKit bgColorState={[bgColor, setBgColor]}>
 						<GuideBox tag="AppBackground" show center fill={bgColor} borderRadius='0 0 4px 4px' spacing={3}>
-							<App />
+							<InnerContentSize>
+								<App />
+							</InnerContentSize>
 						</GuideBox>
 					</DevKit>
 					:

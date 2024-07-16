@@ -1,3 +1,4 @@
+
 /**
 * @title 2-wrapper
 * @description Wrapper for Pyscript
@@ -27,6 +28,8 @@ import { isDevServerListening } from './DevTools/ServerListening';
 import DevKit from './DevTools/Kit';
 
 import { useTranslation } from "react-i18next";
+
+import InnerContentSize from './InnerContentSize';
 
 const ValidWrapper = (props: any) => {
  const { isIntalledPyscript } = props;
@@ -96,7 +99,9 @@ React.useEffect(() => {
 				 {process.env.NODE_ENV === 'development' && isDevServerListening() ?
 					<DevKit bgColorState={[bgColor, setBgColor]}>
 						<GuideBox tag="AppBackground" show center fill={bgColor} borderRadius='0 0 4px 4px' spacing={3}>
-							<App />
+							<InnerContentSize>
+								<App />
+							</InnerContentSize>
 						</GuideBox>
 					</DevKit>
 					:

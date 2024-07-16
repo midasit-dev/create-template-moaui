@@ -5,6 +5,7 @@ import {
 import ManifestHeadLine from './Manifest/HeadLine';
 import HomeManifestTitleUpdator from './Manifest/TitleUpdator';
 import HomeManifestContainerSizeUpdator from './Manifest/ContainerSizeUpdator';
+import HomeManifestInnerContentSizeUpdator from './Manifest/InnerContentSizeUpdator';
 import HomeManifestContainerBackgroundUpdator from './Manifest/ContainerBackgroundUpdator';
 
 import HomeBuilder from './Builder';
@@ -34,6 +35,7 @@ const Home = (props: HomeProps) => {
 				/>
 				<HomeManifestTitleUpdator titleState={[title, setTitle]} />
 				<HomeManifestContainerSizeUpdator containerSizeState={[containerSize, setContainerSize]} />
+				<HomeManifestInnerContentSizeUpdator containerSizeState={[containerSize, setContainerSize]} />
 				<HomeManifestContainerBackgroundUpdator containerBackgroundColorState={[bgColor, setBgColor]} />
 			</GuideBox>
 

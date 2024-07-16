@@ -1,8 +1,8 @@
 import React from 'react';
 import Moaui from '@midasit-dev/moaui';
 import Header from '../Shared/Header';
-import Body from '../Shared/Body';
 import { rowHeaderHeight } from '../Shared/HeaderBodyStyles';
+import { motion } from 'framer-motion';
 
 interface ToolProps {
 	containerSizeState: [{ width: number, height: number }, React.Dispatch<React.SetStateAction<{ width: number; height: number; }>>];
@@ -37,34 +37,36 @@ const Tool = (props: ToolProps) => {
 	}, [constainerSizeUpdate, setContainerSize]);
 
 	return (
-		<Moaui.GuideBox width="100%" height={rowHeaderHeight} center row>
+		<Moaui.GuideBox width="100%" height={rowHeaderHeight} horSpaceBetween verCenter row>
 
-			<Header
-				title="Container Size"
-				noSeparator
-			/>
+			<Moaui.GuideBox row spacing={1} verCenter>
+				<Header title="Container Size" noSeparator />
+			</Moaui.GuideBox>
 
-			<Body>
-				<Moaui.GuideBox width={160} row horRight verCenter spacing={2} loading={loading}>
-					<Moaui.Typography>{`${containerSize.width}px x ${containerSize.height}px`}</Moaui.Typography>
-					<Moaui.Tooltip title="re-calculate the container size" placement='top'>
-						<Moaui.Icon 
-							iconName='Refresh' 
-							toButton
-							onClick={() => {
-								setLoading(true);
-								setTimeout(() => {
-									try {
-										setContainerSizeUpdate(true);
-									} finally {
-										setLoading(false);
-									}
-								}, 500);
-							}}
-						/>
-					</Moaui.Tooltip>
-				</Moaui.GuideBox>
-			</Body>
+			<motion.div
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+				>
+					<Moaui.GuideBox width={160} row horRight verCenter spacing={2} loading={loading}>
+						<Moaui.Typography>{`${containerSize.width}px x ${containerSize.height}px`}</Moaui.Typography>
+						<Moaui.Tooltip title="re-calculate the container size" placement='top'>
+							<Moaui.Icon 
+								iconName='Refresh' 
+								toButton
+								onClick={() => {
+									setLoading(true);
+									setTimeout(() => {
+										try {
+											setContainerSizeUpdate(true);
+										} finally {
+											setLoading(false);
+										}
+									}, 500);
+								}}
+							/>
+						</Moaui.Tooltip>
+					</Moaui.GuideBox>
+				</motion.div>
 
 		</Moaui.GuideBox>
 	)
