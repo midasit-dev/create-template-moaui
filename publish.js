@@ -1,10 +1,10 @@
 //get argments
-const args = process.argv.slice(2);
-if (args.length === 0) {
-	console.error('ERR: Please provide the OTP code as an argument.');
-	console.error('ex) node publish --otp=123456');
-	process.exit(1);
-}
+// const args = process.argv.slice(2);
+// if (args.length === 0) {
+// 	console.error('ERR: Please provide the OTP code as an argument.');
+// 	console.error('ex) node publish --otp=123456');
+// 	process.exit(1);
+// }
 
 console.log('current args:', args);
 
@@ -39,7 +39,8 @@ fs.writeFileSync(logRenderingSignaturePath, updatedContent, 'utf-8');
 console.log(`Updated logRenderingSignature.ts with the new version ${newVersion}`);
 
 //npm publish
-exec(`npm publish ${args[0]}`, (error, stdout, stderr) => {
+// exec(`npm publish ${args[0]}`, (error, stdout, stderr) => {
+exec(`npm publish`, (error, stdout, stderr) => {
   if (error) {
     console.error(`Error during npm publish: ${error}`);
     return;
