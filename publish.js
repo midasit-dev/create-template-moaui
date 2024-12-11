@@ -1,19 +1,19 @@
 //get argments
-// const args = process.argv.slice(2);
-// if (args.length === 0) {
-// 	console.error('ERR: Please provide the OTP code as an argument.');
-// 	console.error('ex) node publish --otp=123456');
-// 	process.exit(1);
-// }
+const args = process.argv.slice(2);
+if (args.length === 0) {
+  console.error("ERR: Please provide the OTP code as an argument.");
+  console.error("ex) node publish --otp=123456");
+  process.exit(1);
+}
 
-console.log('current args:', args);
+console.log("current args:", args);
 
-const fs = require('fs');
-const path = require('path');
-const { exec } = require('child_process');
+const fs = require("fs");
+const path = require("path");
+const { exec } = require("child_process");
 
 // Read package.json
-const packageJsonPath = path.resolve(__dirname, 'package.json');
+const packageJsonPath = path.resolve(__dirname, "package.json");
 const packageJson = require(packageJsonPath);
 
 // Bump up the version
@@ -22,12 +22,24 @@ const newVersion = bumpVersion(currentVersion);
 packageJson.version = newVersion;
 
 // Update package.json
-fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2), 'utf-8');
+fs.writeFileSync(
+  packageJsonPath,
+  JSON.stringify(packageJson, null, 2),
+  "utf-8"
+);
 console.log(`Updated package.json version to ${newVersion}`);
 
 // Update logRenderingSignature.ts
-const logRenderingSignaturePath = path.resolve(__dirname, 'template', 'src', 'Signature.tsx');
-const logRenderingSignatureContent = fs.readFileSync(logRenderingSignaturePath, 'utf-8');
+const logRenderingSignaturePath = path.resolve(
+  __dirname,
+  "template",
+  "src",
+  "Signature.tsx"
+);
+const logRenderingSignatureContent = fs.readFileSync(
+  logRenderingSignaturePath,
+  "utf-8"
+);
 
 // Replace the version string in logRenderingSignature.ts
 const updatedContent = logRenderingSignatureContent.replace(
@@ -35,8 +47,10 @@ const updatedContent = logRenderingSignatureContent.replace(
   `const currentVersionFromPackageJson = '${newVersion}'`
 );
 
-fs.writeFileSync(logRenderingSignaturePath, updatedContent, 'utf-8');
-console.log(`Updated logRenderingSignature.ts with the new version ${newVersion}`);
+fs.writeFileSync(logRenderingSignaturePath, updatedContent, "utf-8");
+console.log(
+  `Updated logRenderingSignature.ts with the new version ${newVersion}`
+);
 
 //npm publish
 // exec(`npm publish ${args[0]}`, (error, stdout, stderr) => {
@@ -52,7 +66,7 @@ exec(`npm publish`, (error, stdout, stderr) => {
 console.log(`Published to NPM ${newVersion}`);
 
 function bumpVersion(version) {
-  const versionParts = version.split('.');
+  const versionParts = version.split(".");
   const newPatch = parseInt(versionParts[2]) + 1;
   return `${versionParts[0]}.${versionParts[1]}.${newPatch}`;
 }

@@ -408,7 +408,7 @@ const active_index_html = `<!DOCTYPE html>
 	<link rel="stylesheet" href="./index.css" />
 
 	<!-- PYSCRIPT Configuration -->
-	<script defer src="https://pyscript.net/latest/pyscript.js"></script>
+	<script defer src="https://pyscript.net/releases/2023.05.1/pyscript.js"></script>
 	<py-config type="json" src="./py_config.json"></py-config>
 
 	<script>
@@ -444,7 +444,7 @@ const inactive_index_html = `<!DOCTYPE html>
 	<link rel="stylesheet" href="./index.css" />
 
 	<!-- PYSCRIPT Configuration -->
-	<!-- <script defer src="https://pyscript.net/latest/pyscript.js"></script> -->
+	<!-- <script defer src="https://pyscript.net/releases/2023.05.1/pyscript.js"></script> -->
 	<!-- <py-config type="json" src="./py_config.json"></py-config> -->
 
 	<script>
